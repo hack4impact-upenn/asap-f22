@@ -12,12 +12,16 @@ const AnswerSchema = new mongoose.Schema({
   },
   resultantQuestionId: {
     type: String,
-    required: false,
+    required: true,
   },
 });
-
+ 
 interface IAnswer extends mongoose.Document {
-  _id: string;
+  _id: number;
   text: string;
   resultantQuestionId: string;
 }
+
+const Answer = mongoose.model<IAnswer>('Answer', AnswerSchema);
+
+export { IAnswer, Answer };
