@@ -15,9 +15,9 @@ const AnswerSchema = new mongoose.Schema({
     required: true,
   },
 });
- 
+
 interface IAnswer extends mongoose.Document {
-  _id: number;
+  _id: string;
   text: string;
   resultantQuestionId: string;
 }
