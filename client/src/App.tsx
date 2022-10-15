@@ -20,6 +20,7 @@ import RegisterPage from './Authentication/RegisterPage';
 import LoginPage from './Authentication/LoginPage';
 import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage';
 import ResetPasswordPage from './Authentication/ResetPasswordPage';
+import DefinitionSidebarPage from './DefinitionSidebar/DefinitionSidebarPage';
 
 function App() {
   return (
@@ -62,6 +63,8 @@ function App() {
                       <DynamicRedirect unAuthPath="/login" authPath="/home" />
                     }
                   />
+
+                  <Route path="/sidebar" element={<DefinitionSidebarPage />} />
 
                   {/* Route which is accessed if no other route is matched */}
                   <Route path="*" element={<NotFoundPage />} />
