@@ -20,6 +20,7 @@ import RegisterPage from './Authentication/RegisterPage';
 import LoginPage from './Authentication/LoginPage';
 import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage';
 import ResetPasswordPage from './Authentication/ResetPasswordPage';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -65,6 +66,8 @@ function App() {
 
                   {/* Route which is accessed if no other route is matched */}
                   <Route path="*" element={<NotFoundPage />} />
+
+                  <Route path="/footer" element={<Footer />} />
                 </Routes>
               </CssBaseline>
             </ThemeProvider>
