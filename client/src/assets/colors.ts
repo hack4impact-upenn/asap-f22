@@ -16,7 +16,7 @@ const COLORS = {
   neutral: '#8c8c8c', // Gray
   lightGray: '#ebeff2', // Gray-subsection
   actionBlue: '#155da1', // Action button
-
   // Other colors:
+  purple: '#5204B9',
 };
 export default COLORS;
