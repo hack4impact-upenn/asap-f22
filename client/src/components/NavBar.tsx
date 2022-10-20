@@ -13,7 +13,6 @@ function NavBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             ASAP Resource Tree
           </Typography>
-          <Button color="primary">Login</Button>
         </Toolbar>
       </AppBar>
     </Box>
