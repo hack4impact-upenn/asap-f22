@@ -48,9 +48,6 @@ function App() {
                     />
                   </Route>
                   {/* Routes accessed only if user is authenticated */}
-                  <Route element={<ProtectedRoutesWrapper />}>
-                    <Route path="/home" element={<HomePage />} />
-                  </Route>
                   <Route element={<AdminRoutesWrapper />}>
                     <Route path="/users" element={<AdminDashboardPage />} />
                   </Route>
@@ -66,6 +63,7 @@ function App() {
                   {/* Route which is accessed if no other route is matched */}
                   <Route path="*" element={<NotFoundPage />} />
 
+                  <Route path="/home" element={<HomePage />} />
                 </Routes>
               </CssBaseline>
             </ThemeProvider>
