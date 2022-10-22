@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { Button, ButtonProps } from '@mui/material';
+import { Button } from '@mui/material';
 
 interface AnswerButtonProps {
   id: string;
   text: string;
   resultantQuestionId: string;
   onClick: any;
-  // allAnswers: string[];
-  // questionIndex: number;
 }
 
 function AnswerButton(props: AnswerButtonProps) {
@@ -17,23 +15,26 @@ function AnswerButton(props: AnswerButtonProps) {
   const [questionIndex, setQuestionIndex] = React.useState(0);
   const [allAnswers, setAllAnswers] = React.useState<string[]>([]);
 
-  // temp click handler -- should appear on page that has entire question component
+  // temp click handler -- this should appear on page that has the entire question component along with the state
   const clickHandler = (
     // event: any,
     answerId: string,
     // resultantQuestionId: string,
   ) => {
-    // these should be part of state (like above)
-    setAllAnswers(
-      allAnswers.map((a, i) => {
-        if (i === questionIndex) {
-          // Increment the clicked counter
-          return answerId;
-        }
-        // The rest haven't changed
-        return a;
-      }),
-    );
+    // these should be part of state (as done above)
+    if (allAnswers.length === questionIndex) {
+      setAllAnswers((current) => [...current, answerId]);
+    } else {
+      setAllAnswers(
+        allAnswers.map((a, i) => {
+          if (i === questionIndex) {
+            // Update answer at question index
+            return answerId;
+          }
+          return a;
+        }),
+      );
+    }
     setQuestionIndex(questionIndex + 1);
     // get new question info from backend route (using resultantQuestionId)
 
