@@ -1,5 +1,5 @@
 /**
- * Defines the Answer model for the database and also the interface to
+ * Defines the resource model for the database and also the interface to
  * access the model in TypeScript.
  */
 
