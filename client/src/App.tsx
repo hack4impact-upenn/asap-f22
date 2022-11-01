@@ -66,7 +66,7 @@ function App() {
 
                   <Route path="/home" element={<HomePage />} />
 
-                  <Route path="/sidebar" element={<SidebarComponent />} />
+                  {/* <Route path="/sidebar" element={<SidebarComponent />} /> */}
                 </Routes>
               </CssBaseline>
             </ThemeProvider>
