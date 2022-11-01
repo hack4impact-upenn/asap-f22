@@ -20,6 +20,7 @@ import RegisterPage from './Authentication/RegisterPage';
 import LoginPage from './Authentication/LoginPage';
 import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage';
 import ResetPasswordPage from './Authentication/ResetPasswordPage';
+import SidebarComponent from './components/sidebar/SidebarComponent';
 
 function App() {
   return (
@@ -64,6 +65,8 @@ function App() {
                   <Route path="*" element={<NotFoundPage />} />
 
                   <Route path="/home" element={<HomePage />} />
+
+                  {/* <Route path="/sidebar" element={<SidebarComponent />} /> */}
                 </Routes>
               </CssBaseline>
             </ThemeProvider>
