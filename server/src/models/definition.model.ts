@@ -14,8 +14,8 @@ const DefinitionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  questionId: {
-    type: String,
+  questionIds: {
+    type: [String],
     required: true,
   },
 });
@@ -24,7 +24,7 @@ interface IDefinition extends mongoose.Document {
   _id: string;
   word: string;
   definition: string;
-  questionId: string;
+  questionIds: string[];
 }
 
 const Definition = mongoose.model<IDefinition>('Definition', DefinitionSchema);
