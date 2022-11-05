@@ -21,9 +21,24 @@ import RegisterPage from './Authentication/RegisterPage';
 import LoginPage from './Authentication/LoginPage';
 import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage';
 import ResetPasswordPage from './Authentication/ResetPasswordPage';
+import QuestionComponent from './Question/QuestionComponent';
+import { IQuestion } from './util/types/question';
+import { IAnswer } from './util/types/answer';
 
 
 function App() {
+  /* const testa = {
+    id: 'A123',
+    text: 'answer',
+    resultantQuestionId: '1234',
+  } as IAnswer;
+  const testq = {
+    id: '123',
+    text: 'hi',
+    isQuestion: true,
+    resultantAnswers: [testa],
+  } as IQuestion; */
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -66,7 +81,10 @@ function App() {
                   <Route path="*" element={<NotFoundPage />} />
 
                   <Route path="/home" element={<HomePage />} />
-
+                  {/* <Route
+                    path="/question"
+                    element={<QuestionComponent question={testq} />}
+                  /> */}
 
                  {/* <Route
                     path="/dropdown"
