@@ -20,7 +20,7 @@ import RegisterPage from './Authentication/RegisterPage';
 import LoginPage from './Authentication/LoginPage';
 import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage';
 import ResetPasswordPage from './Authentication/ResetPasswordPage';
-import SidebarComponent from './components/sidebar/SidebarComponent';
+
 
 function App() {
   return (
@@ -66,6 +66,7 @@ function App() {
 
                   <Route path="/home" element={<HomePage />} />
 
+                  {/* <Route path="popupwarning" element={<PopupWarning />} /> */}
                   {/* <Route path="/sidebar" element={<SidebarComponent />} /> */}
                 </Routes>
               </CssBaseline>
