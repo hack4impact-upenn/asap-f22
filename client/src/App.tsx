@@ -20,6 +20,7 @@ import RegisterPage from './Authentication/RegisterPage';
 import LoginPage from './Authentication/LoginPage';
 import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage';
 import ResetPasswordPage from './Authentication/ResetPasswordPage';
+import PopupWarning from './components/PopupWarning';
 
 function App() {
   return (
@@ -64,6 +65,8 @@ function App() {
                   <Route path="*" element={<NotFoundPage />} />
 
                   <Route path="/home" element={<HomePage />} />
+
+                  <Route path="popupwarning" element={<PopupWarning />} />
                 </Routes>
               </CssBaseline>
             </ThemeProvider>
