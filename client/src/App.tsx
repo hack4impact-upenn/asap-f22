@@ -21,6 +21,7 @@ import LoginPage from './Authentication/LoginPage';
 import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage';
 import ResetPasswordPage from './Authentication/ResetPasswordPage';
 import SidebarComponent from './components/sidebar/SidebarComponent';
+import EditorGUI from './components/EditorGUI';
 
 function App() {
   return (
@@ -65,6 +66,7 @@ function App() {
                   <Route path="*" element={<NotFoundPage />} />
 
                   <Route path="/home" element={<HomePage />} />
+                  <Route path="/editor" element={<EditorGUI id="1" />} />
 
                   {/* <Route path="/sidebar" element={<SidebarComponent />} /> */}
                 </Routes>
