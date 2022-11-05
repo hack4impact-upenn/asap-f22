@@ -4,6 +4,7 @@ import { CssBaseline } from '@mui/material';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import Box from '@mui/system/Box';
 import theme from './assets/theme';
 import { store, persistor } from './util/redux/store';
 import NotFoundPage from './NotFound/NotFoundPage';
@@ -23,6 +24,7 @@ import ResetPasswordPage from './Authentication/ResetPasswordPage';
 import QuestionComponent from './Question/QuestionComponent';
 import { IQuestion } from './util/types/question';
 import { IAnswer } from './util/types/answer';
+
 
 function App() {
   /* const testa = {
@@ -79,11 +81,24 @@ function App() {
                   <Route path="*" element={<NotFoundPage />} />
 
                   <Route path="/home" element={<HomePage />} />
-
                   {/* <Route
                     path="/question"
                     element={<QuestionComponent question={testq} />}
                   /> */}
+
+                 {/* <Route
+                    path="/dropdown"
+                    element={
+                      <Box padding={2}>
+                        <ResourceDropdown
+                          title="Example Resource"
+                          content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed gravida ex. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut erat pulvinar, dignissim est et, eleifend quam. Aenean euismod ultricies accumsan. Sed vel nulla posuere, vestibulum sem eget, porttitor dolor. Integer et erat in mi tincidunt sollicitudin."
+                        />
+                      </Box>
+                    }
+                  /> */}
+                  {/* <Route path="popupwarning" element={<PopupWarning />} /> */}
+                  {/* <Route path="/sidebar" element={<SidebarComponent />} /> */}
                 </Routes>
               </CssBaseline>
             </ThemeProvider>
