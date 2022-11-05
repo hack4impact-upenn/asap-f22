@@ -21,7 +21,7 @@ import RegisterPage from './Authentication/RegisterPage';
 import LoginPage from './Authentication/LoginPage';
 import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage';
 import ResetPasswordPage from './Authentication/ResetPasswordPage';
-import ResourceDropdown from './components/ResourceDropdown';
+
 
 function App() {
   return (
@@ -67,7 +67,8 @@ function App() {
 
                   <Route path="/home" element={<HomePage />} />
 
-                  <Route
+
+                 {/* <Route
                     path="/dropdown"
                     element={
                       <Box padding={2}>
@@ -77,7 +78,9 @@ function App() {
                         />
                       </Box>
                     }
-                  />
+                  /> */}
+                  {/* <Route path="popupwarning" element={<PopupWarning />} /> */}
+                  {/* <Route path="/sidebar" element={<SidebarComponent />} /> */}
                 </Routes>
               </CssBaseline>
             </ThemeProvider>
