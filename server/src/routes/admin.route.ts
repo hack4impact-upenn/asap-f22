@@ -8,6 +8,8 @@ import {
   getAllUsers,
   upgradePrivilege,
   deleteUser,
+  getAllQuestions,
+  editQuestionText,
 } from '../controllers/admin.controller';
 import { isAuthenticated } from '../controllers/auth.middleware';
 import { approve } from '../controllers/auth.controller';
@@ -22,6 +24,7 @@ const router = express.Router();
 router.get('/all', isAuthenticated, isAdmin, getAllUsers);
 
 /**
+ *
  * A GET route to check if the requestor is an admin. Checks first if the
  * requestor is a authenticated. Throws an error if the requestor is not an admin.
  */
@@ -50,5 +53,23 @@ router.put('/autopromote', upgradePrivilege);
  * email (string) - The email of the user to be deleted
  */
 router.delete('/:email', isAuthenticated, isAdmin, deleteUser);
+
+/**
+ * A GET route to get all questions. Checks first if the requestor is a
+ * authenticated and is an admin.
+ */
+//  router.get('/allQuestions', isAuthenticated, isAdmin, getAllQuestions);
+router.get('/allQuestions', getAllQuestions);
+
+/**
+ * A PUT route to edit certain question. Checks first if the requestor is a
+ * authenticated and is an admin.
+ * Expects a JSON body with the following fields:
+ * - question dictionary (string ID --> string text), answer dictionary (string ID --> string text)
+ * - question dictionary should only have 1 key/value pair, answer dictionary can have multiple
+
+ */
+// router.put('/editQuestion', isAuthenticated, isAdmin, editQuestionText);
+router.put('/editQuestion', editQuestionText);
 
 export default router;

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Typography, Grid } from '@mui/material';
 import ScreenGrid from '../components/ScreenGrid';
-import UserTable from './UserTable';
+// import UserTable from './QuestionTable';
+import QuestionTable from './QuestionTable';
 
 /**
  * A page only accessible to admins that displays all users in a table and allows
@@ -19,7 +20,8 @@ function AdminDashboardPage() {
         <Typography variant="h2">Welcome to the Admin Dashboard</Typography>
 
         <div style={{ height: '60vh', width: '60vw' }}>
-          <UserTable />
+          {/* <UserTable /> */}
+          <QuestionTable />
         </div>
       </Grid>
     </ScreenGrid>

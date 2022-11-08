@@ -6,12 +6,19 @@ import express from 'express';
 import ApiError from '../util/apiError';
 import StatusCode from '../util/statusCode';
 import { IUser } from '../models/user.model';
+import { IQuestion } from '../models/question.model';
 import {
   upgradeUserToAdmin,
   getUserByEmail,
   getAllUsersFromDB,
   deleteUserById,
 } from '../services/user.service';
+import {
+  editQuestion,
+  getAllQuestionsFromDB,
+  getQuestionById,
+  //  deleteQuestionById,
+} from '../services/question.service';
 
 /**
  * Get all users from the database. Upon success, send the a list of all users in the res body with 200 OK status code.
@@ -107,4 +114,63 @@ const deleteUser = async (
     });
 };
 
-export { getAllUsers, upgradePrivilege, deleteUser };
+/**
+ * Get all questions from the database. Upon success, send the a list of all questions in the res body with 200 OK status code.
+ */
+const getAllQuestions = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  return (
+    getAllQuestionsFromDB()
+      .then((questionList) => {
+        res.status(StatusCode.OK).send(questionList);
+      })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .catch((e) => {
+        next(ApiError.internal('Unable to retrieve all questions'));
+      })
+  );
+};
+
+/**
+ * Upgrade a user to an admin. The email of the user is expected to be in the request body.
+ * Upon success, return 200 OK status code.
+ */
+const editQuestionText = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { questionVals, answerVals } = req.body;
+  if (!questionVals) {
+    next(ApiError.missingFields(['questionVals']));
+    return;
+  }
+
+  const qID = Object.keys(questionVals)[0];
+
+  const question: IQuestion | null = await getQuestionById(qID);
+  if (!question) {
+    next(ApiError.notFound(`Question with id ${qID} does not exist`));
+    return;
+  }
+
+  editQuestion(questionVals, answerVals)
+    .then(() => {
+      res.sendStatus(StatusCode.OK);
+    })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    .catch((e) => {
+      next(ApiError.internal('Unable to edit question text.'));
+    });
+};
+
+export {
+  getAllUsers,
+  upgradePrivilege,
+  deleteUser,
+  getAllQuestions,
+  editQuestionText,
+};
