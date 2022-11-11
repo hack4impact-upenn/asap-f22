@@ -9,6 +9,7 @@ import theme from './assets/theme';
 import { store, persistor } from './util/redux/store';
 import NotFoundPage from './NotFound/NotFoundPage';
 import HomePage from './Home/HomePage';
+import EditorGUI from './components/EditorGUI';
 import AdminDashboardPage from './AdminDashboard/AdminDashboardPage';
 import {
   UnauthenticatedRoutesWrapper,
@@ -24,7 +25,6 @@ import ResetPasswordPage from './Authentication/ResetPasswordPage';
 import QuestionComponent from './Question/QuestionComponent';
 import { IQuestion } from './util/types/question';
 import { IAnswer } from './util/types/answer';
-
 
 function App() {
   /* const testa = {
@@ -49,6 +49,7 @@ function App() {
                 <Routes>
                   {/* Routes accessed only if user is not authenticated */}
                   <Route element={<UnauthenticatedRoutesWrapper />}>
+                    <Route path="/edit" element={<EditorGUI />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route
@@ -86,7 +87,7 @@ function App() {
                     element={<QuestionComponent question={testq} />}
                   /> */}
 
-                 {/* <Route
+                  {/* <Route
                     path="/dropdown"
                     element={
                       <Box padding={2}>
