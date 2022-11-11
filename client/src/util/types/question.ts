@@ -1,11 +1,12 @@
 /**
  * Interface for the question data type return from the backend
  */
-interface IQuestion {
-  _id: string;
+
+import { IAnswer } from './answer';
+
+export interface IQuestion {
+  id: string;
   text: string;
-  resultantAnswerIds: string[];
+  resultantAnswers: IAnswer[];
   isQuestion: boolean;
 }
-
-export default IQuestion;
