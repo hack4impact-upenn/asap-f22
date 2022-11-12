@@ -7,6 +7,7 @@ import ScreenGrid from '../components/ScreenGrid';
 import AnswerButton from './AnswerButton';
 import { IAnswer } from '../util/types/answer';
 import { IQuestion } from '../util/types/question';
+import { useData } from '../util/api';
 
 interface QuestionComponentProps {
   question: IQuestion;
@@ -34,31 +35,28 @@ function QuestionComponent(props: QuestionComponentProps) {
   };
 
   // temp click handler -- this should appear on page that has the entire question component along with the state
-  const clickHandler = (
+  const ClickHandler = (
     // event: any,
-    answer: string,
+    answerID: string,
     // resultantQuestionId: string,
   ) => {
     // these should be part of state (as done above)
-    console.log(answer);
+    console.log(answerID);
     if (allAnswers.length === questionIndex) {
-      setAnswers(answer);
+      setAnswers(answerID);
     } else {
       setAllAnswers(
         allAnswers.map((a, i) => {
           if (i === questionIndex) {
             // Update answer at question index
-            return answer;
+            return answerID;
           }
           return a;
         }),
       );
     }
     incrementIndex();
-    // get new question info from backend route (using resultantQuestionId)
-
-    // actual one should make next component (with ref field)
-    // console.log(allAnswers);
+    const nextQuestion = useData(`question//get-next-question/:${answerID}`);
   };
 
   return (
@@ -91,7 +89,7 @@ function QuestionComponent(props: QuestionComponentProps) {
                   answer={item}
                   onClick={(e: any) => {
                     // console.log(e);
-                    clickHandler(e.target.id);
+                    ClickHandler(e.target.id);
                   }}
                 />
               );
