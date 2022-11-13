@@ -11,53 +11,11 @@ import { useData } from '../util/api';
 
 interface QuestionComponentProps {
   question: IQuestion;
+  handleClick: (answerID: string) => any;
 }
 
 function QuestionComponent(props: QuestionComponentProps) {
-  const { question } = props;
-  // State values and hooks
-  const [allQuestions, setAllQuestions] = useState<string[]>([]);
-  const [allAnswers, setAllAnswers] = useState<string[]>([]);
-  const [questionIndex, setQuestionIndex] = useState(0);
-
-  // Helper functions
-  const setQuestions = (value: string) => {
-    setAllQuestions((current) => [...current, value]);
-  };
-  const setAnswers = (value: string) => {
-    setAllAnswers((current) => [...current, value]);
-  };
-  const incrementIndex = () => {
-    setQuestionIndex((current) => current + 1);
-  };
-  const decrementIndex = () => {
-    setQuestionIndex((current) => current - 1);
-  };
-
-  // temp click handler -- this should appear on page that has the entire question component along with the state
-  const ClickHandler = (
-    // event: any,
-    answerID: string,
-    // resultantQuestionId: string,
-  ) => {
-    // these should be part of state (as done above)
-    console.log(answerID);
-    if (allAnswers.length === questionIndex) {
-      setAnswers(answerID);
-    } else {
-      setAllAnswers(
-        allAnswers.map((a, i) => {
-          if (i === questionIndex) {
-            // Update answer at question index
-            return answerID;
-          }
-          return a;
-        }),
-      );
-    }
-    incrementIndex();
-    const nextQuestion = useData(`question//get-next-question/:${answerID}`);
-  };
+  const { handleClick, question } = props;
 
   return (
     <div id={question.id}>
@@ -88,8 +46,8 @@ function QuestionComponent(props: QuestionComponentProps) {
                 <AnswerButton
                   answer={item}
                   onClick={(e: any) => {
-                    // console.log(e);
-                    ClickHandler(e.target.id);
+                    console.log(e);
+                    handleClick(e.target.id);
                   }}
                 />
               );

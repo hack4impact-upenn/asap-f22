@@ -21,7 +21,7 @@ import RegisterPage from './Authentication/RegisterPage';
 import LoginPage from './Authentication/LoginPage';
 import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage';
 import ResetPasswordPage from './Authentication/ResetPasswordPage';
-import QuestionComponent from './Question/QuestionComponent';
+import QuestionPage from './Question/QuestionPage';
 import { IQuestion } from './util/types/question';
 import { IAnswer } from './util/types/answer';
 
@@ -80,10 +80,7 @@ function App() {
                   <Route path="*" element={<NotFoundPage />} />
 
                   <Route path="/home" element={<HomePage />} />
-                  {/* <Route
-                    path="/question"
-                    element={<QuestionComponent question={testq} />}
-                  /> */}
+                  <Route path="/question" element={<QuestionPage />} />
 
                   {/* <Route
                     path="/dropdown"
