@@ -12,7 +12,7 @@ import { useData } from '../util/api';
 import { useAppSelector } from '../util/redux/hooks';
 import { selectUser } from '../util/redux/userSlice';
 import IUser from '../util/types/user';
-import IQuestion from '../util/types/question'; // '../../../server/src/models/question.model';
+import { IQuestion } from '../util/types/question'; // '../../../server/src/models/question.model';
 import EditQuestionButton from './EditQuestionButton';
 
 interface AdminDashboardRow {
@@ -30,11 +30,6 @@ interface AdminDashboardRow {
 //   isQuestion: true,
 
 // };
-const testq = {
-  _id: '123',
-  text: 'hi',
-  isQuestion: true,
-} as IQuestion;
 
 /**
  * The standalone table component for holding information about the users in
@@ -59,7 +54,7 @@ function QuestionTable() {
     edit: React.ReactElement,
   ): AdminDashboardRow {
     // const { _id, qstn } = user;
-    const { _id, text, resultantAnswerIds, isQuestion } = question;
+    const { _id, text, resultantAnswers, isQuestion } = question;
     return {
       key: _id,
       question: text,

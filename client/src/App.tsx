@@ -25,7 +25,6 @@ import QuestionComponent from './Question/QuestionComponent';
 import { IQuestion } from './util/types/question';
 import { IAnswer } from './util/types/answer';
 
-
 function App() {
   /* const testa = {
     id: 'A123',
@@ -89,7 +88,7 @@ function App() {
                     element={<QuestionComponent question={testq} />}
                   /> */}
 
-                 {/* <Route
+                  {/* <Route
                     path="/dropdown"
                     element={
                       <Box padding={2}>

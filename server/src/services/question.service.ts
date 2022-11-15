@@ -2,7 +2,7 @@
  * All the functions for interacting with user data in the MongoDB database
  */
 // import { hash } from 'bcrypt';
-import { Answer } from '../models/answer.model';
+import { Answer, IAnswer } from '../models/answer.model';
 import { Question } from '../models/question.model';
 
 // const passwordHashSaltRounds = 10;
@@ -20,15 +20,15 @@ import { Question } from '../models/question.model';
 //  ];
 
 /**
- * Creates a new user in the database.
+ * Creates a new question in the database.
  * @param text - string representing the text
  * @param isQuestion - boolean representing if question is valid
- * @returns The created {@link User}
+ * @returns The created {@link IQuestion}
  */
 const createQuestion = async (
   _id: string,
   text: string,
-  resultantAnswerIds: string[],
+  resultantAnswers: IAnswer[],
   isQuestion: boolean,
 ) => {
   //    const hashedPassword = await hash(password, passwordHashSaltRounds);
@@ -38,7 +38,7 @@ const createQuestion = async (
   const newQuestion = new Question({
     _id,
     text,
-    resultantAnswerIds,
+    resultantAnswers,
     isQuestion,
   });
   const user = await newQuestion.save();
@@ -88,7 +88,7 @@ const createQuestion = async (
  * Gets a question from the database by their id but doesn't include the
  * password in the returned user.
  * @param id The id of the user to get.
- * @returns The {@link Question} or null if the user was not found.
+ * @returns The {@link IQuestion} or null if the user was not found.
  */
 const getQuestionById = async (id: string) => {
   const question = await Question.findById(id).exec();
@@ -96,7 +96,7 @@ const getQuestionById = async (id: string) => {
 };
 
 /**
- * @returns All the {@link Question}s in the database.
+ * @returns All the {@link IQuestion}s in the database.
  */
 const getAllQuestionsFromDB = async () => {
   const questionList = await Question.find({}).exec(); // .select(removeSensitiveDataQuery).exec();
@@ -111,6 +111,7 @@ const getAllQuestionsFromDB = async () => {
 
 const editQuestion = async (
   questionVals: { [key: string]: string },
+  // NOTE that we are using strings for IDs here rather than the Answer Interface.
   answerVals: { [key: string]: string },
 ) => {
   const qID = Object.keys(questionVals)[0];
