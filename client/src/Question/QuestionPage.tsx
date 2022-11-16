@@ -1,32 +1,53 @@
-/* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
-import Button from '@mui/material/Button';
-import { Typography, Grid } from '@mui/material';
-import Box from '@mui/system/Box';
+import React, { useEffect, useState } from 'react';
 import ScreenGrid from '../components/ScreenGrid';
-import Footer from '../components/Footer';
-import NavBar from '../components/NavBar';
 import QuestionComponent from './QuestionComponent';
 import { IQuestion } from '../util/types/question';
 import { IAnswer } from '../util/types/answer';
+import { getData, useData } from '../util/api';
 
 function QuestionPage() {
   const testa = {
-    id: 'A123',
+    _id: 'A123',
     text: 'answer',
     resultantQuestionId: '1234',
   } as IAnswer;
 
+  const initialQuestionResponse = getData(
+    'question/get-next-question/6369a04ee0cca0b76f26576b',
+  );
+
   const [currentQuestion, setCurrentQuestion] = useState({
-    id: '123',
-    text: 'This is the root question',
+    _id: '123',
+    text: 'This is the dummy question',
     isQuestion: true,
-    resultantAnswers: [testa],
+    resultantAnswerIds: ['6369a04ee0cca0b76f26576b'],
   } as IQuestion);
 
   const [allQuestions, setAllQuestions] = useState<string[]>([]);
   const [allAnswers, setAllAnswers] = useState<string[]>([]);
   const [questionIndex, setQuestionIndex] = useState(0);
+
+  // useEffect(() => {
+  //   console.log(initialQuestion);
+  //   setCurrentQuestion(initialQuestion?.data);
+  // }, [initialQuestion]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await initialQuestionResponse;
+      console.log(res);
+      // setCurrentQuestion(res.data);
+      setCurrentQuestion({
+        // eslint-disable-next-line no-underscore-dangle
+        _id: res.data._id,
+        text: res.data.text,
+        isQuestion: res.data.isQuestion,
+        resultantAnswerIds: res.data.resultantAnswerIds,
+      } as IQuestion);
+    };
+
+    fetchData();
+  }, [initialQuestionResponse, currentQuestion]);
 
   // Helper functions
   const setQuestions = (value: string) => {
@@ -65,15 +86,8 @@ function QuestionPage() {
     }
     incrementIndex();
 
-    setCurrentQuestion({
-        id: '123',
-        text: 'This is the new question',
-        isQuestion: true,
-        resultantAnswers: [testa],
-      } as IQuestion) 
-  
-    
-    // const nextQuestion = useData(`question//get-next-question/:${answerID}`);
+    const nextQuestion = useData(`question/get-next-question/:${answerID}`);
+    setCurrentQuestion(nextQuestion?.data);
   };
 
   return (

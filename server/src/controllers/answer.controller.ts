@@ -1,19 +1,18 @@
 import express from 'express';
 import StatusCode from '../util/statusCode';
 import ApiError from '../util/apiError';
-import getNextQuestionFromDB from '../services/question.service';
+import getAnswerFromDB from '../services/answer.service';
 
-const getNextQuestion = async (
+const getAnswer = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
 ) => {
   const { answerID } = req.params;
   return (
-    getNextQuestionFromDB(answerID)
-      .then((nextQuestion) => {
-        res.status(StatusCode.OK).send(nextQuestion);
-        console.log('Next question', nextQuestion);
+    getAnswerFromDB(answerID)
+      .then((answer) => {
+        res.status(StatusCode.OK).send(answer);
       })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .catch((e) => {
@@ -22,4 +21,4 @@ const getNextQuestion = async (
   );
 };
 
-export default getNextQuestion;
+export default getAnswer;

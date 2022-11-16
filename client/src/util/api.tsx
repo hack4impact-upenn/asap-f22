@@ -65,12 +65,16 @@ const useData = (url: string) => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await getData(url);
+      console.log(res);
       setData(res);
+      console.log(data);
     };
 
     fetchData();
     // getData(url).then((res) => setData(res.data));
-  }, [url]);
+  }, [url, data]);
+
+  console.log(data);
 
   return data;
 };
