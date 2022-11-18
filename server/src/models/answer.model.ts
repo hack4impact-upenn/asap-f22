@@ -24,4 +24,4 @@ interface IAnswer extends mongoose.Document {
 
 const Answer = mongoose.model<IAnswer>('Answer', AnswerSchema);
 
-export { IAnswer, Answer };
+export { IAnswer, Answer, AnswerSchema };
