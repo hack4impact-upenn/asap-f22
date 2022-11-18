@@ -35,6 +35,10 @@ export default function EditorGUI({ id }: any) {
     setValue('content', editorContent);
   };
 
+  // const handleClick = () => {
+  //   // testQuestion = getQuestionBy
+  // }
+
   return (
     <div className="App">
       <h1>React Editors</h1>
@@ -48,6 +52,7 @@ export default function EditorGUI({ id }: any) {
         //   setContent(newContent);
         // }}
       />
+      {/* <button onClick={handleClick()}>test</button> */}
     </div>
   );
 }
