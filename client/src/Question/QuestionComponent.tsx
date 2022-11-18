@@ -62,7 +62,8 @@ function QuestionComponent(props: QuestionComponentProps) {
   };
 
   return (
-    <div id={question.id}>
+    // eslint-disable-next-line no-underscore-dangle
+    <div id={question._id}>
       <ScreenGrid>
         <Grid
           container

@@ -4,14 +4,15 @@
  */
 
 import mongoose from 'mongoose';
+import { IAnswer, AnswerSchema } from './answer.model';
 
 const QuestionSchema = new mongoose.Schema({
   text: {
     type: String,
     required: true,
   },
-  resultantAnswerIds: {
-    type: [String],
+  resultantAnswers: {
+    type: [AnswerSchema],
     required: true,
   },
   isQuestion: {
@@ -23,7 +24,7 @@ const QuestionSchema = new mongoose.Schema({
 interface IQuestion extends mongoose.Document {
   _id: string;
   text: string;
-  resultantAnswerIds: string[];
+  resultantAnswers: [IAnswer];
   isQuestion: boolean;
 }
 
