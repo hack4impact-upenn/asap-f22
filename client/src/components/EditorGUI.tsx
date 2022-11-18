@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import JoditEditor from 'jodit-react';
+import { getData } from '../util/api';
 
 export default function EditorGUI({ id }: any) {
   const editor = useRef(null);
@@ -35,9 +36,10 @@ export default function EditorGUI({ id }: any) {
     setValue('content', editorContent);
   };
 
-  // const handleClick = () => {
-  //   // testQuestion = getQuestionBy
-  // }
+  const handleClick = () => {
+    const allQuestions = getData('admin/allQuestions');
+    console.log(allQuestions);
+  };
 
   return (
     <div className="App">
@@ -52,7 +54,6 @@ export default function EditorGUI({ id }: any) {
         //   setContent(newContent);
         // }}
       />
-      {/* <button onClick={handleClick()}>test</button> */}
     </div>
   );
 }
