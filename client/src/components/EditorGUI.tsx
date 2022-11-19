@@ -48,12 +48,10 @@ export default function EditorGUI({ id }: any) {
       <JoditEditor
         ref={editor}
         value={values.content}
-        // config={config}
-        onBlur={handleUpdate}
-        // onChange={(newContent) => {
-        //   setContent(newContent);
-        // }}
+        onChange={handleUpdate}
       />
+
+      <button type="button">Submit</button>
     </div>
   );
 }
