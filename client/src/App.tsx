@@ -64,11 +64,14 @@ function App() {
                       path="/reset-password/:token"
                       element={<ResetPasswordPage />}
                     />
+                    {/* <Route element={<AdminRoutesWrapper />}> */}
+                    <Route path="/users" element={<AdminDashboardPage />} />
+                    {/* </Route> */}
                   </Route>
                   {/* Routes accessed only if user is authenticated */}
-                  <Route element={<AdminRoutesWrapper />}>
+                  {/* <Route element={<AdminRoutesWrapper />}>
                     <Route path="/users" element={<AdminDashboardPage />} />
-                  </Route>
+                  </Route> */}
 
                   {/* Route which redirects to a different page depending on if the user is an authenticated or not by utilizing the DynamicRedirect component */}
                   <Route
