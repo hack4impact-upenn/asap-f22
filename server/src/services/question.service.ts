@@ -3,13 +3,27 @@
  */
 // import { hash } from 'bcrypt';
 import { Answer, IAnswer } from '../models/answer.model';
-import { Question } from '../models/question.model';
+import { IQuestion, Question } from '../models/question.model';
+import { TempQuestion } from '../models/temp-question.model';
 
 const getNextQuestionFromDB = async (answerID: string) => {
   const answer = await Answer.findById(answerID).exec();
-  const nextQuestion = await Question.findById(
+  const nextTempQuestion = await TempQuestion.findById(
     answer?.resultantQuestionId,
   ).exec();
+  const nextQuestion = {
+    _id: nextTempQuestion?._id,
+    text: nextTempQuestion?.text,
+    isQuestion: nextTempQuestion?.isQuestion,
+  } as IQuestion;
+
+  nextTempQuestion?.resultantAnswerIDs.forEach(async (id) => {
+    const resultantAnswer = await Answer.findById(id).exec();
+    if (resultantAnswer != null) {
+      nextQuestion.resultantAnswers.push(resultantAnswer!);
+    }
+  });
+
   return nextQuestion;
 };
 
