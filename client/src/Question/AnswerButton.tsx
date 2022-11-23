@@ -1,14 +1,38 @@
 import * as React from 'react';
 import { Button } from '@mui/material';
 import { IAnswer } from '../util/types/answer';
+import { getData, useData } from '../util/api';
 
 interface AnswerButtonProps {
-  answer: IAnswer;
+  answerId: string;
   onClick: any;
 }
 
 function AnswerButton(props: AnswerButtonProps) {
-  const { answer, onClick } = props;
+  const { answerId, onClick } = props;
+
+  // /get-answer/:answerID
+  const answerData = getData(`answer/get-answer/${answerId}`);
+
+  const [answer, setAnswer] = React.useState({
+    _id: '123',
+    text: 'This is the dummy answer',
+    resultantQuestionId: 'test',
+  } as IAnswer);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const res = await answerData;
+      setAnswer({
+        // eslint-disable-next-line no-underscore-dangle
+        _id: res.data._id,
+        text: res.data.text,
+        resultantQuestionId: res.data.resultantQuestionId,
+      } as IAnswer);
+    };
+
+    fetchData();
+  }, [answerData]);
 
   const [isHover, setIsHover] = React.useState(false);
   // const [questionIndex, setQuestionIndex] = React.useState(0);
@@ -50,9 +74,11 @@ function AnswerButton(props: AnswerButtonProps) {
 
   return (
     <Button
-      id={answer.id}
+      // eslint-disable-next-line no-underscore-dangle
+      id={answer._id}
       variant="outlined"
-      onClick={(e) => onClick(e, answer.id, answer.resultantQuestionId)}
+      // eslint-disable-next-line no-underscore-dangle
+      onClick={(e) => onClick(e, answer._id, answer.resultantQuestionId)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       sx={{

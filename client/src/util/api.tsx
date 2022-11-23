@@ -65,14 +65,16 @@ const useData = (url: string) => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await getData(url);
+      console.log(res);
       setData(res);
+      console.log(data);
     };
 
     fetchData();
     // getData(url).then((res) => setData(res.data));
-  }, [url]);
+  }, [url, data]);
 
-  return data;
+  console.log(data);
 };
 
 // https://stackoverflow.com/questions/53059059/react-hooks-making-an-ajax-request

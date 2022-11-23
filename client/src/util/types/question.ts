@@ -7,6 +7,6 @@ import { IAnswer } from './answer';
 export interface IQuestion {
   _id: string;
   text: string;
-  resultantAnswers: IAnswer[];
+  resultantAnswerIds: string[];
   isQuestion: boolean;
 }

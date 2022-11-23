@@ -19,7 +19,7 @@ function QuestionComponent(props: QuestionComponentProps) {
 
   return (
     // eslint-disable-next-line no-underscore-dangle
-    <div id={question._id}>
+    <div>
       <ScreenGrid>
         <Grid
           container
@@ -42,10 +42,10 @@ function QuestionComponent(props: QuestionComponentProps) {
                 {question.text}
               </Typography>
             </Grid>
-            {question.resultantAnswers.map((item) => {
+            {question.resultantAnswerIds.map((id) => {
               return (
                 <AnswerButton
-                  answer={item}
+                  answerId={id}
                   onClick={(e: any) => {
                     console.log(e);
                     handleClick(e.target.id);
