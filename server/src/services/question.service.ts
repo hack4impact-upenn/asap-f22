@@ -8,23 +8,37 @@ import { TempQuestion } from '../models/temp-question.model';
 
 const getNextQuestionFromDB = async (answerID: string) => {
   const answer = await Answer.findById(answerID).exec();
-  const nextTempQuestion = await TempQuestion.findById(
-    answer?.resultantQuestionId,
-  ).exec();
-  const nextQuestion = {
-    _id: nextTempQuestion?._id,
-    text: nextTempQuestion?.text,
-    isQuestion: nextTempQuestion?.isQuestion,
-  } as IQuestion;
+  await TempQuestion.findById(answer?.resultantQuestionId)
+    .exec()
+    .then((tempQuestion) => {
+      const array: IAnswer[] = [];
 
-  nextTempQuestion?.resultantAnswerIDs.forEach(async (id) => {
-    const resultantAnswer = await Answer.findById(id).exec();
-    if (resultantAnswer != null) {
-      nextQuestion.resultantAnswers.push(resultantAnswer!);
-    }
-  });
+      tempQuestion?.resultantAnswerIds.forEach(async (id) => {
+        const resultantAnswer = await Answer.findById(id).exec();
+        console.log('resultant answer:', resultantAnswer);
+        if (resultantAnswer != null) {
+          // console.log('NOT NULL');
+          array.push(resultantAnswer!);
+          // console.log(array);
+        }
+      });
+      console.log(array);
+      return { tempQuestion, array };
+    })
+    .then(({ tempQuestion, array }) => {
+      // console.log(array);
 
-  return nextQuestion;
+      const nextQuestion = {
+        _id: tempQuestion?._id,
+        text: tempQuestion?.text,
+        resultantAnswers: array,
+        isQuestion: tempQuestion?.isQuestion,
+      } as IQuestion;
+
+      console.log(nextQuestion);
+    });
+
+  // console.log(nextTempQuestion);
 };
 
 // const passwordHashSaltRounds = 10;

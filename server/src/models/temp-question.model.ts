@@ -10,7 +10,7 @@ const TempQuestionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  resultantAnswerIDs: {
+  resultantAnswerIds: {
     type: [String],
     required: true,
   },
@@ -23,7 +23,7 @@ const TempQuestionSchema = new mongoose.Schema({
 interface ITempQuestion extends mongoose.Document {
   _id: string;
   text: string;
-  resultantAnswerIDs: string[];
+  resultantAnswerIds: string[];
   isQuestion: boolean;
 }
 

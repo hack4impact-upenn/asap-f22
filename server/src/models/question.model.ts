@@ -28,6 +28,6 @@ interface IQuestion extends mongoose.Document {
   isQuestion: boolean;
 }
 
-const Question = mongoose.model<IQuestion>('Question', QuestionSchema);
+const Question = mongoose.model<IQuestion>('FIXTHISQuestion', QuestionSchema);
 
 export { IQuestion, Question };

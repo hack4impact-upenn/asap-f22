@@ -7,63 +7,19 @@ import ScreenGrid from '../components/ScreenGrid';
 import AnswerButton from './AnswerButton';
 import { IAnswer } from '../util/types/answer';
 import { IQuestion } from '../util/types/question';
+import { useData } from '../util/api';
 
 interface QuestionComponentProps {
   question: IQuestion;
+  handleClick: (answerID: string) => any;
 }
 
 function QuestionComponent(props: QuestionComponentProps) {
-  const { question } = props;
-  // State values and hooks
-  const [allQuestions, setAllQuestions] = useState<string[]>([]);
-  const [allAnswers, setAllAnswers] = useState<string[]>([]);
-  const [questionIndex, setQuestionIndex] = useState(0);
-
-  // Helper functions
-  const setQuestions = (value: string) => {
-    setAllQuestions((current) => [...current, value]);
-  };
-  const setAnswers = (value: string) => {
-    setAllAnswers((current) => [...current, value]);
-  };
-  const incrementIndex = () => {
-    setQuestionIndex((current) => current + 1);
-  };
-  const decrementIndex = () => {
-    setQuestionIndex((current) => current - 1);
-  };
-
-  // temp click handler -- this should appear on page that has the entire question component along with the state
-  const clickHandler = (
-    // event: any,
-    answer: string,
-    // resultantQuestionId: string,
-  ) => {
-    // these should be part of state (as done above)
-    console.log(answer);
-    if (allAnswers.length === questionIndex) {
-      setAnswers(answer);
-    } else {
-      setAllAnswers(
-        allAnswers.map((a, i) => {
-          if (i === questionIndex) {
-            // Update answer at question index
-            return answer;
-          }
-          return a;
-        }),
-      );
-    }
-    incrementIndex();
-    // get new question info from backend route (using resultantQuestionId)
-
-    // actual one should make next component (with ref field)
-    // console.log(allAnswers);
-  };
+  const { handleClick, question } = props;
 
   return (
     // eslint-disable-next-line no-underscore-dangle
-    <div id={question._id}>
+    <div>
       <ScreenGrid>
         <Grid
           container
@@ -86,13 +42,13 @@ function QuestionComponent(props: QuestionComponentProps) {
                 {question.text}
               </Typography>
             </Grid>
-            {question.resultantAnswers.map((item) => {
+            {question.resultantAnswers.map((answer) => {
               return (
                 <AnswerButton
-                  answer={item}
+                  answer={answer}
                   onClick={(e: any) => {
-                    // console.log(e);
-                    clickHandler(e.target.id);
+                    console.log(e);
+                    handleClick(e.target.id);
                   }}
                 />
               );

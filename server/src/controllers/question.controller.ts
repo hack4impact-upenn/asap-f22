@@ -13,7 +13,7 @@ const getNextQuestion = async (
     getNextQuestionFromDB(answerID)
       .then((nextQuestion) => {
         res.status(StatusCode.OK).send(nextQuestion);
-        console.log('Next question', nextQuestion);
+        // console.log('Next question', nextQuestion);
       })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .catch((e) => {
