@@ -5,6 +5,14 @@
 import { Answer, IAnswer } from '../models/answer.model';
 import { Question } from '../models/question.model';
 
+const getNextQuestionFromDB = async (answerID: string) => {
+  const answer = await Answer.findById(answerID).exec();
+  const nextQuestion = await Question.findById(
+    answer?.resultantQuestionId,
+  ).exec();
+  return nextQuestion;
+};
+
 // const passwordHashSaltRounds = 10;
 //  const removeSensitiveDataQuery = [
 //    '-password',
@@ -150,5 +158,6 @@ export {
   //    getUserByResetPasswordToken,
   getAllQuestionsFromDB,
   editQuestion,
+  getNextQuestionFromDB,
   //    deleteUserById,
 };
