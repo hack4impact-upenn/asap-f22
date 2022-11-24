@@ -27,28 +27,6 @@ function QuestionPage() {
   const [allAnswers, setAllAnswers] = useState<string[]>([]);
   const [questionIndex, setQuestionIndex] = useState(0);
 
-  // useEffect(() => {
-  //   console.log(initialQuestion);
-  //   setCurrentQuestion(initialQuestion?.data);
-  // }, [initialQuestion]);
-
-  //   useEffect(() => {
-  //   const fetchData = async () => {
-  //       const res = await initialQuestionResponse;
-  //       // console.log(res);
-  //       // setCurrentQuestion(res.data);
-  //       setCurrentQuestion({
-  //       // eslint-disable-next-line no-underscore-dangle
-  //       _id: res.data._id,
-  //       text: res.data.text,
-  //       isQuestion: res.data.isQuestion,
-  //       resultantAnswers: res.data.resultantAnswers,
-  //       } as IQuestion);
-  //   };
-
-  //   fetchData();
-  //   }, [initialQuestionResponse, currentQuestion]);
-
   // Helper functions
   const setQuestions = (value: string) => {
     setAllQuestions((current) => [...current, value]);
@@ -86,11 +64,10 @@ function QuestionPage() {
     }
     incrementIndex();
 
-    const nextQuestion = getData(`question/get-next-question/:${answerID}`);
-
+    const nextQuestion = getData(`question/get-next-question/${answerID}`);
     console.log(nextQuestion);
 
-    useEffect(() => {
+    (async () => {
       const fetchData = async () => {
         const res = await nextQuestion;
         console.log(res);
@@ -104,7 +81,7 @@ function QuestionPage() {
         } as IQuestion);
       };
       fetchData();
-    }, [nextQuestion]);
+    })();
   };
 
   return (

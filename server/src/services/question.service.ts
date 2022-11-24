@@ -8,11 +8,6 @@ import { TempQuestion } from '../models/temp-question.model';
 
 async function getAnswerObj(ansId: string) {
   const resultantAnswer = await Answer.findById(ansId);
-  if (resultantAnswer != null) {
-    // console.log('NOT NULL');
-    // console.log(array);
-  }
-  // need to add error handling!!
   const answerObj = {
     _id: resultantAnswer?._id,
     text: resultantAnswer?.text,
@@ -23,25 +18,27 @@ async function getAnswerObj(ansId: string) {
 
 const getNextQuestionFromDB = async (answerID: string) => {
   const answer = await Answer.findById(answerID).exec();
-  await TempQuestion.findById(answer?.resultantQuestionId)
-    .exec()
-    .then(async (tempQuestion) => {
-      const array: IAnswer[] = [];
-      if (tempQuestion != null) {
-        await Promise.all(
-          tempQuestion?.resultantAnswerIds.map(async (id) =>
-            getAnswerObj(id).then((newAnswer) => array.push(newAnswer)),
-          ),
-        );
-      }
-      const nextQuestion = {
-        _id: tempQuestion?._id,
-        text: tempQuestion?.text,
-        resultantAnswers: array,
-        isQuestion: tempQuestion?.isQuestion,
-      } as IQuestion;
-      return nextQuestion;
-    });
+  const tempQuestion = await TempQuestion.findById(
+    answer?.resultantQuestionId,
+  ).exec();
+
+  const answerArray: IAnswer[] = [];
+  if (tempQuestion != null) {
+    await Promise.all(
+      tempQuestion?.resultantAnswerIds.map(async (id) =>
+        getAnswerObj(id).then((newAnswer) => answerArray.push(newAnswer)),
+      ),
+    );
+  }
+
+  const nextQuestion = {
+    _id: tempQuestion?._id,
+    text: tempQuestion?.text,
+    resultantAnswers: answerArray,
+    isQuestion: tempQuestion?.isQuestion,
+  } as IQuestion;
+
+  return nextQuestion;
 };
 
 // const passwordHashSaltRounds = 10;
