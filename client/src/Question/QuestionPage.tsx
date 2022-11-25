@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import ScreenGrid from '../components/ScreenGrid';
 import QuestionComponent from './QuestionComponent';
+import ResourceDropdown from '../components/ResourceDropdown';
 import { IQuestion } from '../util/types/question';
 import { IAnswer } from '../util/types/answer';
+import { IResource } from '../util/types/resource';
 import { getData, useData } from '../util/api';
 
 function QuestionPage() {
@@ -22,6 +24,12 @@ function QuestionPage() {
     isQuestion: true,
     resultantAnswers: [testa],
   } as IQuestion);
+
+  const [resource, setResource] = useState({
+    _id: '',
+    title: '',
+    content: '',
+  } as IResource);
 
   const [allQuestions, setAllQuestions] = useState<string[]>([]);
   const [allAnswers, setAllAnswers] = useState<string[]>([]);
@@ -82,16 +90,44 @@ function QuestionPage() {
       };
       fetchData();
     })();
+
+    // if (!currentQuestion.isQuestion) {
+    const nextResource = getData(`resource/get-resource/${answerID}`);
+    // }
+
+    (async () => {
+      const fetchData = async () => {
+        const res = await nextResource;
+        console.log(res);
+        // setCurrentQuestion(res.data);
+        setResource({
+          // eslint-disable-next-line no-underscore-dangle
+          _id: res.data._id,
+          title: res.data.title,
+          content: res.data.content,
+        } as IResource);
+      };
+      fetchData();
+    })();
   };
 
+  if (currentQuestion.isQuestion) {
+    return (
+      <ScreenGrid>
+        <QuestionComponent
+          question={currentQuestion}
+          handleClick={ClickHandler}
+        />
+      </ScreenGrid>
+    );
+  }
+  // if (!currentQuestion.isQuestion) {
   return (
     <ScreenGrid>
-      <QuestionComponent
-        question={currentQuestion}
-        handleClick={ClickHandler}
-      />
+      <ResourceDropdown title={resource.title} content={resource.content} />
     </ScreenGrid>
   );
+  // }
 }
 
 export default QuestionPage;
