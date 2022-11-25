@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ScreenGrid from '../components/ScreenGrid';
 import QuestionComponent from './QuestionComponent';
+import ResourceComponent from './ResourceComponent';
 import ResourceDropdown from '../components/ResourceDropdown';
 import { IQuestion } from '../util/types/question';
 import { IAnswer } from '../util/types/answer';
@@ -14,22 +15,35 @@ function QuestionPage() {
     resultantQuestionId: '63751d7cc26b48cf7f1d9724',
   } as IAnswer;
 
+  const testResourceAns = {
+    id: '63813ff774b0e803fd9614db',
+    text: 'Resource 1',
+    resultantQuestionId: '63813ff774b0e803fd9614db',
+  } as IAnswer;
+
   const initialQuestionResponse = getData(
     'question/get-next-question/6369a04ee0cca0b76f26576b',
   );
 
+  // const [currentQuestion, setCurrentQuestion] = useState({
+  //   _id: '637ea16cf9860ef25c72e639',
+  //   text: 'This is the first question',
+  //   isQuestion: true,
+  //   resultantAnswers: [testa],
+  // } as IQuestion);
+
   const [currentQuestion, setCurrentQuestion] = useState({
-    _id: '637ea16cf9860ef25c72e639',
-    text: 'This is the first question',
+    _id: '6381404374b0e803fd9614dd',
+    text: 'This is the resource question',
     isQuestion: true,
-    resultantAnswers: [testa],
+    resultantAnswers: [testResourceAns],
   } as IQuestion);
 
-  const [resource, setResource] = useState({
-    _id: '',
-    title: '',
-    content: '',
-  } as IResource);
+  // const [resource, setResource] = useState({
+  //   _id: '',
+  //   title: '',
+  //   content: '',
+  // } as IResource);
 
   const [allQuestions, setAllQuestions] = useState<string[]>([]);
   const [allAnswers, setAllAnswers] = useState<string[]>([]);
@@ -92,23 +106,23 @@ function QuestionPage() {
     })();
 
     // if (!currentQuestion.isQuestion) {
-    const nextResource = getData(`resource/get-resource/${answerID}`);
+    // const nextResource = getData(`resource/get-resource/${answerID}`);
     // }
 
-    (async () => {
-      const fetchData = async () => {
-        const res = await nextResource;
-        console.log(res);
-        // setCurrentQuestion(res.data);
-        setResource({
-          // eslint-disable-next-line no-underscore-dangle
-          _id: res.data._id,
-          title: res.data.title,
-          content: res.data.content,
-        } as IResource);
-      };
-      fetchData();
-    })();
+    // (async () => {
+    //   const fetchData = async () => {
+    //     const res = await nextResource;
+    //     console.log(res);
+    //     // setCurrentQuestion(res.data);
+    //     setResource({
+    //       // eslint-disable-next-line no-underscore-dangle
+    //       _id: res.data._id,
+    //       title: res.data.title,
+    //       content: res.data.content,
+    //     } as IResource);
+    //   };
+    //   fetchData();
+    // })();
   };
 
   if (currentQuestion.isQuestion) {
@@ -120,11 +134,11 @@ function QuestionPage() {
         />
       </ScreenGrid>
     );
-  }
+  } // gets mad at else here, idk why
   // if (!currentQuestion.isQuestion) {
   return (
     <ScreenGrid>
-      <ResourceDropdown title={resource.title} content={resource.content} />
+      <ResourceComponent question={currentQuestion} />
     </ScreenGrid>
   );
   // }
