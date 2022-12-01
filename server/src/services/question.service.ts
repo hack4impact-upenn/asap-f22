@@ -21,7 +21,6 @@ const getNextQuestionFromDB = async (answerID: string) => {
   const tempQuestion = await TempQuestion.findById(
     answer?.resultantQuestionId,
   ).exec();
-
   const answerArray: IAnswer[] = [];
   if (tempQuestion != null) {
     await Promise.all(
@@ -123,11 +122,28 @@ const createQuestion = async (
 /**
  * Gets a question from the database by their id but doesn't include the
  * password in the returned user.
- * @param id The id of the user to get.
- * @returns The {@link IQuestion} or null if the user was not found.
+ * @param id The id of the question to get.
+ * @returns The {@link IQuestion} or null if the question was not found.
  */
-const getQuestionById = async (id: string) => {
-  const question = await Question.findById(id).exec();
+const getQuestionById = async (questID: string) => {
+  const tempQuestion = await TempQuestion.findById(questID).exec();
+
+  const answerArray: IAnswer[] = [];
+  if (tempQuestion != null) {
+    await Promise.all(
+      tempQuestion?.resultantAnswerIds.map(async (id) =>
+        getAnswerObj(id).then((newAnswer) => answerArray.push(newAnswer)),
+      ),
+    );
+  }
+
+  const question = {
+    _id: tempQuestion?._id,
+    text: tempQuestion?.text,
+    resultantAnswers: answerArray,
+    isQuestion: tempQuestion?.isQuestion,
+  } as IQuestion;
+
   return question;
 };
 

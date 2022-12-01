@@ -6,26 +6,32 @@ import { IAnswer } from '../util/types/answer';
 import { getData, useData } from '../util/api';
 
 function QuestionPage() {
-  const testa = {
-    id: '637ea185f9860ef25c72e63a',
-    text: 'Q1 Answer 1',
-    resultantQuestionId: '63751d7cc26b48cf7f1d9724',
-  } as IAnswer;
-
-  const initialQuestionResponse = getData(
-    'question/get-next-question/6369a04ee0cca0b76f26576b',
-  );
-
   const [currentQuestion, setCurrentQuestion] = useState({
-    _id: '637ea16cf9860ef25c72e639',
-    text: 'This is the first question',
+    _id: 'Placeholder',
+    text: '',
     isQuestion: true,
-    resultantAnswers: [testa],
+    resultantAnswers: [],
   } as IQuestion);
 
   const [allQuestions, setAllQuestions] = useState<string[]>([]);
   const [allAnswers, setAllAnswers] = useState<string[]>([]);
   const [questionIndex, setQuestionIndex] = useState(0);
+
+  const initialQuestion = useData(
+    `question/get-question/637ea16cf9860ef25c72e639`,
+  );
+
+  useEffect(() => {
+    if (initialQuestion != null) {
+      setCurrentQuestion({
+        // eslint-disable-next-line no-underscore-dangle
+        _id: initialQuestion?.data._id,
+        text: initialQuestion?.data.text,
+        isQuestion: initialQuestion?.data.isQuestion,
+        resultantAnswers: initialQuestion?.data.resultantAnswers,
+      } as IQuestion);
+    }
+  }, [initialQuestion]);
 
   // Helper functions
   const setQuestions = (value: string) => {
@@ -48,7 +54,6 @@ function QuestionPage() {
     // resultantQuestionId: string,
   ) => {
     // these should be part of state (as done above)
-    console.log(answerID);
     if (allAnswers.length === questionIndex) {
       setAnswers(answerID);
     } else {
@@ -65,12 +70,10 @@ function QuestionPage() {
     incrementIndex();
 
     const nextQuestion = getData(`question/get-next-question/${answerID}`);
-    console.log(nextQuestion);
 
     (async () => {
       const fetchData = async () => {
         const res = await nextQuestion;
-        console.log(res);
         // setCurrentQuestion(res.data);
         setCurrentQuestion({
           // eslint-disable-next-line no-underscore-dangle

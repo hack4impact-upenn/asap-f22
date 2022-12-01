@@ -47,8 +47,8 @@ function QuestionComponent(props: QuestionComponentProps) {
                 <AnswerButton
                   answer={answer}
                   onClick={(e: any) => {
-                    console.log(e);
-                    handleClick(e.target.id);
+                    // eslint-disable-next-line no-underscore-dangle
+                    handleClick(answer._id);
                   }}
                 />
               );
