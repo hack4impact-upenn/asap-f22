@@ -3,6 +3,9 @@
  * access the model in TypeScript.
  */
 
+// This schema serves for both answers and resources. When IQuestion.isQuestion is false, resultantQuestionId will
+// be empty. If IQuestion.isQuestion is true, then resourceContent will be empty.
+
 import mongoose from 'mongoose';
 
 const AnswerSchema = new mongoose.Schema({

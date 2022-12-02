@@ -41,6 +41,33 @@ const getNextQuestionFromDB = async (answerID: string) => {
   return nextQuestion;
 };
 
+/**
+ * Get's a question from it's ID
+ * @param questID the id of the desired question
+ * @returns the question with the given ID or null
+ */
+const getQuestionById = async (questID: string) => {
+  const tempQuestion = await TempQuestion.findById(questID).exec();
+
+  const answerArray: IAnswer[] = [];
+  if (tempQuestion != null) {
+    await Promise.all(
+      tempQuestion?.resultantAnswerIds.map(async (id) =>
+        getAnswerObj(id).then((newAnswer) => answerArray.push(newAnswer)),
+      ),
+    );
+  }
+
+  const question = {
+    _id: tempQuestion?._id,
+    text: tempQuestion?.text,
+    resultantAnswers: answerArray,
+    isQuestion: tempQuestion?.isQuestion,
+  } as IQuestion;
+
+  return question;
+};
+
 // const passwordHashSaltRounds = 10;
 //  const removeSensitiveDataQuery = [
 //    '-password',
@@ -119,34 +146,6 @@ const createQuestion = async (
 //      .exec();
 //    return user;
 //  };
-
-/**
- * Gets a question from the database by their id but doesn't include the
- * password in the returned user.
- * @param id The id of the question to get.
- * @returns The {@link IQuestion} or null if the question was not found.
- */
-const getQuestionById = async (questID: string) => {
-  const tempQuestion = await TempQuestion.findById(questID).exec();
-
-  const answerArray: IAnswer[] = [];
-  if (tempQuestion != null) {
-    await Promise.all(
-      tempQuestion?.resultantAnswerIds.map(async (id) =>
-        getAnswerObj(id).then((newAnswer) => answerArray.push(newAnswer)),
-      ),
-    );
-  }
-
-  const question = {
-    _id: tempQuestion?._id,
-    text: tempQuestion?.text,
-    resultantAnswers: answerArray,
-    isQuestion: tempQuestion?.isQuestion,
-  } as IQuestion;
-
-  return question;
-};
 
 /**
  * @returns All the {@link IQuestion}s in the database.

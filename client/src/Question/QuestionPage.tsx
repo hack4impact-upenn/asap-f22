@@ -1,4 +1,6 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
+import { Typography } from '@mui/material';
 import ScreenGrid from '../components/ScreenGrid';
 import QuestionComponent from './QuestionComponent';
 import ResourceComponent from './ResourceComponent';
@@ -8,29 +10,18 @@ import { IAnswer } from '../util/types/answer';
 import { IResource } from '../util/types/resource';
 import { getData, useData } from '../util/api';
 
+/**
+ * This page is the source of truth for all the state driven interactions of the question system.
+ * .
+ * So basically, it handles updating the currentQuestion which then depending on the type of question
+ * will display a resource component or a question component.
+ * .
+ * It also stores an array of "allQuestions" which will be used to handle to "back" functionality
+ */
 function QuestionPage() {
-  // const testa = {
-  //   id: '637ea185f9860ef25c72e63a',
-  //   text: 'Q1 Answer 1',
-  //   resultantQuestionId: '63751d7cc26b48cf7f1d9724',
-  // } as IAnswer;
-
-  // const testResourceAns = {
-  //   id: '63813ff774b0e803fd9614db',
-  //   text: 'Resource 1',
-  //   resultantQuestionId: '63813ff774b0e803fd9614db',
-  // } as IAnswer;
-
   const initialQuestionResponse = getData(
     'question/get-next-question/6369a04ee0cca0b76f26576b',
   );
-
-  // const [currentQuestion, setCurrentQuestion] = useState({
-  //   _id: '637ea16cf9860ef25c72e639',
-  //   text: 'This is the first question',
-  //   isQuestion: true,
-  //   resultantAnswers: [testa],
-  // } as IQuestion);
 
   const [currentQuestion, setCurrentQuestion] = useState({
     _id: 'Placeholder',
@@ -38,12 +29,6 @@ function QuestionPage() {
     isQuestion: true,
     resultantAnswers: [],
   } as IQuestion);
-
-  // const [resource, setResource] = useState({
-  //   _id: '',
-  //   title: '',
-  //   content: '',
-  // } as IResource);
 
   const [allQuestions, setAllQuestions] = useState<string[]>([]);
   const [allAnswers, setAllAnswers] = useState<string[]>([]);
@@ -53,20 +38,8 @@ function QuestionPage() {
     `question/get-question/637ea16cf9860ef25c72e639`,
   );
 
-  useEffect(() => {
-    if (initialQuestion != null) {
-      setCurrentQuestion({
-        // eslint-disable-next-line no-underscore-dangle
-        _id: initialQuestion?.data._id,
-        text: initialQuestion?.data.text,
-        isQuestion: initialQuestion?.data.isQuestion,
-        resultantAnswers: initialQuestion?.data.resultantAnswers,
-      } as IQuestion);
-    }
-  }, [initialQuestion]);
-
   // Helper functions
-  const setQuestions = (value: string) => {
+  const appendQuestion = (value: string) => {
     setAllQuestions((current) => [...current, value]);
   };
   const setAnswers = (value: string) => {
@@ -79,12 +52,21 @@ function QuestionPage() {
     setQuestionIndex((current) => current - 1);
   };
 
-  // temp click handler -- this should appear on page that has the entire question component along with the state
-  const ClickHandler = (
-    // event: any,
-    answerID: string,
-    // resultantQuestionId: string,
-  ) => {
+  useEffect(() => {
+    if (initialQuestion != null) {
+      setCurrentQuestion({
+        _id: initialQuestion?.data._id,
+        text: initialQuestion?.data.text,
+        isQuestion: initialQuestion?.data.isQuestion,
+        resultantAnswers: initialQuestion?.data.resultantAnswers,
+      } as IQuestion);
+      appendQuestion(initialQuestion?.data._id);
+      incrementIndex();
+    }
+  }, [initialQuestion]);
+
+  // This click handler gets passed down to QuestionComponent and AnswerButton
+  const ClickHandler = (answerID: string) => {
     // these should be part of state (as done above)
     if (allAnswers.length === questionIndex) {
       setAnswers(answerID);
@@ -114,33 +96,20 @@ function QuestionPage() {
           isQuestion: res.data.isQuestion,
           resultantAnswers: res.data.resultantAnswers,
         } as IQuestion);
+        // eslint-disable-next-line no-underscore-dangle
+        appendQuestion(res.data._id);
+        incrementIndex();
       };
       fetchData();
     })();
-
-    // if (!currentQuestion.isQuestion) {
-    // const nextResource = getData(`resource/get-resource/${answerID}`);
-    // }
-
-    // (async () => {
-    //   const fetchData = async () => {
-    //     const res = await nextResource;
-    //     console.log(res);
-    //     // setCurrentQuestion(res.data);
-    //     setResource({
-    //       // eslint-disable-next-line no-underscore-dangle
-    //       _id: res.data._id,
-    //       title: res.data.title,
-    //       content: res.data.content,
-    //     } as IResource);
-    //   };
-    //   fetchData();
-    // })();
   };
 
   if (currentQuestion.isQuestion) {
     return (
       <ScreenGrid>
+        {/* {allQuestions.map((question) => {
+          return <Typography>{question}</Typography>;
+        })} */}
         <QuestionComponent
           question={currentQuestion}
           handleClick={ClickHandler}
