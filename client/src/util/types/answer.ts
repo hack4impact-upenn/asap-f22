@@ -5,5 +5,6 @@
 export interface IAnswer {
   _id: string;
   text: string;
+  resourceContent: string;
   resultantQuestionId: string;
 }

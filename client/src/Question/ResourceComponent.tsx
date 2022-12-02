@@ -19,12 +19,6 @@ interface ResourceComponentProps {
 function ResourceComponent(props: ResourceComponentProps) {
   const { question } = props;
 
-  const [resource, setResource] = useState({
-    _id: '',
-    title: '',
-    content: '',
-  } as IResource);
-
   return (
     // eslint-disable-next-line no-underscore-dangle
     <div>
@@ -47,32 +41,14 @@ function ResourceComponent(props: ResourceComponentProps) {
           >
             <Grid container direction="column" alignItems="center" padding={2}>
               <Typography variant="h1" fontWeight="bold" textAlign="center">
-                Resources
+                {question.text}
               </Typography>
             </Grid>
             {question.resultantAnswers.map((answer) => {
-              const answerID = answer._id;
-              const nextResource = getData(`resource/get-resource/${answerID}`);
-
-              (async () => {
-                const fetchData = async () => {
-                  const res = await nextResource;
-                  console.log(res);
-                  // setCurrentQuestion(res.data);
-                  setResource({
-                    // eslint-disable-next-line no-underscore-dangle
-                    _id: res.data._id,
-                    title: res.data.title,
-                    content: res.data.content,
-                  } as IResource);
-                };
-                fetchData();
-              })();
-
               return (
                 <ResourceDropdown
-                  title={resource.title}
-                  content={resource.content}
+                  title={answer.text}
+                  content={answer.resourceContent}
                 />
               );
             })}

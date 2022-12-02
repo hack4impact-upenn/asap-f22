@@ -11,6 +11,7 @@ async function getAnswerObj(ansId: string) {
   const answerObj = {
     _id: resultantAnswer?._id,
     text: resultantAnswer?.text,
+    resourceContent: resultantAnswer?.resourceContent,
     resultantQuestionId: resultantAnswer?.resultantQuestionId,
   } as IAnswer;
   return answerObj;

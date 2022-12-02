@@ -14,11 +14,16 @@ const AnswerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  resourceContent: {
+    type: String,
+    required: true,
+  },
 });
 
 interface IAnswer extends mongoose.Document {
   _id: string;
   text: string;
+  resourceContent: string;
   resultantQuestionId: string;
 }
 
