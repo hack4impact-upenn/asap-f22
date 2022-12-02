@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import JoditEditor from 'jodit-react';
 import { getData } from '../util/api';
 
-export default function EditorGUI({ id }: any) {
+export default function EditorGUI({ content }: any) {
   const editor = useRef(null);
 
   const defaultValues = {
