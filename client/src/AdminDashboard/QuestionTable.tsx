@@ -140,6 +140,8 @@ function QuestionTable() {
         createAdminDashboardRow(
           question,
           <DeleteQuestionButton
+            // eslint-disable-next-line no-underscore-dangle
+            id={question._id}
             isQuestion={question.isQuestion}
             text={question.text}
             removeRow={() => removeQuestion(question)}

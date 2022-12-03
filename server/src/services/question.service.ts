@@ -140,6 +140,16 @@ const editQuestion = async (
 //    return user;
 //  };
 
+/**
+ * A function that deletes a question from the database.
+ * @param id The id of the question to delete.
+ * @returns The deleted {@link Question}
+ */
+const deleteQuestionById = async (id: string) => {
+  const question = await Question.findByIdAndDelete(id).exec();
+  return question;
+};
+
 export {
   //    passwordHashSaltRounds,
   createQuestion,
@@ -151,4 +161,5 @@ export {
   getAllQuestionsFromDB,
   editQuestion,
   //    deleteUserById,
+  deleteQuestionById,
 };

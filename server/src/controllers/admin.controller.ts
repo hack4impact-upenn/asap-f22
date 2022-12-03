@@ -17,7 +17,7 @@ import {
   editQuestion,
   getAllQuestionsFromDB,
   getQuestionById,
-  //  deleteQuestionById,
+  deleteQuestionById,
 } from '../services/question.service';
 
 /**
@@ -167,10 +167,41 @@ const editQuestionText = async (
     });
 };
 
+/**
+ * Delete a resource question from the database. The id of the resource is expected to be in the request parameter (url). Send a 200 OK status code on success.
+ */
+const deleteResource = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { id } = req.params;
+  if (!id) {
+    next(ApiError.missingFields(['id']));
+    return;
+  }
+
+  // Check if resource to delete is an admin
+  const resource: IQuestion | null = await getQuestionById(id);
+  if (!resource) {
+    next(ApiError.notFound(`Resource with id ${id} does not exist`));
+    return;
+  }
+
+  // resource is a question
+  deleteQuestionById(resource._id)
+    .then(() => res.sendStatus(StatusCode.OK))
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    .catch((e) => {
+      next(ApiError.internal('Failed to delete question.'));
+    });
+};
+
 export {
   getAllUsers,
   upgradePrivilege,
   deleteUser,
   getAllQuestions,
   editQuestionText,
+  deleteResource,
 };

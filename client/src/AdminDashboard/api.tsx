@@ -20,6 +20,12 @@ async function deleteQuestion(text: string) {
   return true;
 }
 
+async function deleteResource(id: string) {
+  const res = await deleteData(`admin/resource/${id}`);
+  if (res.error) return false;
+  return true;
+}
+
 // routes! hopefully
 async function editQuestion(
   questionVals: { [key: string]: string },
@@ -54,4 +60,10 @@ async function upgradePrivilege(email: string) {
   return true;
 }
 
-export { deleteUser, deleteQuestion, editQuestion, upgradePrivilege };
+export {
+  deleteUser,
+  deleteQuestion,
+  deleteResource,
+  editQuestion,
+  upgradePrivilege,
+};

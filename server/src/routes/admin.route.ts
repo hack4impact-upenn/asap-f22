@@ -9,6 +9,7 @@ import {
   upgradePrivilege,
   deleteUser,
   getAllQuestions,
+  deleteResource,
   editQuestionText,
 } from '../controllers/admin.controller';
 import { isAuthenticated } from '../controllers/auth.middleware';
@@ -71,5 +72,13 @@ router.get('/allQuestions', getAllQuestions);
  */
 // router.put('/editQuestion', isAuthenticated, isAdmin, editQuestionText);
 router.put('/editQuestion', editQuestionText);
+
+/**
+ * A PUT route to delete a resource. Checks first if the requestor
+ * is a authenticated and is an admin.
+ * Expects the following fields in the URL:
+ * resource id (string) - The id of the resource to be deleted
+ */
+router.delete('/resource/:id', isAuthenticated, isAdmin, deleteResource);
 
 export default router;

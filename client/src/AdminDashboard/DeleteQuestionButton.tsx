@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { deleteQuestion } from './api'; // change to deleteQuestion
+import { deleteQuestion, deleteResource } from './api'; // change to deleteQuestion
 import LoadingButton from '../components/buttons/LoadingButton';
 import ConfirmationModal from '../components/ConfirmationModal';
 
 interface DeleteQuestionButtonProps {
+  id: string;
   isQuestion: boolean;
   text: string;
   removeRow: (question: string) => void;
@@ -14,12 +15,14 @@ interface DeleteQuestionButtonProps {
 /**
  * The button component which, when clicked, will delete the question from the database.
  * If the user is not a valid question, button will be unclickable //this is kinda unnecessary lowkey
+ * @param id - id of the question to delete
  * @param isQuestion - whether the question is valid
  * @param text - the text of the question to delete
  * @param removeRow - a function which removes a row from the question table. This
  * function is called upon successfully deletion of user from the database.
  */
 function DeleteQuestionButton({
+  id,
   isQuestion,
   text,
   removeRow,
@@ -38,6 +41,18 @@ function DeleteQuestionButton({
       setLoading(false);
     }
   }
+
+  async function handleDeleteResource() {
+    console.log('deleting resource');
+    console.log(id);
+    setLoading(true);
+    if (true) {
+      await deleteResource(id);
+      removeRow(text);
+    } else {
+      setLoading(false);
+    }
+  }
   if (isLoading) {
     return <LoadingButton />;
   }
@@ -52,10 +67,14 @@ function DeleteQuestionButton({
       />
     );
   }
+  // resource
   return (
-    <Button variant="outlined" disabled>
-      Question is Invalid
-    </Button>
+    <ConfirmationModal
+      buttonText="Remove Resource"
+      title="Are you sure you want to remove this resource?"
+      body="This action is permanent. Resource information will not be able to be recovered."
+      onConfirm={() => handleDeleteResource()}
+    />
   );
 }
 
