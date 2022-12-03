@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, Link } from 'react-router-dom';
 import { editQuestion } from './api';
 import LoadingButton from '../components/buttons/LoadingButton';
 import ConfirmationModal from '../components/ConfirmationModal';
+import { IQuestion } from '../util/types/question';
+import EditResource from '../components/EditResource';
 
 interface EditQuestionButtonProps {
   qID: string;
   isQuestion: boolean;
   text: string;
+  question: IQuestion;
   editRow: (qID: string, question: string, newText: string) => void;
 }
 
@@ -24,16 +27,17 @@ function EditQuestionButton({
   qID,
   isQuestion,
   text,
+  question,
   editRow,
 }: EditQuestionButtonProps) {
   const navigate = useNavigate();
 
   const questionVals = {
-    '63699fdbe0cca0b76f26576a': 'updated question text',
+    [qID]: 'updated question text',
   };
-  const answerVals = {
-    '6369a04ee0cca0b76f26576b': 'lalalala',
-    '6369a05ce0cca0b76f26576c': 'hehehehehe',
+  const answerVals: { [index: string]: string } = {
+    // '6369a04ee0cca0b76f26576b': 'lalalala',
+    // '6369a05ce0cca0b76f26576c': 'hehehehehe',
   };
 
   const [isLoading, setLoading] = useState(false);
@@ -64,10 +68,16 @@ function EditQuestionButton({
       />
     );
   }
+
   return (
-    <Button variant="outlined" disabled>
-      Question is Invalid
-    </Button>
+    <div>
+      <Link to="/editResource" state={{ question }}>
+        <button type="button">Edit Resource</button>
+      </Link>
+      <Button variant="outlined" disabled>
+        Question is Invalid
+      </Button>
+    </div>
   );
 }
 

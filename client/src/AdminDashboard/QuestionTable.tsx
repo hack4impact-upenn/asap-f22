@@ -155,6 +155,7 @@ function QuestionTable() {
             qID={question._id}
             isQuestion={question.isQuestion}
             text={question.text}
+            question={question}
             editRow={() => editRow(question, '')}
             // open up text editor
             // extract inputted text data from text editor GUI
