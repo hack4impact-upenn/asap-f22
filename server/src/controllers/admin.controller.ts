@@ -6,7 +6,6 @@ import express from 'express';
 import ApiError from '../util/apiError';
 import StatusCode from '../util/statusCode';
 import { IUser } from '../models/user.model';
-import { IQuestion } from '../models/question.model';
 import {
   upgradeUserToAdmin,
   getUserByEmail,
@@ -16,7 +15,6 @@ import {
 import {
   editQuestion,
   getAllQuestionsFromDB,
-  getQuestionById,
   //  deleteQuestionById,
 } from '../services/question.service';
 
@@ -143,21 +141,13 @@ const editQuestionText = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { questionVals, answerVals } = req.body;
-  if (!questionVals) {
-    next(ApiError.missingFields(['questionVals']));
-    return;
-  }
-
-  const qID = Object.keys(questionVals)[0];
-
-  const question: IQuestion | null = await getQuestionById(qID);
+  const { question } = req.body;
   if (!question) {
-    next(ApiError.notFound(`Question with id ${qID} does not exist`));
+    next(ApiError.missingFields(['question']));
     return;
   }
 
-  editQuestion(questionVals, answerVals)
+  editQuestion(question)
     .then(() => {
       res.sendStatus(StatusCode.OK);
     })

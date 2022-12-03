@@ -2,6 +2,7 @@
  * A file containing all the api calls for the admin dashboard.
  */
 import { deleteData, putData, postData } from '../util/api';
+import { IQuestion } from '../util/types/question';
 
 /**
  * Sends a request to the server to delete a user
@@ -21,14 +22,10 @@ async function deleteQuestion(text: string) {
 }
 
 // routes! hopefully
-async function editQuestion(
-  questionVals: { [key: string]: string },
-  answerVals: { [key: string]: string },
-) {
+async function editQuestion(question: IQuestion) {
   const res = await putData(`admin/editQuestion`, {
     // add in all fields
-    questionVals,
-    answerVals,
+    question,
   });
   if (res.error) return false;
   return true;

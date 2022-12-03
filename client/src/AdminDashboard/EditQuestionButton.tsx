@@ -4,6 +4,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { editQuestion } from './api';
 import LoadingButton from '../components/buttons/LoadingButton';
 import ConfirmationModal from '../components/ConfirmationModal';
+import { IQuestion } from '../util/types/question';
 
 interface EditQuestionButtonProps {
   qID: string;
@@ -28,19 +29,29 @@ function EditQuestionButton({
 }: EditQuestionButtonProps) {
   const navigate = useNavigate();
 
-  const questionVals = {
-    '63699fdbe0cca0b76f26576a': 'updated question text',
-  };
-  const answerVals = {
-    '6369a04ee0cca0b76f26576b': 'lalalala',
-    '6369a05ce0cca0b76f26576c': 'hehehehehe',
+  const question: IQuestion = {
+    _id: '63699fdbe0cca0b76f26576a',
+    text: 'edited question text',
+    isQuestion: true,
+    resultantAnswers: [
+      {
+        id: '6369a05ce0cca0b76f26576c',
+        text: 'edited answer text 1',
+        resultantQuestionId: '63751d7cc26b48cf7f1d9724',
+      },
+      {
+        id: '6369a04ee0cca0b76f26576b',
+        text: 'edited answer text 2',
+        resultantQuestionId: '63751d7cc26b48cf7f1d9724',
+      },
+    ],
   };
 
   const [isLoading, setLoading] = useState(false);
   async function handleEdit() {
     setLoading(true);
     // edit question needs to take in new text that user has typed in
-    if (await editQuestion(questionVals, answerVals)) {
+    if (await editQuestion(question)) {
       // navigate('/newquestion'); // go to create new question page
       // const newtext = newquestionpage.getData(); //this isnt real, but //click save in newquestion page; should return new text data
       // editRow(text, newtext); //basically just deletes the row for now

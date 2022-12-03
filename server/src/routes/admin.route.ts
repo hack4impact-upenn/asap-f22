@@ -64,10 +64,7 @@ router.get('/allQuestions', getAllQuestions);
 /**
  * A PUT route to edit certain question. Checks first if the requestor is a
  * authenticated and is an admin.
- * Expects a JSON body with the following fields:
- * - question dictionary (string ID --> string text), answer dictionary (string ID --> string text)
- * - question dictionary should only have 1 key/value pair, answer dictionary can have multiple
-
+ * Expects an IQuestion model
  */
 // router.put('/editQuestion', isAuthenticated, isAdmin, editQuestionText);
 router.put('/editQuestion', editQuestionText);

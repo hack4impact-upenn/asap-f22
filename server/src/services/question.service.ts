@@ -2,8 +2,8 @@
  * All the functions for interacting with user data in the MongoDB database
  */
 // import { hash } from 'bcrypt';
-import { Answer, IAnswer } from '../models/answer.model';
-import { Question } from '../models/question.model';
+import { IAnswer } from '../models/answer.model';
+import { IQuestion, Question } from '../models/question.model';
 
 // const passwordHashSaltRounds = 10;
 //  const removeSensitiveDataQuery = [
@@ -104,30 +104,15 @@ const getAllQuestionsFromDB = async () => {
 };
 
 //  /**
-//   * A function that upgrades a certain user to an admin.
-//   * @param id The id of the user to upgrade.
+//   * A function that edits a question
+//   * @param question The updated IQuestion
 //   * @returns nothing?
 //   */
 
-const editQuestion = async (
-  questionVals: { [key: string]: string },
-  // NOTE that we are using strings for IDs here rather than the Answer Interface.
-  answerVals: { [key: string]: string },
-) => {
-  const qID = Object.keys(questionVals)[0];
-  const qText = questionVals[qID];
-
-  console.log('in edit question');
-
-  await Question.findByIdAndUpdate(qID, [{ $set: { text: qText } }]).exec();
-
-  // do we need to check for isQuestion? if it's false answerVals will just be empty.
-  // for (const key in answerVals) {
-  Object.keys(answerVals).forEach(async (key) => {
-    await Answer.findByIdAndUpdate(key, [
-      { $set: { text: answerVals[key] } },
-    ]).exec();
-  });
+const editQuestion = async (question: IQuestion) => {
+  const qID = question._id;
+  // eslint-disable-next-line prettier/prettier
+  await Question.findOneAndReplace({ _id : qID}, question).exec();
 };
 
 //  /**
