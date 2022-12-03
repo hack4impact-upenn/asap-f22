@@ -3,7 +3,7 @@
  */
 // import { hash } from 'bcrypt';
 import { Answer, IAnswer } from '../models/answer.model';
-import { IQuestion, Question } from '../models/question.model';
+import IQuestion from '../models/question.model';
 import { TempQuestion, ITempQuestion } from '../models/temp-question.model';
 
 async function getAnswerObj(ansId: string) {
@@ -35,6 +35,21 @@ const convertTempToQuestion = async (tempQuestion: ITempQuestion) => {
   } as IQuestion;
 
   return question;
+};
+
+const convertQuestionToTemp = (question: IQuestion) => {
+  const answerIdArray: string[] = [];
+  question.resultantAnswers.forEach((answer) => {
+    answerIdArray.push(answer._id);
+  });
+  const tempQuestion = {
+    _id: question._id,
+    text: question.text,
+    resultantAnswerIds: answerIdArray,
+    isQuestion: question.isQuestion,
+  } as ITempQuestion;
+
+  return tempQuestion;
 };
 
 const getNextQuestionFromDB = async (answerID: string) => {
@@ -88,17 +103,15 @@ const createQuestion = async (
   resultantAnswers: IAnswer[],
   isQuestion: boolean,
 ) => {
-  //    const hashedPassword = await hash(password, passwordHashSaltRounds);
-  //    if (!hashedPassword) {
-  //      return null;
-  //    }
-  const newQuestion = new Question({
+  const newQuestion = {
     _id,
     text,
     resultantAnswers,
     isQuestion,
-  });
-  const user = await newQuestion.save();
+  } as IQuestion;
+  const newTempQuestion = convertQuestionToTemp(newQuestion);
+
+  const user = await newTempQuestion.save();
   return user;
 };
 
@@ -176,7 +189,7 @@ const editQuestion = async (
 
   console.log('in edit question');
 
-  await Question.findByIdAndUpdate(qID, [{ $set: { text: qText } }]).exec();
+  await TempQuestion.findByIdAndUpdate(qID, [{ $set: { text: qText } }]).exec();
 
   // do we need to check for isQuestion? if it's false answerVals will just be empty.
   // for (const key in answerVals) {
