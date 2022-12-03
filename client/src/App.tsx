@@ -10,6 +10,7 @@ import NotFoundPage from './NotFound/NotFoundPage';
 import HomePage from './Home/HomePage';
 import AboutThisProjectPage from './Home/AboutThisProjectPage';
 import AdminDashboardPage from './AdminDashboard/AdminDashboardPage';
+import EditResource from './components/EditResource';
 import {
   UnauthenticatedRoutesWrapper,
   ProtectedRoutesWrapper,
@@ -62,6 +63,7 @@ function App() {
                     {/* <Route element={<AdminRoutesWrapper />}> */}
                     {/* <Route path="/users" element={<AdminDashboardPage />} /> */}
                     {/* </Route> */}
+                    <Route path="/editResource" element={<EditResource />} />
                   </Route>
                   {/* Routes accessed only if user is authenticated */}
                   {/* <Route element={<AdminRoutesWrapper />}> */}
