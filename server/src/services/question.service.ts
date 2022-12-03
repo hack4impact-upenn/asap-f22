@@ -4,7 +4,7 @@
 // import { hash } from 'bcrypt';
 import { Answer, IAnswer } from '../models/answer.model';
 import { IQuestion, Question } from '../models/question.model';
-import { TempQuestion } from '../models/temp-question.model';
+import { TempQuestion, ITempQuestion } from '../models/temp-question.model';
 
 async function getAnswerObj(ansId: string) {
   const resultantAnswer = await Answer.findById(ansId);
@@ -17,38 +17,7 @@ async function getAnswerObj(ansId: string) {
   return answerObj;
 }
 
-const getNextQuestionFromDB = async (answerID: string) => {
-  const answer = await Answer.findById(answerID).exec();
-  const tempQuestion = await TempQuestion.findById(
-    answer?.resultantQuestionId,
-  ).exec();
-  const answerArray: IAnswer[] = [];
-  if (tempQuestion != null) {
-    await Promise.all(
-      tempQuestion?.resultantAnswerIds.map(async (id) =>
-        getAnswerObj(id).then((newAnswer) => answerArray.push(newAnswer)),
-      ),
-    );
-  }
-
-  const nextQuestion = {
-    _id: tempQuestion?._id,
-    text: tempQuestion?.text,
-    resultantAnswers: answerArray,
-    isQuestion: tempQuestion?.isQuestion,
-  } as IQuestion;
-
-  return nextQuestion;
-};
-
-/**
- * Get's a question from it's ID
- * @param questID the id of the desired question
- * @returns the question with the given ID or null
- */
-const getQuestionById = async (questID: string) => {
-  const tempQuestion = await TempQuestion.findById(questID).exec();
-
+const convertTempToQuestion = async (tempQuestion: ITempQuestion) => {
   const answerArray: IAnswer[] = [];
   if (tempQuestion != null) {
     await Promise.all(
@@ -66,6 +35,31 @@ const getQuestionById = async (questID: string) => {
   } as IQuestion;
 
   return question;
+};
+
+const getNextQuestionFromDB = async (answerID: string) => {
+  const answer = await Answer.findById(answerID).exec();
+  const tempQuestion = await TempQuestion.findById(
+    answer?.resultantQuestionId,
+  ).exec();
+
+  if (tempQuestion != null) {
+    return convertTempToQuestion(tempQuestion!);
+  }
+  return null;
+};
+
+/**
+ * Get's a question from it's ID
+ * @param questID the id of the desired question
+ * @returns the question with the given ID or null
+ */
+const getQuestionById = async (questID: string) => {
+  const tempQuestion = await TempQuestion.findById(questID).exec();
+  if (tempQuestion != null) {
+    return convertTempToQuestion(tempQuestion!);
+  }
+  return null;
 };
 
 // const passwordHashSaltRounds = 10;
@@ -151,8 +145,19 @@ const createQuestion = async (
  * @returns All the {@link IQuestion}s in the database.
  */
 const getAllQuestionsFromDB = async () => {
-  const questionList = await Question.find({}).exec(); // .select(removeSensitiveDataQuery).exec();
-  return questionList;
+  const tempQuestionList = await TempQuestion.find({}).exec(); // .select(removeSensitiveDataQuery).exec();
+  const questionArray: IQuestion[] = [];
+  if (tempQuestionList != null) {
+    await Promise.all(
+      tempQuestionList?.map(async (tempQuestion) =>
+        convertTempToQuestion(tempQuestion).then((newQuestion) =>
+          questionArray.push(newQuestion),
+        ),
+      ),
+    );
+    return questionArray;
+  }
+  return null;
 };
 
 //  /**
