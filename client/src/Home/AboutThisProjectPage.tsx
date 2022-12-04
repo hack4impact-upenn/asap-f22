@@ -53,7 +53,7 @@ function AboutThisProjectPage() {
               direction="column"
               alignItems="flex-start"
               justifyContent="flex-start"
-              padding={2}
+              padding={4}
             >
               <Typography variant="h2" fontWeight="bold" textAlign="left">
                 How does this work?
@@ -73,7 +73,7 @@ function AboutThisProjectPage() {
               direction="column"
               alignItems="flex-start"
               justifyContent="flex-start"
-              padding={2}
+              padding={4}
             >
               <Typography variant="h2" fontWeight="bold" textAlign="left">
                 Why are we doing this?
@@ -101,7 +101,7 @@ function AboutThisProjectPage() {
             container
             direction="column"
             alignItems="flex-start"
-            padding={2}
+            padding={4}
           >
             <Typography variant="h2" fontWeight="bold" textAlign="left">
               Who created this guide?
