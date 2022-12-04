@@ -9,6 +9,7 @@ import theme from './assets/theme';
 import { store, persistor } from './util/redux/store';
 import NotFoundPage from './NotFound/NotFoundPage';
 import HomePage from './Home/HomePage';
+import AboutThisProjectPage from './Home/AboutThisProjectPage';
 import AdminDashboardPage from './AdminDashboard/AdminDashboardPage';
 import {
   UnauthenticatedRoutesWrapper,
@@ -83,6 +84,7 @@ function App() {
                   <Route path="*" element={<NotFoundPage />} />
 
                   <Route path="/home" element={<HomePage />} />
+                  <Route path="/about-us" element={<AboutThisProjectPage />} />
                   {/* <Route
                     path="/question"
                     element={<QuestionComponent question={testq} />}
