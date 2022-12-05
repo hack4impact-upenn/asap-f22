@@ -117,8 +117,6 @@ const editQuestion = async (
   const qID = Object.keys(questionVals)[0];
   const qText = questionVals[qID];
 
-  console.log('in edit question');
-
   await Question.findByIdAndUpdate(qID, [{ $set: { text: qText } }]).exec();
 
   // do we need to check for isQuestion? if it's false answerVals will just be empty.

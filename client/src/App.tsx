@@ -4,7 +4,6 @@ import { CssBaseline } from '@mui/material';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import Box from '@mui/system/Box';
 import theme from './assets/theme';
 import { store, persistor } from './util/redux/store';
 import NotFoundPage from './NotFound/NotFoundPage';
@@ -23,9 +22,6 @@ import RegisterPage from './Authentication/RegisterPage';
 import LoginPage from './Authentication/LoginPage';
 import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage';
 import ResetPasswordPage from './Authentication/ResetPasswordPage';
-import QuestionComponent from './Question/QuestionComponent';
-import { IQuestion } from './util/types/question';
-import { IAnswer } from './util/types/answer';
 
 function App() {
   /* const testa = {
