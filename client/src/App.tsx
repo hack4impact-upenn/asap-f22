@@ -4,11 +4,11 @@ import { CssBaseline } from '@mui/material';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import Box from '@mui/system/Box';
 import theme from './assets/theme';
 import { store, persistor } from './util/redux/store';
 import NotFoundPage from './NotFound/NotFoundPage';
 import HomePage from './Home/HomePage';
+import AboutThisProjectPage from './Home/AboutThisProjectPage';
 import AdminDashboardPage from './AdminDashboard/AdminDashboardPage';
 import {
   UnauthenticatedRoutesWrapper,
@@ -21,9 +21,6 @@ import RegisterPage from './Authentication/RegisterPage';
 import LoginPage from './Authentication/LoginPage';
 import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage';
 import ResetPasswordPage from './Authentication/ResetPasswordPage';
-import QuestionPage from './Question/QuestionPage';
-import { IQuestion } from './util/types/question';
-import { IAnswer } from './util/types/answer';
 
 function App() {
   /* const testa = {
@@ -83,7 +80,8 @@ function App() {
                   <Route path="*" element={<NotFoundPage />} />
 
                   <Route path="/home" element={<HomePage />} />
-                  <Route path="/question" element={<QuestionPage />} />
+                  <Route path="/about-us" element={<AboutThisProjectPage />} />
+
 
                   {/* <Route
                     path="/dropdown"
