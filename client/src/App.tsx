@@ -9,7 +9,6 @@ import { store, persistor } from './util/redux/store';
 import NotFoundPage from './NotFound/NotFoundPage';
 import HomePage from './Home/HomePage';
 import AboutThisProjectPage from './Home/AboutThisProjectPage';
-import EditorGUI from './components/EditorGUI';
 import AdminDashboardPage from './AdminDashboard/AdminDashboardPage';
 import {
   UnauthenticatedRoutesWrapper,
@@ -46,7 +45,6 @@ function App() {
                 <Routes>
                   {/* Routes accessed only if user is not authenticated */}
                   <Route element={<UnauthenticatedRoutesWrapper />}>
-                    <Route path="/edit" element={<EditorGUI />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route
@@ -83,10 +81,7 @@ function App() {
 
                   <Route path="/home" element={<HomePage />} />
                   <Route path="/about-us" element={<AboutThisProjectPage />} />
-                  {/* <Route
-                    path="/question"
-                    element={<QuestionComponent question={testq} />}
-                  /> */}
+
 
                   {/* <Route
                     path="/dropdown"

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import { Typography, Grid, ListItemSecondaryAction } from '@mui/material';
@@ -6,16 +7,17 @@ import { ViewComfyAltOutlined } from '@mui/icons-material';
 import ScreenGrid from '../components/ScreenGrid';
 import AnswerButton from './AnswerButton';
 import { IAnswer } from '../util/types/answer';
+import { IResource } from '../util/types/resource';
 import { IQuestion } from '../util/types/question';
-import { useData } from '../util/api';
+import { getData, useData } from '../util/api';
+import ResourceDropdown from '../components/ResourceDropdown';
 
-interface QuestionComponentProps {
+interface ResourceComponentProps {
   question: IQuestion;
-  handleClick: (answerID: string) => any;
 }
 
-function QuestionComponent(props: QuestionComponentProps) {
-  const { handleClick, question } = props;
+function ResourceComponent(props: ResourceComponentProps) {
+  const { question } = props;
 
   return (
     // eslint-disable-next-line no-underscore-dangle
@@ -44,12 +46,9 @@ function QuestionComponent(props: QuestionComponentProps) {
             </Grid>
             {question.resultantAnswers.map((answer) => {
               return (
-                <AnswerButton
-                  answer={answer}
-                  onClick={(e: any) => {
-                    // eslint-disable-next-line no-underscore-dangle
-                    handleClick(answer._id);
-                  }}
+                <ResourceDropdown
+                  title={answer.text}
+                  content={answer.resourceContent}
                 />
               );
             })}
@@ -60,4 +59,4 @@ function QuestionComponent(props: QuestionComponentProps) {
   );
 }
 
-export default QuestionComponent;
+export default ResourceComponent;
