@@ -42,9 +42,6 @@ function NavBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             ASAP Resource Tree
           </Typography>
-          {/* <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            HELLO
-          </Typography> */}
           <Button variant="contained" size="large" onClick={routeChange}>
             {buttonText}
           </Button>
