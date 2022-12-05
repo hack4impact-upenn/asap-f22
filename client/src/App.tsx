@@ -9,7 +9,6 @@ import theme from './assets/theme';
 import { store, persistor } from './util/redux/store';
 import NotFoundPage from './NotFound/NotFoundPage';
 import HomePage from './Home/HomePage';
-import EditorGUI from './components/EditorGUI';
 import AdminDashboardPage from './AdminDashboard/AdminDashboardPage';
 import {
   UnauthenticatedRoutesWrapper,
@@ -22,7 +21,7 @@ import RegisterPage from './Authentication/RegisterPage';
 import LoginPage from './Authentication/LoginPage';
 import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage';
 import ResetPasswordPage from './Authentication/ResetPasswordPage';
-import QuestionComponent from './Question/QuestionComponent';
+import QuestionPage from './Question/QuestionPage';
 import { IQuestion } from './util/types/question';
 import { IAnswer } from './util/types/answer';
 
@@ -49,7 +48,6 @@ function App() {
                 <Routes>
                   {/* Routes accessed only if user is not authenticated */}
                   <Route element={<UnauthenticatedRoutesWrapper />}>
-                    <Route path="/edit" element={<EditorGUI />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route
@@ -85,10 +83,7 @@ function App() {
                   <Route path="*" element={<NotFoundPage />} />
 
                   <Route path="/home" element={<HomePage />} />
-                  {/* <Route
-                    path="/question"
-                    element={<QuestionComponent question={testq} />}
-                  /> */}
+                  <Route path="/question" element={<QuestionPage />} />
 
                   {/* <Route
                     path="/dropdown"

@@ -6,7 +6,11 @@
 import mongoose from 'mongoose';
 
 const ResourceSchema = new mongoose.Schema({
-  information: {
+  title: {
+    type: String,
+    required: true,
+  },
+  content: {
     type: String,
     required: true,
   },
@@ -14,7 +18,8 @@ const ResourceSchema = new mongoose.Schema({
 
 interface IResource extends mongoose.Document {
   _id: string;
-  information: string;
+  title: string;
+  content: string;
 }
 
 const Resource = mongoose.model<IResource>('Resource', ResourceSchema);
