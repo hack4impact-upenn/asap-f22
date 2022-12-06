@@ -1,4 +1,9 @@
+/**
+ * A type for encapsulating any react components/elements as children. The child
+ * or children is accessed from the `children` property.
+ */
 export interface IResource {
-  id: string;
-  information: string;
+  _id: string;
+  title: string;
+  content: string;
 }

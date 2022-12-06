@@ -3,7 +3,79 @@
  */
 // import { hash } from 'bcrypt';
 import { Answer, IAnswer } from '../models/answer.model';
-import { Question } from '../models/question.model';
+import IQuestion from '../models/question.model';
+import { TempQuestion, ITempQuestion } from '../models/temp-question.model';
+
+async function getAnswerObj(ansId: string) {
+  const resultantAnswer = await Answer.findById(ansId);
+  const answerObj = {
+    _id: resultantAnswer?._id,
+    text: resultantAnswer?.text,
+    resourceContent: resultantAnswer?.resourceContent,
+    resultantQuestionId: resultantAnswer?.resultantQuestionId,
+  } as IAnswer;
+  return answerObj;
+}
+
+const convertTempToQuestion = async (tempQuestion: ITempQuestion) => {
+  const answerArray: IAnswer[] = [];
+  if (tempQuestion != null) {
+    await Promise.all(
+      tempQuestion?.resultantAnswerIds.map(async (id) =>
+        getAnswerObj(id).then((newAnswer) => answerArray.push(newAnswer)),
+      ),
+    );
+  }
+
+  const question = {
+    _id: tempQuestion?._id,
+    text: tempQuestion?.text,
+    resultantAnswers: answerArray,
+    isQuestion: tempQuestion?.isQuestion,
+  } as IQuestion;
+
+  return question;
+};
+
+const convertQuestionToTemp = (question: IQuestion) => {
+  const answerIdArray: string[] = [];
+  question.resultantAnswers.forEach((answer) => {
+    answerIdArray.push(answer._id);
+  });
+  const tempQuestion = {
+    _id: question._id,
+    text: question.text,
+    resultantAnswerIds: answerIdArray,
+    isQuestion: question.isQuestion,
+  } as ITempQuestion;
+
+  return tempQuestion;
+};
+
+const getNextQuestionFromDB = async (answerID: string) => {
+  const answer = await Answer.findById(answerID).exec();
+  const tempQuestion = await TempQuestion.findById(
+    answer?.resultantQuestionId,
+  ).exec();
+
+  if (tempQuestion != null) {
+    return convertTempToQuestion(tempQuestion!);
+  }
+  return null;
+};
+
+/**
+ * Get's a question from it's ID
+ * @param questID the id of the desired question
+ * @returns the question with the given ID or null
+ */
+const getQuestionById = async (questID: string) => {
+  const tempQuestion = await TempQuestion.findById(questID).exec();
+  if (tempQuestion != null) {
+    return convertTempToQuestion(tempQuestion!);
+  }
+  return null;
+};
 
 // const passwordHashSaltRounds = 10;
 //  const removeSensitiveDataQuery = [
@@ -31,17 +103,15 @@ const createQuestion = async (
   resultantAnswers: IAnswer[],
   isQuestion: boolean,
 ) => {
-  //    const hashedPassword = await hash(password, passwordHashSaltRounds);
-  //    if (!hashedPassword) {
-  //      return null;
-  //    }
-  const newQuestion = new Question({
+  const newQuestion = {
     _id,
     text,
     resultantAnswers,
     isQuestion,
-  });
-  const user = await newQuestion.save();
+  } as IQuestion;
+  const newTempQuestion = convertQuestionToTemp(newQuestion);
+
+  const user = await newTempQuestion.save();
   return user;
 };
 
@@ -85,22 +155,22 @@ const createQuestion = async (
 //  };
 
 /**
- * Gets a question from the database by their id but doesn't include the
- * password in the returned user.
- * @param id The id of the user to get.
- * @returns The {@link IQuestion} or null if the user was not found.
- */
-const getQuestionById = async (id: string) => {
-  const question = await Question.findById(id).exec();
-  return question;
-};
-
-/**
  * @returns All the {@link IQuestion}s in the database.
  */
 const getAllQuestionsFromDB = async () => {
-  const questionList = await Question.find({}).exec(); // .select(removeSensitiveDataQuery).exec();
-  return questionList;
+  const tempQuestionList = await TempQuestion.find({}).exec(); // .select(removeSensitiveDataQuery).exec();
+  const questionArray: IQuestion[] = [];
+  if (tempQuestionList != null) {
+    await Promise.all(
+      tempQuestionList?.map(async (tempQuestion) =>
+        convertTempToQuestion(tempQuestion).then((newQuestion) =>
+          questionArray.push(newQuestion),
+        ),
+      ),
+    );
+    return questionArray;
+  }
+  return null;
 };
 
 //  /**
@@ -117,9 +187,8 @@ const editQuestion = async (
   const qID = Object.keys(questionVals)[0];
   const qText = questionVals[qID];
 
-  console.log('in edit question');
+  await TempQuestion.findByIdAndUpdate(qID, [{ $set: { text: qText } }]).exec();
 
-  await Question.findByIdAndUpdate(qID, [{ $set: { text: qText } }]).exec();
 
   // do we need to check for isQuestion? if it's false answerVals will just be empty.
   // for (const key in answerVals) {
@@ -150,5 +219,6 @@ export {
   //    getUserByResetPasswordToken,
   getAllQuestionsFromDB,
   editQuestion,
+  getNextQuestionFromDB,
   //    deleteUserById,
 };

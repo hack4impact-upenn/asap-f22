@@ -52,10 +52,10 @@ const login = async (
         next(ApiError.unauthorized('Incorrect credentials'));
         return;
       }
-      if (!user!.verified) {
-        next(ApiError.unauthorized('Need to verify account by email'));
-        return;
-      }
+      // if (!user!.verified) {
+      //   next(ApiError.unauthorized('Need to verify account by email'));
+      //   return;
+      // }
       req.logIn(user, (error) => {
         if (error) {
           next(ApiError.internal('Failed to log in user'));

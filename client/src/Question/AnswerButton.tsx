@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import { Button } from '@mui/material';
 import { IAnswer } from '../util/types/answer';
@@ -50,9 +51,9 @@ function AnswerButton(props: AnswerButtonProps) {
 
   return (
     <Button
-      id={answer.id}
+      id={answer._id}
       variant="outlined"
-      onClick={(e) => onClick(e, answer.id, answer.resultantQuestionId)}
+      onClick={(e) => onClick(e, answer._id, answer.resultantQuestionId)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       sx={{

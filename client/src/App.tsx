@@ -4,12 +4,11 @@ import { CssBaseline } from '@mui/material';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import Box from '@mui/system/Box';
 import theme from './assets/theme';
 import { store, persistor } from './util/redux/store';
 import NotFoundPage from './NotFound/NotFoundPage';
 import HomePage from './Home/HomePage';
-import EditorGUI from './components/EditorGUI';
+import AboutThisProjectPage from './Home/AboutThisProjectPage';
 import AdminDashboardPage from './AdminDashboard/AdminDashboardPage';
 import {
   UnauthenticatedRoutesWrapper,
@@ -25,6 +24,7 @@ import ResetPasswordPage from './Authentication/ResetPasswordPage';
 import QuestionPage from './Question/QuestionPage';
 import ResourcePage from './Resource/ResourcePage';
 
+
 function App() {
   return (
     <div className="App">
@@ -36,7 +36,6 @@ function App() {
                 <Routes>
                   {/* Routes accessed only if user is not authenticated */}
                   <Route element={<UnauthenticatedRoutesWrapper />}>
-                    <Route path="/edit" element={<EditorGUI />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route
@@ -52,13 +51,14 @@ function App() {
                       element={<ResetPasswordPage />}
                     />
                     {/* <Route element={<AdminRoutesWrapper />}> */}
-                    <Route path="/users" element={<AdminDashboardPage />} />
+                    {/* <Route path="/users" element={<AdminDashboardPage />} /> */}
                     {/* </Route> */}
                   </Route>
                   {/* Routes accessed only if user is authenticated */}
-                  {/* <Route element={<AdminRoutesWrapper />}>
+                  {/* <Route element={<AdminRoutesWrapper />}> */}
+                  <Route element={<ProtectedRoutesWrapper />}>
                     <Route path="/users" element={<AdminDashboardPage />} />
-                  </Route> */}
+                  </Route>
 
                   {/* Route which redirects to a different page depending on if the user is an authenticated or not by utilizing the DynamicRedirect component */}
                   <Route
@@ -76,6 +76,9 @@ function App() {
                   <Route path="/question" element={<QuestionPage />} />
 
                   <Route path="/resource" element={<ResourcePage />} />
+
+                  <Route path="/about-us" element={<AboutThisProjectPage />} />
+
 
                   {/* <Route
                     path="/dropdown"

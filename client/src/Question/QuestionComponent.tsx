@@ -9,8 +9,10 @@ import BackButton from './BackButton';
 import NextButton from './NextButton';
 import { IAnswer } from '../util/types/answer';
 import { IQuestion } from '../util/types/question';
+import { useData } from '../util/api';
 
 interface QuestionComponentProps {
+
   questions: IQuestion[];
 }
 
@@ -149,7 +151,7 @@ function QuestionComponent(props: QuestionComponentProps) {
 
   return (
     // eslint-disable-next-line no-underscore-dangle
-    <div id={question._id}>
+    <div>
       <ScreenGrid>
         <Grid
           container
@@ -183,13 +185,13 @@ function QuestionComponent(props: QuestionComponentProps) {
                 {question.text}
               </Typography>
             </Grid>
-            {question.resultantAnswers.map((item) => {
+            {question.resultantAnswers.map((answer) => {
               return (
                 <AnswerButton
-                  answer={item}
+                  answer={answer}
                   onClick={(e: any) => {
-                    // console.log(e);
-                    clickHandler(e.target.id);
+                    // eslint-disable-next-line no-underscore-dangle
+                    handleClick(answer._id);
                   }}
                 />
               );
