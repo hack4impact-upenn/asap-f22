@@ -2,6 +2,8 @@
  * A file containing all the api calls for the admin dashboard.
  */
 import { deleteData, putData, postData } from '../util/api';
+import { IAnswer } from '../util/types/answer';
+import { IQuestion } from '../util/types/question';
 
 /**
  * Sends a request to the server to delete a user
@@ -21,14 +23,20 @@ async function deleteQuestion(text: string) {
 }
 
 // routes! hopefully
-async function editQuestion(
-  questionVals: { [key: string]: string },
-  answerVals: { [key: string]: string },
-) {
+async function editQuestion(question: IQuestion) {
   const res = await putData(`admin/editQuestion`, {
     // add in all fields
-    questionVals,
-    answerVals,
+    question,
+  });
+  if (res.error) return false;
+  return true;
+}
+
+async function deleteResource(question: IQuestion, resource: IAnswer) {
+  // eslint-disable-next-line no-underscore-dangle
+  const res = await putData(`admin/deleteResource`, {
+    question,
+    resource,
   });
   if (res.error) return false;
   return true;
@@ -54,4 +62,10 @@ async function upgradePrivilege(email: string) {
   return true;
 }
 
-export { deleteUser, deleteQuestion, editQuestion, upgradePrivilege };
+export {
+  deleteUser,
+  deleteQuestion,
+  editQuestion,
+  deleteResource,
+  upgradePrivilege,
+};

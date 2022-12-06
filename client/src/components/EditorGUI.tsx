@@ -1,54 +1,70 @@
 import React, { useState, useRef } from 'react';
 import JoditEditor from 'jodit-react';
+import { IAnswer } from '../util/types/answer';
+import { editQuestion } from '../AdminDashboard/api';
 
 export default function EditorGUI({ values, setValue, type, idx }: any) {
   const editor = useRef(null);
-
   let defaultText = '';
   if (type === 'question') {
-    defaultText = values.question;
+    defaultText = values.text;
   } else if (type === 'title') {
-    defaultText = values.answer.text;
+    defaultText = values.resultantAnswers[idx].text;
   } else {
-    defaultText = values.answer.resourceContent;
+    defaultText = values.resultantAnswers[idx].resourceContent;
   }
   // change useState input if we store everything as html in db
   const [text, setText] = useState(`<p>${defaultText}</p>`);
 
-  const updateTitle = ({ index }: any) => {
-    const newArray = values.answer.map(({ item, i }: any) => {
+  const updateTitle = (index: any) => {
+    // values.answer[index].text = text;
+    const newArray = values.resultantAnswers.map((item: IAnswer, i: any) => {
       if (index === i) {
-        return { ...item, text };
+        const newAnswer: IAnswer = {
+          id: item.id,
+          // eslint-disable-next-line object-shorthand
+          text: text,
+          resultantQuestionId: item.resultantQuestionId,
+          resourceContent: item.resourceContent,
+        };
+        return newAnswer;
       }
       return item;
     });
-    setValue('answer', newArray);
+    setValue('resultantAnswers', newArray);
   };
 
-  const updateDescription = ({ index }: any) => {
-    const newArray = values.answer.map(({ item, i }: any) => {
+  const updateDescription = (index: any) => {
+    const newArray = values.resultantAnswers.map((item: IAnswer, i: any) => {
       if (index === i) {
-        return { ...item, resourceContent: text };
+        const newAnswer: IAnswer = {
+          id: item.id,
+          text: item.text,
+          resultantQuestionId: item.resultantQuestionId,
+          resourceContent: text,
+        };
+        return newAnswer;
       }
       return item;
     });
-    setValue('answer', newArray);
+    setValue('resultantAnswers', newArray);
   };
 
   const handleUpdate = () => {
     if (type === 'question') {
-      setValue(`${type}`, text);
+      setValue('text', text);
     } else if (type === 'title') {
       updateTitle(idx);
     } else if (type === 'description') {
       updateDescription(idx);
     }
     console.log(values);
+    editQuestion(values);
   };
 
   return (
     <div className="App">
-      <div dangerouslySetInnerHTML={{ __html: text }} />
+      {/* <div dangerouslySetInnerHTML={{ __html: text }} /> */}
       {/* {!text && <div>{defaultText}</div>} */}
       <JoditEditor ref={editor} value={text} onChange={setText} />
       <button type="button" onClick={() => handleUpdate()}>

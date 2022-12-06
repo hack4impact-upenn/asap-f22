@@ -7,4 +7,5 @@ export interface IAnswer {
   text: string;
   resourceContent: string;
   resultantQuestionId: string;
+  resourceContent: string;
 }

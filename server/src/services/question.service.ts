@@ -182,21 +182,23 @@ const getAllQuestionsFromDB = async () => {
 const editQuestion = async (
   questionVals: { [key: string]: string },
   // NOTE that we are using strings for IDs here rather than the Answer Interface.
-  answerVals: { [key: string]: string },
 ) => {
   const qID = Object.keys(questionVals)[0];
   const qText = questionVals[qID];
 
   await TempQuestion.findByIdAndUpdate(qID, [{ $set: { text: qText } }]).exec();
+};
 
-
-  // do we need to check for isQuestion? if it's false answerVals will just be empty.
-  // for (const key in answerVals) {
-  Object.keys(answerVals).forEach(async (key) => {
-    await Answer.findByIdAndUpdate(key, [
-      { $set: { text: answerVals[key] } },
-    ]).exec();
-  });
+const deleteResource = async (question: IQuestion, resource: IAnswer) => {
+  const qID = question._id;
+  const rID = resource.id;
+  console.log(qID);
+  console.log(rID);
+  // removes resource with id rID from question with id qID
+  await TempQuestion.findByIdAndUpdate(
+    { _id: qID },
+    { $pull: { resultantAnswers: { _id: rID } } },
+  ).exec();
 };
 
 //  /**
@@ -220,5 +222,6 @@ export {
   getAllQuestionsFromDB,
   editQuestion,
   getNextQuestionFromDB,
+  deleteResource,
   //    deleteUserById,
 };

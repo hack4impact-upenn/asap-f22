@@ -85,7 +85,6 @@ function App() {
                   <Route path="/home" element={<HomePage />} />
                   <Route path="/about-us" element={<AboutThisProjectPage />} />
 
-
                   {/* <Route
                     path="/dropdown"
                     element={
