@@ -5,21 +5,90 @@ import Box from '@mui/system/Box';
 import { ViewComfyAltOutlined } from '@mui/icons-material';
 import ScreenGrid from '../components/ScreenGrid';
 import AnswerButton from './AnswerButton';
+import BackButton from './BackButton';
+import NextButton from './NextButton';
 import { IAnswer } from '../util/types/answer';
 import { IQuestion } from '../util/types/question';
 
 interface QuestionComponentProps {
-  question: IQuestion;
+  questions: IQuestion[];
+}
+
+// eslint-disable-next-line prefer-const
+let hasGoneBack = false;
+let hasGoneForward = false;
+
+// moved up
+
+const incrementIndex2 = (
+  func: React.Dispatch<React.SetStateAction<number>>,
+) => {
+  // console.log('hi');
+  func((current) => current + 1);
+  hasGoneForward = true;
+};
+const decrementIndex2 = (
+  func: React.Dispatch<React.SetStateAction<number>>,
+) => {
+  // console.log('bye');
+  func((current) => current - 1);
+};
+
+function ShowButton(
+  questions: IQuestion[],
+  qIndex: () => number,
+  func: React.Dispatch<React.SetStateAction<number>>,
+) {
+  const qs = questions;
+  if (qIndex() >= qs.length - 1) {
+    hasGoneBack = false;
+  }
+  if (hasGoneBack) {
+    return (
+      <NextButton
+        onClick={(e: any) => {
+          // incrementIndex();
+          incrementIndex2(func);
+        }}
+      />
+    );
+  }
+  return <Typography />;
+}
+
+function ShowBack(
+  qIndex: () => number,
+  func: React.Dispatch<React.SetStateAction<number>>,
+) {
+  if (qIndex() <= 0) {
+    hasGoneForward = false;
+  }
+  if (hasGoneForward) {
+    return (
+      <BackButton
+        onClick={(e: any) => {
+          // decrementIndex();
+          decrementIndex2(func);
+          hasGoneBack = true;
+        }}
+      />
+    );
+  }
+  return <Typography />;
 }
 
 function QuestionComponent(props: QuestionComponentProps) {
-  const { question } = props;
-  // State values and hooks
+  const { questions } = props;
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [allQuestions, setAllQuestions] = useState<string[]>([]);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [allAnswers, setAllAnswers] = useState<string[]>([]);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [questionIndex, setQuestionIndex] = useState(0);
 
-  // Helper functions
+  const question = questions[questionIndex];
+
   const setQuestions = (value: string) => {
     setAllQuestions((current) => [...current, value]);
   };
@@ -27,10 +96,17 @@ function QuestionComponent(props: QuestionComponentProps) {
     setAllAnswers((current) => [...current, value]);
   };
   const incrementIndex = () => {
+    console.log('hi');
     setQuestionIndex((current) => current + 1);
+    hasGoneForward = true;
   };
   const decrementIndex = () => {
+    console.log('bye');
     setQuestionIndex((current) => current - 1);
+  };
+
+  const getIndex = () => {
+    return questionIndex;
   };
 
   // temp click handler -- this should appear on page that has the entire question component along with the state
@@ -54,7 +130,17 @@ function QuestionComponent(props: QuestionComponentProps) {
         }),
       );
     }
+
+    // console.log("questions length - 1: ", questions.length - 1);
+    // console.log("questionIndex: ", questionIndex);
+
+    // if(questionIndex < (questions.length - 1)) {
+    //   incrementIndex();
+    // }
+
+    // automatically goes to resources once hit end of questions
     incrementIndex();
+
     // get new question info from backend route (using resultantQuestionId)
 
     // actual one should make next component (with ref field)
@@ -82,7 +168,18 @@ function QuestionComponent(props: QuestionComponentProps) {
             gap="2%"
           >
             <Grid container direction="column" alignItems="center" padding={2}>
-              <Typography variant="h1" fontWeight="bold" textAlign="center">
+              <Typography
+                style={{
+                  fontFamily: 'Roboto',
+                  fontStyle: 'normal',
+                  fontWeight: '400',
+                  fontSize: '64px',
+                  lineHeight: '78px',
+                }}
+                fontWeight="400"
+                textAlign="center"
+                text-size="64px"
+              >
                 {question.text}
               </Typography>
             </Grid>
@@ -98,6 +195,9 @@ function QuestionComponent(props: QuestionComponentProps) {
               );
             })}
           </Grid>
+          <Grid>{ShowBack(getIndex, setQuestionIndex)}</Grid>
+          {/* <Grid>{ShowButton(props)}</Grid> */}
+          <Grid>{ShowButton(questions, getIndex, setQuestionIndex)}</Grid>
         </Grid>
       </ScreenGrid>
     </div>

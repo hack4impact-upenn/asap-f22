@@ -15,6 +15,7 @@ function HomePage() {
         justifyContent="space-between"
         alignItems="center"
         height="100%"
+        minHeight="100vh"
         fit-content="100%"
       >
         <Grid item width="100%">
