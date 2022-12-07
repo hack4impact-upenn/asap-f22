@@ -1,10 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import { IAnswer } from '../util/types/answer';
 import { editQuestion } from '../AdminDashboard/api';
 
 export default function EditorGUI({ values, setValue, type, idx }: any) {
   const editor = useRef(null);
+  const isFirstRender = useRef(true);
+
   let defaultText = '';
   if (type === 'question') {
     defaultText = values.text;
@@ -60,7 +62,7 @@ export default function EditorGUI({ values, setValue, type, idx }: any) {
     } else if (type === 'description') {
       updateDescription(idx);
     }
-    editQuestion(values);
+    // editQuestion(values);
   };
 
   return (

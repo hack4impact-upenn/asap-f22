@@ -183,6 +183,12 @@ const editQuestion = async (question: IQuestion) => {
   const qID = question._id;
   const tempQuestion: ITempQuestion = convertQuestionToTemp(question);
   await TempQuestion.replaceOne({ _id: qID }, tempQuestion).exec();
+  // save answers too
+  if (question.resultantAnswers != null) {
+    question.resultantAnswers.forEach(async (answer: IAnswer) => {
+      await Answer.replaceOne({ _id: answer._id }, answer).exec();
+    });
+  }
 };
 
 const deleteResource = async (question: IQuestion, resource: IAnswer) => {

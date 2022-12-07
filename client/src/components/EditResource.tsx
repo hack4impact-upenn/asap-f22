@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { deleteQuestion, deleteResource } from '../AdminDashboard/api';
+import {
+  deleteQuestion,
+  deleteResource,
+  editQuestion,
+} from '../AdminDashboard/api';
 import { IAnswer } from '../util/types/answer';
 import { IQuestion } from '../util/types/question';
 import EditorGUI from './EditorGUI';
 
 export default function EditResource() {
   const defaultResource: IQuestion = useLocation().state.question;
+  const didMountRef = useRef(false);
 
   const [values, setValueState] = useState(defaultResource);
   const setValue = (field: string, value: string) => {
@@ -15,6 +20,15 @@ export default function EditResource() {
       ...{ [field]: value },
     }));
   };
+
+  useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+    } else {
+      console.log(values);
+      editQuestion(values);
+    }
+  }, [values]);
 
   return (
     <div>
