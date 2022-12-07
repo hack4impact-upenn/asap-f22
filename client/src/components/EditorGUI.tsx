@@ -21,7 +21,8 @@ export default function EditorGUI({ values, setValue, type, idx }: any) {
     const newArray = values.resultantAnswers.map((item: IAnswer, i: any) => {
       if (index === i) {
         const newAnswer: IAnswer = {
-          id: item.id,
+          // eslint-disable-next-line no-underscore-dangle
+          _id: item._id,
           // eslint-disable-next-line object-shorthand
           text: text,
           resultantQuestionId: item.resultantQuestionId,
@@ -38,7 +39,8 @@ export default function EditorGUI({ values, setValue, type, idx }: any) {
     const newArray = values.resultantAnswers.map((item: IAnswer, i: any) => {
       if (index === i) {
         const newAnswer: IAnswer = {
-          id: item.id,
+          // eslint-disable-next-line no-underscore-dangle
+          _id: item._id,
           text: item.text,
           resultantQuestionId: item.resultantQuestionId,
           resourceContent: text,

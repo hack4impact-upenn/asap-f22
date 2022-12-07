@@ -34,7 +34,7 @@ function EditQuestionButton({
   const navigate = useNavigate();
 
   const tempAnswer: IAnswer = {
-    id: '6369a05ce0cca0b76f26576c',
+    _id: '6369a05ce0cca0b76f26576c',
     text: '2x edited answer text 1',
     resultantQuestionId: '63751d7cc26b48cf7f1d9724',
     resourceContent: '',
