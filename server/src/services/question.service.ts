@@ -179,26 +179,26 @@ const getAllQuestionsFromDB = async () => {
 //   * @returns nothing?
 //   */
 
-const editQuestion = async (
-  questionVals: { [key: string]: string },
-  // NOTE that we are using strings for IDs here rather than the Answer Interface.
-) => {
-  const qID = Object.keys(questionVals)[0];
-  const qText = questionVals[qID];
-
-  await TempQuestion.findByIdAndUpdate(qID, [{ $set: { text: qText } }]).exec();
+const editQuestion = async (question: IQuestion) => {
+  const qID = question._id;
+  const tempQuestion: ITempQuestion = convertQuestionToTemp(question);
+  await TempQuestion.replaceOne({ _id: qID }, tempQuestion).exec();
 };
 
 const deleteResource = async (question: IQuestion, resource: IAnswer) => {
   const qID = question._id;
-  const rID = resource.id;
-  console.log(qID);
-  console.log(rID);
+  const rID = resource._id;
   // removes resource with id rID from question with id qID
   await TempQuestion.findByIdAndUpdate(
     { _id: qID },
-    { $pull: { resultantAnswers: { _id: rID } } },
+    { $pull: { resultantAnswerIds: rID } },
   ).exec();
+};
+
+const deleteQuestion = async (question: IQuestion) => {
+  const qID = question._id;
+  // removes question from question db
+  await TempQuestion.findByIdAndDelete(qID).exec();
 };
 
 //  /**
@@ -223,5 +223,6 @@ export {
   editQuestion,
   getNextQuestionFromDB,
   deleteResource,
+  deleteQuestion,
   //    deleteUserById,
 };

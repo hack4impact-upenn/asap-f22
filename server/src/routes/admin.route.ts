@@ -11,6 +11,7 @@ import {
   getAllQuestions,
   editQuestionText,
   deleteResourceFromQuestion,
+  deleteQuestionFromDB,
 } from '../controllers/admin.controller';
 import { isAuthenticated } from '../controllers/auth.middleware';
 import { approve } from '../controllers/auth.controller';
@@ -61,6 +62,12 @@ router.delete('/:email', isAuthenticated, isAdmin, deleteUser);
  */
 //  router.get('/allQuestions', isAuthenticated, isAdmin, getAllQuestions);
 router.get('/allQuestions', getAllQuestions);
+
+/**
+ * A PUT route to delete certain question.
+ * Expects an IQuestion
+ */
+router.put('/deleteQuestion', deleteQuestionFromDB);
 
 /**
  * A PUT route to edit certain question. Checks first if the requestor is a

@@ -16,8 +16,10 @@ async function deleteUser(email: string) {
   return true;
 }
 
-async function deleteQuestion(text: string) {
-  const res = await deleteData(`admin/${text}`);
+async function deleteQuestion(question: IQuestion) {
+  const res = await putData(`admin/deleteQuestion`, {
+    question,
+  });
   if (res.error) return false;
   return true;
 }
@@ -25,7 +27,6 @@ async function deleteQuestion(text: string) {
 // routes! hopefully
 async function editQuestion(question: IQuestion) {
   const res = await putData(`admin/editQuestion`, {
-    // add in all fields
     question,
   });
   if (res.error) return false;

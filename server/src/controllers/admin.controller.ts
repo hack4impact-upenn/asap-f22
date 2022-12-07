@@ -18,6 +18,7 @@ import {
   // getQuestionById,
   //  deleteQuestionById,
   deleteResource,
+  deleteQuestion,
 } from '../services/question.service';
 
 /**
@@ -186,6 +187,27 @@ const deleteResourceFromQuestion = async (
     });
 };
 
+const deleteQuestionFromDB = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { question } = req.body;
+  if (!question) {
+    next(ApiError.missingFields(['question']));
+    return;
+  }
+
+  deleteQuestion(question)
+    .then(() => {
+      res.sendStatus(StatusCode.OK);
+    })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    .catch((e) => {
+      next(ApiError.internal('Unable to delete question.'));
+    });
+};
+
 export {
   getAllUsers,
   upgradePrivilege,
@@ -193,4 +215,5 @@ export {
   getAllQuestions,
   editQuestionText,
   deleteResourceFromQuestion,
+  deleteQuestionFromDB,
 };

@@ -60,7 +60,6 @@ export default function EditorGUI({ values, setValue, type, idx }: any) {
     } else if (type === 'description') {
       updateDescription(idx);
     }
-    console.log(values);
     editQuestion(values);
   };
 

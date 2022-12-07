@@ -33,9 +33,15 @@ function EditQuestionButton({
 }: EditQuestionButtonProps) {
   const navigate = useNavigate();
 
-  const tempAnswer: IAnswer = {
+  const tempAnswer1: IAnswer = {
     _id: '6369a05ce0cca0b76f26576c',
     text: '2x edited answer text 1',
+    resultantQuestionId: '63751d7cc26b48cf7f1d9724',
+    resourceContent: '',
+  };
+  const tempAnswer2: IAnswer = {
+    _id: '6369a04ee0cca0b76f26576b',
+    text: '2x edited answer text 2',
     resultantQuestionId: '63751d7cc26b48cf7f1d9724',
     resourceContent: '',
   };
@@ -43,19 +49,18 @@ function EditQuestionButton({
     _id: '63699fdbe0cca0b76f26576a',
     text: '2x edited question text',
     isQuestion: true,
-    resultantAnswers: [tempAnswer],
+    resultantAnswers: [tempAnswer1, tempAnswer2],
   };
 
   const [isLoading, setLoading] = useState(false);
   async function handleEdit() {
     setLoading(true);
-    // edit question needs to take in new text that user has typed in
+    // tempQuestion should be replaced with question prop. Question needs to have all correct edited values. Shouldn't this happen in EditorGUI?
     if (await editQuestion(tempQuestion)) {
       // navigate('/newquestion'); // go to create new question page
       // const newtext = newquestionpage.getData(); //this isnt real, but //click save in newquestion page; should return new text data
       // editRow(text, newtext); //basically just deletes the row for now
       // overwrite current row text
-      console.log('hi');
     } else {
       setLoading(false);
     }
