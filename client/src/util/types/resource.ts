@@ -2,9 +2,8 @@
  * A type for encapsulating any react components/elements as children. The child
  * or children is accessed from the `children` property.
  */
-export interface IAnswer {
+export interface IResource {
   _id: string;
-  text: string;
-  resourceContent: string;
-  resultantQuestionId: string;
+  title: string;
+  content: string;
 }

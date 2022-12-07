@@ -6,7 +6,7 @@ import express from 'express';
 import ApiError from '../util/apiError';
 import StatusCode from '../util/statusCode';
 import { IUser } from '../models/user.model';
-import { IQuestion } from '../models/question.model';
+import IQuestion from '../models/question.model';
 import {
   upgradeUserToAdmin,
   getUserByEmail,

@@ -4,12 +4,11 @@ import { CssBaseline } from '@mui/material';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import Box from '@mui/system/Box';
 import theme from './assets/theme';
 import { store, persistor } from './util/redux/store';
 import NotFoundPage from './NotFound/NotFoundPage';
 import HomePage from './Home/HomePage';
-import EditorGUI from './components/EditorGUI';
+import AboutThisProjectPage from './Home/AboutThisProjectPage';
 import AdminDashboardPage from './AdminDashboard/AdminDashboardPage';
 import EditResource from './components/EditResource';
 import {
@@ -23,9 +22,6 @@ import RegisterPage from './Authentication/RegisterPage';
 import LoginPage from './Authentication/LoginPage';
 import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage';
 import ResetPasswordPage from './Authentication/ResetPasswordPage';
-import QuestionComponent from './Question/QuestionComponent';
-import { IQuestion } from './util/types/question';
-import { IAnswer } from './util/types/answer';
 
 function App() {
   /* const testa = {
@@ -50,7 +46,6 @@ function App() {
                 <Routes>
                   {/* Routes accessed only if user is not authenticated */}
                   <Route element={<UnauthenticatedRoutesWrapper />}>
-                    <Route path="/edit" element={<EditorGUI />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route
@@ -66,14 +61,15 @@ function App() {
                       element={<ResetPasswordPage />}
                     />
                     {/* <Route element={<AdminRoutesWrapper />}> */}
-                    <Route path="/users" element={<AdminDashboardPage />} />
+                    {/* <Route path="/users" element={<AdminDashboardPage />} /> */}
                     {/* </Route> */}
                     <Route path="/editResource" element={<EditResource />} />
                   </Route>
                   {/* Routes accessed only if user is authenticated */}
-                  {/* <Route element={<AdminRoutesWrapper />}>
+                  {/* <Route element={<AdminRoutesWrapper />}> */}
+                  <Route element={<ProtectedRoutesWrapper />}>
                     <Route path="/users" element={<AdminDashboardPage />} />
-                  </Route> */}
+                  </Route>
 
                   {/* Route which redirects to a different page depending on if the user is an authenticated or not by utilizing the DynamicRedirect component */}
                   <Route
@@ -87,10 +83,8 @@ function App() {
                   <Route path="*" element={<NotFoundPage />} />
 
                   <Route path="/home" element={<HomePage />} />
-                  {/* <Route
-                    path="/question"
-                    element={<QuestionComponent question={testq} />}
-                  /> */}
+                  <Route path="/about-us" element={<AboutThisProjectPage />} />
+
 
                   {/* <Route
                     path="/dropdown"
