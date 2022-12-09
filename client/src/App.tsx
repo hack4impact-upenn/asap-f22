@@ -61,14 +61,14 @@ function App() {
                       element={<ResetPasswordPage />}
                     />
                     {/* <Route element={<AdminRoutesWrapper />}> */}
-                    {/* <Route path="/users" element={<AdminDashboardPage />} /> */}
+                    <Route path="/users" element={<AdminDashboardPage />} />
                     {/* </Route> */}
                     <Route path="/editResource" element={<EditResource />} />
                   </Route>
                   {/* Routes accessed only if user is authenticated */}
                   {/* <Route element={<AdminRoutesWrapper />}> */}
                   <Route element={<ProtectedRoutesWrapper />}>
-                    <Route path="/users" element={<AdminDashboardPage />} />
+                    {/* <Route path="/users" element={<AdminDashboardPage />} /> */}
                   </Route>
 
                   {/* Route which redirects to a different page depending on if the user is an authenticated or not by utilizing the DynamicRedirect component */}
@@ -84,7 +84,6 @@ function App() {
 
                   <Route path="/home" element={<HomePage />} />
                   <Route path="/about-us" element={<AboutThisProjectPage />} />
-
 
                   {/* <Route
                     path="/dropdown"

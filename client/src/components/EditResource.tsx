@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Typography, Container, Box } from '@mui/material';
+import { sizing } from '@mui/system';
 import EditorGUI from './EditorGUI';
 
 export default function EditResource() {
@@ -19,12 +21,16 @@ export default function EditResource() {
   };
 
   return (
-    <div>
-      <EditorGUI values={values} setValue={setValue} type="question" />
+    <Box mt={8} mx={10} width={3 / 5}>
+      <Container>
+        <Typography variant="h5">Resource:</Typography>
+        <EditorGUI values={values} setValue={setValue} type="question" />
+      </Container>
       <br />
       {values.answer.map(({ ans, idx }: any) => {
         return (
-          <div>
+          <Container>
+            <Typography variant="h5">Title:</Typography>
             <EditorGUI
               values={values}
               setValue={setValue}
@@ -32,15 +38,16 @@ export default function EditResource() {
               idx={idx}
             />{' '}
             <br />
+            <Typography variant="h5">Content:</Typography>
             <EditorGUI
               values={values}
               setValue={setValue}
               type="description"
               idx={idx}
             />{' '}
-          </div>
+          </Container>
         );
       })}
-    </div>
+    </Box>
   );
 }

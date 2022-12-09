@@ -12,7 +12,8 @@ import { useData } from '../util/api';
 import { useAppSelector } from '../util/redux/hooks';
 import { selectUser } from '../util/redux/userSlice';
 import IUser from '../util/types/user';
-import { IQuestion } from '../util/types/question'; // '../../../server/src/models/question.model';
+import { IQuestion } from '../util/types/question';
+import { IResource } from '../util/types/resource';
 import EditQuestionButton from './EditQuestionButton';
 
 interface AdminDashboardRow {

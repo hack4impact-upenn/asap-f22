@@ -71,12 +71,16 @@ function EditQuestionButton({
 
   return (
     <div>
-      <Link to="/editResource" state={{ question }}>
-        <button type="button">Edit Resource</button>
+      <Link
+        to="/editResource"
+        state={{ question }}
+        style={{ textDecoration: 'none' }}
+      >
+        <Button variant="outlined">Edit Resource</Button>
       </Link>
-      <Button variant="outlined" disabled>
+      {/* <Button variant="outlined" disabled>
         Question is Invalid
-      </Button>
+      </Button> */}
     </div>
   );
 }
