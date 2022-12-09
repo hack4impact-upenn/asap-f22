@@ -34,6 +34,7 @@ interface TColumn {
   label: string;
   minWidth?: number;
   align?: 'left' | 'right' | 'center' | 'justify' | 'inherit';
+  render?: any;
 }
 
 /**

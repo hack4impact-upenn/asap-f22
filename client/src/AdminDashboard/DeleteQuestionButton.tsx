@@ -4,11 +4,11 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { deleteQuestion } from './api'; // change to deleteQuestion
 import LoadingButton from '../components/buttons/LoadingButton';
 import ConfirmationModal from '../components/ConfirmationModal';
+import { IQuestion } from '../util/types/question';
 
 interface DeleteQuestionButtonProps {
-  isQuestion: boolean;
-  text: string;
-  removeRow: (question: string) => void;
+  question: IQuestion;
+  removeRow: (question: IQuestion) => void;
 }
 
 /**
@@ -20,8 +20,7 @@ interface DeleteQuestionButtonProps {
  * function is called upon successfully deletion of user from the database.
  */
 function DeleteQuestionButton({
-  isQuestion,
-  text,
+  question,
   removeRow,
 }: DeleteQuestionButtonProps) {
   const navigate = useNavigate();
@@ -29,11 +28,11 @@ function DeleteQuestionButton({
   const [isLoading, setLoading] = useState(false);
   async function handleDelete() {
     setLoading(true);
-    if (true) {
-      // (await deleteQuestion(text)) {//if you comment this out it'll go to the login page but rn this never returns true bc theres no user created that it can delete
-      removeRow(text);
+    if (await deleteQuestion(question)) {
+      // if you comment this out it'll go to the login page but rn this never returns true bc theres no user created that it can delete
+      removeRow(question);
       // go to new page just to check button functionality
-      navigate('/login');
+      // navigate('/login');
     } else {
       setLoading(false);
     }
@@ -41,7 +40,7 @@ function DeleteQuestionButton({
   if (isLoading) {
     return <LoadingButton />;
   }
-  if (isQuestion) {
+  if (question.isQuestion) {
     // valid question
     return (
       <ConfirmationModal

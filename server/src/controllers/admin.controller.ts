@@ -6,7 +6,6 @@ import express from 'express';
 import ApiError from '../util/apiError';
 import StatusCode from '../util/statusCode';
 import { IUser } from '../models/user.model';
-import IQuestion from '../models/question.model';
 import {
   upgradeUserToAdmin,
   getUserByEmail,
@@ -16,8 +15,10 @@ import {
 import {
   editQuestion,
   getAllQuestionsFromDB,
-  getQuestionById,
+  // getQuestionById,
   //  deleteQuestionById,
+  deleteResource,
+  deleteQuestion,
 } from '../services/question.service';
 
 /**
@@ -143,21 +144,13 @@ const editQuestionText = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { questionVals, answerVals } = req.body;
-  if (!questionVals) {
-    next(ApiError.missingFields(['questionVals']));
-    return;
-  }
-
-  const qID = Object.keys(questionVals)[0];
-
-  const question: IQuestion | null = await getQuestionById(qID);
+  const { question } = req.body;
   if (!question) {
-    next(ApiError.notFound(`Question with id ${qID} does not exist`));
+    next(ApiError.missingFields(['question']));
     return;
   }
 
-  editQuestion(questionVals, answerVals)
+  editQuestion(question)
     .then(() => {
       res.sendStatus(StatusCode.OK);
     })
@@ -167,10 +160,60 @@ const editQuestionText = async (
     });
 };
 
+/**
+ * Delete resource
+ */
+const deleteResourceFromQuestion = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { question, resource } = req.body;
+  if (!question) {
+    next(ApiError.missingFields(['question']));
+    return;
+  }
+  if (!resource) {
+    next(ApiError.missingFields(['resource']));
+    return;
+  }
+  deleteResource(question, resource)
+    .then(() => {
+      res.sendStatus(StatusCode.OK);
+    })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    .catch((e) => {
+      next(ApiError.internal('Unable to delete resource.'));
+    });
+};
+
+const deleteQuestionFromDB = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { question } = req.body;
+  if (!question) {
+    next(ApiError.missingFields(['question']));
+    return;
+  }
+
+  deleteQuestion(question)
+    .then(() => {
+      res.sendStatus(StatusCode.OK);
+    })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    .catch((e) => {
+      next(ApiError.internal('Unable to delete question.'));
+    });
+};
+
 export {
   getAllUsers,
   upgradePrivilege,
   deleteUser,
   getAllQuestions,
   editQuestionText,
+  deleteResourceFromQuestion,
+  deleteQuestionFromDB,
 };

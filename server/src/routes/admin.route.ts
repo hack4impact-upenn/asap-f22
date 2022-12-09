@@ -10,6 +10,8 @@ import {
   deleteUser,
   getAllQuestions,
   editQuestionText,
+  deleteResourceFromQuestion,
+  deleteQuestionFromDB,
 } from '../controllers/admin.controller';
 import { isAuthenticated } from '../controllers/auth.middleware';
 import { approve } from '../controllers/auth.controller';
@@ -62,14 +64,25 @@ router.delete('/:email', isAuthenticated, isAdmin, deleteUser);
 router.get('/allQuestions', getAllQuestions);
 
 /**
+ * A PUT route to delete certain question.
+ * Expects an IQuestion
+ */
+router.put('/deleteQuestion', deleteQuestionFromDB);
+
+/**
  * A PUT route to edit certain question. Checks first if the requestor is a
  * authenticated and is an admin.
- * Expects a JSON body with the following fields:
- * - question dictionary (string ID --> string text), answer dictionary (string ID --> string text)
- * - question dictionary should only have 1 key/value pair, answer dictionary can have multiple
+ * Expects an IQuestion
 
  */
 // router.put('/editQuestion', isAuthenticated, isAdmin, editQuestionText);
 router.put('/editQuestion', editQuestionText);
+
+/**
+ * A DELETE route to delete resource from resultantAnswers of a resource question. Checks first if the requestor is a
+ * authenticated and is an admin.
+ * Expects an IAnswer component
+ */
+router.put('/deleteResource', deleteResourceFromQuestion);
 
 export default router;

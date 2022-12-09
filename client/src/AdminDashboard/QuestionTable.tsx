@@ -4,6 +4,7 @@
  */
 import React, { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
+import { EnhancedEncryptionRounded } from '@mui/icons-material';
 import { PaginationTable, TColumn } from '../components/PaginationTable';
 import DeleteUserButton from './DeleteUserButton';
 import DeleteQuestionButton from './DeleteQuestionButton';
@@ -15,6 +16,7 @@ import IUser from '../util/types/user';
 import { IQuestion } from '../util/types/question';
 import { IResource } from '../util/types/resource';
 import EditQuestionButton from './EditQuestionButton';
+import { deleteQuestion } from './api';
 
 interface AdminDashboardRow {
   key: string;
@@ -39,7 +41,14 @@ interface AdminDashboardRow {
 function QuestionTable() {
   // define columns for the table
   const columns: TColumn[] = [
-    { id: 'question', label: 'Question' },
+    {
+      id: 'question',
+      label: 'Question',
+      render: (row: AdminDashboardRow) => {
+        // eslint-disable-next-line react/no-danger
+        return <span dangerouslySetInnerHTML={{ __html: row.question }} />;
+      },
+    },
     // { id: 'promote', label: 'Promote to Admin' },
     { id: 'remove', label: 'Remove Question' },
     { id: 'edit', label: 'Edit Question' },
@@ -92,11 +101,13 @@ function QuestionTable() {
       questionList.filter(
         (entry: IQuestion) =>
           entry &&
-          entry.isQuestion &&
           entry.text &&
-          entry.text !== question.text, //! == question.text,
+          entry.text !== question.text &&
+          // eslint-disable-next-line no-underscore-dangle
+          entry._id !== question._id, //! == question.text,
       ),
     );
+    deleteQuestion(question);
   };
 
   const handleEditChange = (oldQ: IQuestion, newQ: IQuestion) => {
@@ -141,8 +152,7 @@ function QuestionTable() {
         createAdminDashboardRow(
           question,
           <DeleteQuestionButton
-            isQuestion={question.isQuestion}
-            text={question.text}
+            question={question}
             removeRow={() => removeQuestion(question)}
           />,
           // <DeleteQuestionButton

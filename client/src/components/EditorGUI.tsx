@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import {
   Typography,
@@ -8,58 +8,74 @@ import {
   CardContent,
 } from '@mui/material';
 import ConfirmationModal from './ConfirmationModal';
+import { IAnswer } from '../util/types/answer';
 
 export default function EditorGUI({ values, setValue, type, idx }: any) {
   const editor = useRef(null);
-  console.log(values);
+  // console.log(values);
   let defaultText = '';
   if (type === 'question') {
-    defaultText = values.question;
+    defaultText = values.text;
   } else if (type === 'title') {
-    defaultText = values.answer.text;
+    defaultText = values.resultantAnswers[idx].text;
   } else {
-    defaultText = values.answer.resourceContent;
+    defaultText = values.resultantAnswers[idx].resourceContent;
   }
   // change useState input if we store everything as html in db
-  defaultText = `<p>${defaultText}</p>`;
   const [text, setText] = useState(defaultText);
   const [clicked, setClicked] = useState(false);
 
-  const updateTitle = ({ index }: any) => {
-    const newArray = values.answer.map(({ item, i }: any) => {
+  const updateTitle = (index: any) => {
+    const newArray = values.resultantAnswers.map((item: IAnswer, i: any) => {
       if (index === i) {
-        return { ...item, text };
+        const newAnswer: IAnswer = {
+          // eslint-disable-next-line no-underscore-dangle
+          _id: item._id,
+          // eslint-disable-next-line object-shorthand
+          text: text,
+          resultantQuestionId: item.resultantQuestionId,
+          resourceContent: item.resourceContent,
+        };
+        return newAnswer;
       }
       return item;
     });
-    setValue('answer', newArray);
+    setValue('resultantAnswers', newArray);
   };
 
-  const updateDescription = ({ index }: any) => {
-    const newArray = values.answer.map(({ item, i }: any) => {
+  const updateDescription = (index: any) => {
+    const newArray = values.resultantAnswers.map((item: IAnswer, i: any) => {
       if (index === i) {
-        return { ...item, resourceContent: text };
+        const newAnswer: IAnswer = {
+          // eslint-disable-next-line no-underscore-dangle
+          _id: item._id,
+          text: item.text,
+          resultantQuestionId: item.resultantQuestionId,
+          resourceContent: text,
+        };
+        return newAnswer;
       }
       return item;
     });
-    setValue('answer', newArray);
+    setValue('resultantAnswers', newArray);
   };
 
   const handleUpdate = () => {
     if (type === 'question') {
-      setValue(`${type}`, text);
+      const newText = text.replaceAll(/<[^>]*>?/gm, '');
+      setValue('text', newText);
     } else if (type === 'title') {
       updateTitle(idx);
     } else if (type === 'description') {
       updateDescription(idx);
     }
-    console.log(values);
     setClicked(false);
   };
 
   const handleCancelClick = () => {
     setClicked(!clicked);
     setText(defaultText);
+    console.log(text);
   };
 
   return (
@@ -72,6 +88,7 @@ export default function EditorGUI({ values, setValue, type, idx }: any) {
           variant="outlined"
           sx={{ margin: 1 }}
           onClick={() => handleCancelClick()}
+          disabled={clicked}
         >
           Edit
         </Button>
@@ -87,12 +104,6 @@ export default function EditorGUI({ values, setValue, type, idx }: any) {
           >
             Confirm
           </Button>
-          {/* <ConfirmationModal
-            buttonText="Confirm"
-            title="Are you sure you want to edit this resource?"
-            body="This action is permanent. Resource information will not be able to be recovered."
-            // onConfirm={() => {}}
-          /> */}
           <Button variant="outlined" onClick={() => handleCancelClick()}>
             Cancel
           </Button>
