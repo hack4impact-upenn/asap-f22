@@ -10,7 +10,13 @@ import {
 import ConfirmationModal from './ConfirmationModal';
 import { IAnswer } from '../util/types/answer';
 
-export default function EditorGUI({ values, setValue, type, idx }: any) {
+export default function EditorGUI({
+  values,
+  setValue,
+  type,
+  idx,
+  deleted,
+}: any) {
   const editor = useRef(null);
   // console.log(values);
   let defaultText = '';
@@ -79,7 +85,11 @@ export default function EditorGUI({ values, setValue, type, idx }: any) {
   };
 
   return (
-    <Card className="App" sx={{ boxShadow: 2 }}>
+    <Card
+      className="App"
+      sx={{ boxShadow: 2 }}
+      style={deleted ? { color: '#C0C0C0' } : {}}
+    >
       <CardContent>
         <Typography variant="h6" dangerouslySetInnerHTML={{ __html: text }} />
       </CardContent>
@@ -88,12 +98,11 @@ export default function EditorGUI({ values, setValue, type, idx }: any) {
           variant="outlined"
           sx={{ margin: 1 }}
           onClick={() => handleCancelClick()}
-          disabled={clicked}
+          disabled={clicked || deleted}
         >
           Edit
         </Button>
       </CardActions>
-
       {clicked && (
         <CardContent>
           <JoditEditor ref={editor} value={text} onChange={setText} />
