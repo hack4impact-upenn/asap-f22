@@ -1,15 +1,8 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useState } from 'react';
-import Button from '@mui/material/Button';
-import { Typography, Grid, ListItemSecondaryAction } from '@mui/material';
-import Box from '@mui/system/Box';
-import { ViewComfyAltOutlined } from '@mui/icons-material';
+import React from 'react';
+import { Typography, Grid } from '@mui/material';
 import ScreenGrid from '../components/ScreenGrid';
-import AnswerButton from './AnswerButton';
-import { IAnswer } from '../util/types/answer';
-import { IResource } from '../util/types/resource';
 import { IQuestion } from '../util/types/question';
-import { getData, useData } from '../util/api';
 import ResourceDropdown from '../components/ResourceDropdown';
 
 interface ResourceComponentProps {

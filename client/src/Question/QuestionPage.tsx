@@ -1,11 +1,11 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useCallback, useEffect, useState } from 'react';
-import { Typography, Grid } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Grid } from '@mui/material';
 import ScreenGrid from '../components/ScreenGrid';
 import QuestionComponent from './QuestionComponent';
 import ResourceComponent from './ResourceComponent';
 import { IQuestion } from '../util/types/question';
-import { getData, useData } from '../util/api';
+import { getData } from '../util/api';
 import SidebarComponent from '../components/sidebar/SidebarComponent';
 import Footer from '../components/Footer';
 import BackButton from './Components/BackButton';

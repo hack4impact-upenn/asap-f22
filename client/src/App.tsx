@@ -4,7 +4,7 @@ import { CssBaseline } from '@mui/material';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import theme from './assets/theme';
-import { store, persistor } from './util/redux/store';
+import { store } from './util/redux/store';
 import NotFoundPage from './NotFound/NotFoundPage';
 import HomePage from './Home/HomePage';
 import AboutThisProjectPage from './Home/AboutThisProjectPage';

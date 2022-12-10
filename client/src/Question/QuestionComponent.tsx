@@ -1,13 +1,7 @@
-import React, { useState } from 'react';
-import Button from '@mui/material/Button';
-import { Typography, Grid, ListItemSecondaryAction } from '@mui/material';
-import Box from '@mui/system/Box';
-import { ViewComfyAltOutlined } from '@mui/icons-material';
-import ScreenGrid from '../components/ScreenGrid';
+import React from 'react';
+import { Typography, Grid } from '@mui/material';
 import AnswerButton from './AnswerButton';
-import { IAnswer } from '../util/types/answer';
 import { IQuestion } from '../util/types/question';
-import { useData } from '../util/api';
 
 interface QuestionComponentProps {
   question: IQuestion;
@@ -45,7 +39,7 @@ function QuestionComponent(props: QuestionComponentProps) {
             return (
               <AnswerButton
                 answer={answer}
-                onClick={(e: any) => {
+                onClick={() => {
                   // eslint-disable-next-line no-underscore-dangle
                   handleClick(answer._id);
                 }}
