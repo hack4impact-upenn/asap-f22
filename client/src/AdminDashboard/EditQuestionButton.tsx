@@ -93,9 +93,6 @@ function EditQuestionButton({
       >
         <Button variant="outlined">Edit Resource</Button>
       </Link>
-      {/* <Button variant="outlined" disabled>
-        Question is Invalid
-      </Button> */}
     </div>
   );
 }

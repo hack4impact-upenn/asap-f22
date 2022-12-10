@@ -22,7 +22,6 @@ interface AdminDashboardRow {
   key: string;
   question: string;
   // promote: React.ReactElement;
-  remove: React.ReactElement;
   edit: React.ReactElement;
 }
 
@@ -44,10 +43,6 @@ function QuestionTable() {
     {
       id: 'question',
       label: 'Question/Resource',
-      render: (row: AdminDashboardRow) => {
-        // eslint-disable-next-line react/no-danger
-        return <span dangerouslySetInnerHTML={{ __html: row.question }} />;
-      },
     },
     // { id: 'promote', label: 'Promote to Admin' },
     { id: 'edit', label: 'Edit' },
@@ -59,7 +54,6 @@ function QuestionTable() {
   function createAdminDashboardRow(
     question: IQuestion, // IUser, //fix this to question type
     // promote: React.ReactElement,
-    remove: React.ReactElement,
     edit: React.ReactElement,
   ): AdminDashboardRow {
     // const { _id, qstn } = user;
@@ -70,7 +64,6 @@ function QuestionTable() {
       // resultantAnswerIds: resultantAnswerIds,
       // isQuestion: isQuestion,
       // promote,
-      remove,
       edit,
     };
   }
@@ -150,16 +143,6 @@ function QuestionTable() {
       rows={questionList.map((question: IQuestion) =>
         createAdminDashboardRow(
           question,
-          <DeleteQuestionButton
-            question={question}
-            removeRow={() => removeQuestion(question)}
-          />,
-          // <DeleteQuestionButton
-          //   isQuestion={question.isQuestion}
-          //   text={question.text}
-          //   removeRow={() => removeQuestion(question)}
-          // />,
-
           <EditQuestionButton
             // eslint-disable-next-line no-underscore-dangle
             qID={question._id}
