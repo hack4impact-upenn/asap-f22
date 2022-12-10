@@ -20,42 +20,40 @@ function QuestionComponent(props: QuestionComponentProps) {
   return (
     // eslint-disable-next-line no-underscore-dangle
     <div>
-      <ScreenGrid>
+      <Grid
+        container
+        direction="column"
+        justifyContent="space-between"
+        alignItems="center"
+        height="100%"
+        fit-content="100%"
+      >
         <Grid
           container
-          direction="column"
-          justifyContent="space-between"
-          alignItems="center"
           height="100%"
-          fit-content="100%"
+          direction="column"
+          alignItems="center"
+          justifyContent="space-in"
+          gap="2%"
         >
-          <Grid
-            container
-            height="100%"
-            direction="column"
-            alignItems="center"
-            justifyContent="space-in"
-            gap="2%"
-          >
-            <Grid container direction="column" alignItems="center" padding={2}>
-              <Typography variant="h1" fontWeight="bold" textAlign="center">
-                {question.text}
-              </Typography>
-            </Grid>
-            {question.resultantAnswers.map((answer) => {
-              return (
-                <AnswerButton
-                  answer={answer}
-                  onClick={(e: any) => {
-                    // eslint-disable-next-line no-underscore-dangle
-                    handleClick(answer._id);
-                  }}
-                />
-              );
-            })}
+          <Grid container direction="column" alignItems="center" padding={2}>
+            <Typography variant="h2" fontWeight="bold" textAlign="center">
+              {question.text}
+            </Typography>
           </Grid>
+          {question.resultantAnswers.map((answer) => {
+            return (
+              <AnswerButton
+                answer={answer}
+                onClick={(e: any) => {
+                  // eslint-disable-next-line no-underscore-dangle
+                  handleClick(answer._id);
+                }}
+              />
+            );
+          })}
         </Grid>
-      </ScreenGrid>
+      </Grid>
     </div>
   );
 }

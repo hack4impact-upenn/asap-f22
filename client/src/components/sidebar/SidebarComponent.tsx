@@ -17,10 +17,11 @@ interface Props {
    * You won't need it on your project.
    */
   window?: () => Window;
+  children: JSX.Element;
 }
 
 export default function SidebarComponent(props: Props) {
-  const { window } = props;
+  const { window, children } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -54,6 +55,17 @@ export default function SidebarComponent(props: Props) {
           </IconButton>
         </Toolbar>
       </AppBar>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+        }}
+      >
+        <Toolbar />
+        {children}
+      </Box>
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}

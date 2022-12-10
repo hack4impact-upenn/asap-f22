@@ -3,7 +3,6 @@ import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
 import theme from './assets/theme';
 import { store, persistor } from './util/redux/store';
 import NotFoundPage from './NotFound/NotFoundPage';
@@ -21,6 +20,7 @@ import RegisterPage from './Authentication/RegisterPage';
 import LoginPage from './Authentication/LoginPage';
 import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage';
 import ResetPasswordPage from './Authentication/ResetPasswordPage';
+import QuestionPage from './Question/QuestionPage';
 
 function App() {
   /* const testa = {
@@ -39,52 +39,52 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <ThemeProvider theme={theme}>
-              <CssBaseline>
-                <Routes>
-                  {/* Routes accessed only if user is not authenticated */}
-                  <Route element={<UnauthenticatedRoutesWrapper />}>
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/register" element={<RegisterPage />} />
-                    <Route
-                      path="/verify-account/:token"
-                      element={<VerifyAccountPage />}
-                    />
-                    <Route
-                      path="/email-reset"
-                      element={<EmailResetPasswordPage />}
-                    />
-                    <Route
-                      path="/reset-password/:token"
-                      element={<ResetPasswordPage />}
-                    />
-                    {/* <Route element={<AdminRoutesWrapper />}> */}
-                    {/* <Route path="/users" element={<AdminDashboardPage />} /> */}
-                    {/* </Route> */}
-                  </Route>
-                  {/* Routes accessed only if user is authenticated */}
-                  {/* <Route element={<AdminRoutesWrapper />}> */}
-                  <Route element={<ProtectedRoutesWrapper />}>
-                    <Route path="/users" element={<AdminDashboardPage />} />
-                  </Route>
-
-                  {/* Route which redirects to a different page depending on if the user is an authenticated or not by utilizing the DynamicRedirect component */}
+          <ThemeProvider theme={theme}>
+            <CssBaseline>
+              <Routes>
+                {/* Routes accessed only if user is not authenticated */}
+                <Route element={<UnauthenticatedRoutesWrapper />}>
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
                   <Route
-                    path="/"
-                    element={
-                      <DynamicRedirect unAuthPath="/login" authPath="/home" />
-                    }
+                    path="/verify-account/:token"
+                    element={<VerifyAccountPage />}
                   />
+                  <Route
+                    path="/email-reset"
+                    element={<EmailResetPasswordPage />}
+                  />
+                  <Route
+                    path="/reset-password/:token"
+                    element={<ResetPasswordPage />}
+                  />
+                  {/* <Route element={<AdminRoutesWrapper />}> */}
+                  {/* <Route path="/users" element={<AdminDashboardPage />} /> */}
+                  {/* </Route> */}
+                </Route>
+                {/* Routes accessed only if user is authenticated */}
+                {/* <Route element={<AdminRoutesWrapper />}> */}
+                <Route element={<ProtectedRoutesWrapper />}>
+                  <Route path="/users" element={<AdminDashboardPage />} />
+                </Route>
 
-                  {/* Route which is accessed if no other route is matched */}
-                  <Route path="*" element={<NotFoundPage />} />
+                {/* Route which redirects to a different page depending on if the user is an authenticated or not by utilizing the DynamicRedirect component */}
+                <Route
+                  path="/"
+                  element={
+                    <DynamicRedirect unAuthPath="/login" authPath="/home" />
+                  }
+                />
 
-                  <Route path="/home" element={<HomePage />} />
-                  <Route path="/about-us" element={<AboutThisProjectPage />} />
+                <Route path="/question" element={<QuestionPage />} />
 
+                {/* Route which is accessed if no other route is matched */}
+                <Route path="*" element={<NotFoundPage />} />
 
-                  {/* <Route
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/about-us" element={<AboutThisProjectPage />} />
+
+                {/* <Route
                     path="/dropdown"
                     element={
                       <Box padding={2}>
@@ -95,12 +95,11 @@ function App() {
                       </Box>
                     }
                   /> */}
-                  {/* <Route path="popupwarning" element={<PopupWarning />} /> */}
-                  {/* <Route path="/sidebar" element={<SidebarComponent />} /> */}
-                </Routes>
-              </CssBaseline>
-            </ThemeProvider>
-          </PersistGate>
+                {/* <Route path="popupwarning" element={<PopupWarning />} /> */}
+                {/* <Route path="/sidebar" element={<SidebarComponent />} /> */}
+              </Routes>
+            </CssBaseline>
+          </ThemeProvider>
         </Provider>
       </BrowserRouter>
     </div>

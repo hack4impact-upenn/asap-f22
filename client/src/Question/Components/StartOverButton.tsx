@@ -3,12 +3,7 @@ import { Button } from '@mui/material';
 import { Navigate, useNavigate } from 'react-router-dom';
 import ConfirmationModal from './ConfirmationModal';
 
-interface StartOverButtonProps {
-  onClick: any;
-}
-function StartOverButton(props: StartOverButtonProps) {
-  const { onClick } = props;
-
+function StartOverButton() {
   const [isHover, setIsHover] = React.useState(false);
 
   const handleMouseEnter = () => {
@@ -29,7 +24,7 @@ function StartOverButton(props: StartOverButtonProps) {
     <ConfirmationModal
       buttonText="RESTART"
       title="Are you sure you want to start over?"
-      body="This action is permanent. You will return to the home page."
+      body="You will lose all progress and return to the home page."
       onConfirm={() => handleNav()}
     />
   );

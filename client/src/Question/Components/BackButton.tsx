@@ -21,7 +21,7 @@ function BackButton(props: BackButtonProps) {
   return (
     <Button
       id="qback"
-      onClick={(e) => onClick(e)}
+      onClick={onClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       sx={{

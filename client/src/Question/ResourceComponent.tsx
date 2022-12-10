@@ -40,7 +40,7 @@ function ResourceComponent(props: ResourceComponentProps) {
             gap="2%"
           >
             <Grid container direction="column" alignItems="center" padding={2}>
-              <Typography variant="h1" fontWeight="bold" textAlign="center">
+              <Typography variant="h2" fontWeight="bold" textAlign="center">
                 {question.text}
               </Typography>
             </Grid>
