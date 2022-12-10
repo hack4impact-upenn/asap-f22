@@ -8987,7 +8987,7 @@ mongodb@~4.11.0:
     "@aws-sdk/credential-providers" "^3.186.0"
     saslprep "^1.0.3"
 
-mongoose@^6.1.10, mongoose@^6.8.0:
+mongoose@^6.1.10:
   version "6.8.0"
   resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-6.8.0.tgz#24f32c751a6011d8fc7992af5792f706ca748eda"
   integrity sha512-zlUfjcLya3pLfLTxwyH5S9bZUolJWGKF2M7PEV0118jv4VWHR/krjb6LIWu1RPQN2rwYmnmjjzJLVhbhmHqSmg==
@@ -10359,7 +10359,7 @@ react-is@^18.0.0, react-is@^18.2.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
-react-redux@^8.0.0:
+react-redux@^8.0.0, react-redux@^8.0.5:
   version "8.0.5"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-8.0.5.tgz#e5fb8331993a019b8aaf2e167a93d10af469c7bd"
   integrity sha512-Q2f6fCKxPFpkXt1qNRZdEDLlScsDWyrgSj0mliK59qU6W5gvBiKkdMEG2lJzhd1rCctf0hb6EtePPLZ2e0m1uw==
