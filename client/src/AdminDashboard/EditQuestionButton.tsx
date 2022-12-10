@@ -6,6 +6,7 @@ import LoadingButton from '../components/buttons/LoadingButton';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { IQuestion } from '../util/types/question';
 import EditResource from '../components/EditResource';
+import EditQuestion from '../components/EditQuestion';
 import { IAnswer } from '../util/types/answer';
 
 interface EditQuestionButtonProps {
@@ -71,12 +72,15 @@ function EditQuestionButton({
   if (isQuestion) {
     // valid question
     return (
-      <ConfirmationModal
-        buttonText="Edit Question"
-        title="Are you sure you want to edit this question?"
-        body="This action is permanent. Question information will not be able to be recovered."
-        onConfirm={() => handleEdit()}
-      />
+      <div>
+        <Link
+          to="/editQuestion"
+          state={{ question }}
+          style={{ textDecoration: 'none' }}
+        >
+          <Button variant="outlined">Edit Question</Button>
+        </Link>
+      </div>
     );
   }
 

@@ -43,15 +43,14 @@ function QuestionTable() {
   const columns: TColumn[] = [
     {
       id: 'question',
-      label: 'Question',
+      label: 'Question/Resource',
       render: (row: AdminDashboardRow) => {
         // eslint-disable-next-line react/no-danger
         return <span dangerouslySetInnerHTML={{ __html: row.question }} />;
       },
     },
     // { id: 'promote', label: 'Promote to Admin' },
-    { id: 'remove', label: 'Remove Question' },
-    { id: 'edit', label: 'Edit Question' },
+    { id: 'edit', label: 'Edit' },
   ];
 
   const [selectedRow, setSelectedRow] = useState({});
