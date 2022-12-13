@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
-import { Grid } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
+import zIndex from '@mui/material/styles/zIndex';
 import ScreenGrid from '../components/ScreenGrid';
 import QuestionComponent from './QuestionComponent';
 import ResourceComponent from './ResourceComponent';
@@ -147,32 +148,36 @@ function QuestionPage() {
     return (
       <ScreenGrid>
         <SidebarComponent>
-          <Grid container direction="row">
-            <Grid item width="100%">
-              <QuestionComponent
-                question={currentQuestion}
-                handleClick={getNextFromAnswer}
-              />
-            </Grid>
-            <Grid item width="100%">
-              <Footer />
-            </Grid>
-          </Grid>
-          {/* <Typography paragraph>
-            Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-            ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-            elementum integer enim neque volutpat ac tincidunt. Ornare
-            suspendisse sed nisi lacus sed viverra tellus. Purus sit amet
-            volutpat consequat mauris. Elementum eu facilisis sed odio morbi.
-            Euismod lacinia at quis risus sed vulputate odio. Morbi tincidunt
-            ornare massa eget egestas purus viverra accumsan in. In hendrerit
-            gravida rutrum quisque non tellus orci ac. Pellentesque nec nam
-            aliquam sem et tortor. Habitant morbi tristique senectus et.
-            Adipiscing elit duis tristique sollicitudin nibh sit. Ornare aenean
-            euismod elementum nisi quis eleifend. Commodo viverra maecenas
-            accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam
-            ultrices sagittis orci a.
-          </Typography> */}
+          {/* <Typography>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </Typography> */}
+          {/* <QuestionComponent
+              question={currentQuestion}
+              handleClick={getNextFromAnswer}
+            /> */}
+          {/* <Grid container bgcolor="blue" direction="row" padding="10">
+              <Grid item xs={12}>
+                <Box bgcolor="red" flex="1">
+                  <Typography>Hello there</Typography>
+                </Box>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Box bgcolor="red" flex="1">
+                  <Typography>Hello there</Typography>
+                </Box>
+              </Grid>
+            </Grid> */}
+          <Box justifyContent="space-between" height="100%">
+            <QuestionComponent
+              question={currentQuestion}
+              handleClick={getNextFromAnswer}
+            />
+            <Footer />
+          </Box>
         </SidebarComponent>
         {leftButton}
         {rightButton}

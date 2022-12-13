@@ -32,7 +32,7 @@ export default function SidebarComponent(props: Props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex' }} width="100vw" height="100vw">
       <CssBaseline />
       <AppBar
         position="fixed"
