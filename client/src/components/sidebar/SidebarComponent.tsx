@@ -8,6 +8,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SidebarContent from './SidebarContent';
+import { IQuestion } from '../../util/types/question';
 
 const drawerWidth = 260;
 
@@ -17,11 +18,12 @@ interface Props {
    * You won't need it on your project.
    */
   window?: () => Window;
+  currentQuestion: IQuestion;
   children: JSX.Element;
 }
 
 export default function SidebarComponent(props: Props) {
-  const { window, children } = props;
+  const { window, currentQuestion, children } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -89,7 +91,7 @@ export default function SidebarComponent(props: Props) {
           }}
           anchor="right"
         >
-          <SidebarContent />
+          <SidebarContent currentQuestion={currentQuestion} />
         </Drawer>
         <Drawer
           variant="permanent"
@@ -103,7 +105,7 @@ export default function SidebarComponent(props: Props) {
           anchor="right"
           open
         >
-          <SidebarContent />
+          <SidebarContent currentQuestion={currentQuestion} />
         </Drawer>
       </Box>
     </Box>

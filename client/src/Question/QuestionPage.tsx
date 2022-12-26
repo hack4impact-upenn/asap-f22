@@ -147,30 +147,7 @@ function QuestionPage() {
   if (currentQuestion.isQuestion) {
     return (
       <ScreenGrid>
-        <SidebarComponent>
-          {/* <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </Typography> */}
-          {/* <QuestionComponent
-              question={currentQuestion}
-              handleClick={getNextFromAnswer}
-            /> */}
-          {/* <Grid container bgcolor="blue" direction="row" padding="10">
-              <Grid item xs={12}>
-                <Box bgcolor="red" flex="1">
-                  <Typography>Hello there</Typography>
-                </Box>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Box bgcolor="red" flex="1">
-                  <Typography>Hello there</Typography>
-                </Box>
-              </Grid>
-            </Grid> */}
+        <SidebarComponent currentQuestion={currentQuestion}>
           <Box justifyContent="space-between" height="100%">
             <QuestionComponent
               question={currentQuestion}

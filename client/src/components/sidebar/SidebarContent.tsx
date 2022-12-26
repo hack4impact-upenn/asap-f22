@@ -1,19 +1,51 @@
+/* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Toolbar from '@mui/material/Toolbar';
+import { useEffect, useState } from 'react';
 import SidebarContentItem from './SidebarContentItem';
+import { IQuestion } from '../../util/types/question';
+import { getData, useData } from '../../util/api';
+import { IDefinition } from '../../util/types/definition';
 
-export default function SidebarContent() {
+interface SidebarProps {
+  currentQuestion: IQuestion;
+}
+
+export default function SidebarContent(props: SidebarProps) {
+  const { currentQuestion } = props;
+
+  const [definitions, setDefinitions] = useState<IDefinition[]>([]);
+
+  const definitionResponse = useData(
+    `definition/get-definitions-for-question/${currentQuestion._id}`,
+  );
+
+  useEffect(() => {
+    if (definitionResponse != null) {
+      setDefinitions(definitionResponse.data);
+    }
+  }, [definitionResponse]);
+
+  // (async () => {
+  //   const fetchData = async () => {
+  //     const res = await definitionResponse;
+  //     // setCurrentQuestion(res.data);
+  //     console.log(res);
+  //   };
+  //   fetchData();
+  // })();
+
   return (
     <div>
       <Toolbar />
       <List>
-        {['These', 'Are', 'Some', 'Example', 'Definitions'].map((text) => (
+        {definitions.map((definition) => (
           <ListItem>
             <SidebarContentItem
-              title={text}
-              definition="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
+              title={definition.word}
+              definition={definition.definition}
             />
           </ListItem>
         ))}
