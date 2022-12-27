@@ -68,8 +68,8 @@ export default function EditorGUI({
 
   const handleUpdate = () => {
     if (type === 'question') {
-      const newText = text.replaceAll(/<[^>]*>?/gm, '');
-      setValue('text', newText);
+      // const newText = text.replaceAll(/<[^>]*>?/gm, '');
+      setValue('text', text);
     } else if (type === 'title') {
       updateTitle(idx);
     } else if (type === 'description') {

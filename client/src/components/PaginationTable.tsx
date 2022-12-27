@@ -9,6 +9,8 @@ import {
   TablePagination,
   TableRow,
 } from '@mui/material';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import HtmlMapper from 'react-html-map';
 
 /**
  * interface for the props of the {@link PaginationTable} component
@@ -60,9 +62,33 @@ function Row({ row, columns }: RowProps) {
         if (value === null || value === undefined) {
           return null;
         }
+        if (column.id === 'edit') {
+          return (
+            <TableCell key={column.id + row.key} align={column.align || 'left'}>
+              {value}
+            </TableCell>
+          );
+        }
         return (
           <TableCell key={column.id + row.key} align={column.align || 'left'}>
-            {value}
+            <HtmlMapper
+              html={value}
+              // now we'll accept tags like strong by default,
+              // but at the cost of predictibility and security.
+              // eslint-disable-next-line react/no-children-prop
+              decodeEntities={undefined}
+            >
+              {{
+                p: null,
+                // eslint-disable-next-line react/jsx-no-undef, react/jsx-props-no-spreading, react/no-unstable-nested-components
+                a: ({ href, children, ...rest }) => (
+                  // eslint-disable-next-line react/jsx-props-no-spreading
+                  <a href={href} {...rest}>
+                    {children}
+                  </a>
+                ),
+              }}
+            </HtmlMapper>
           </TableCell>
         );
       })}
