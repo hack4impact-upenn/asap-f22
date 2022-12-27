@@ -26,6 +26,7 @@ export default function ResourceDropdown(props: ResourceDropdownProps) {
       }}
     >
       <CardHeader
+        titleTypographyProps={{ variant: 'subtitle1', fontWeight: 600 }}
         title={title}
         action={
           <IconButton
