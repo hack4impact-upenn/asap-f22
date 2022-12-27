@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, Grid } from '@mui/material';
-import AnswerButton from './AnswerButton';
+import AnswerButton from './Components/AnswerButton';
 import { IQuestion } from '../util/types/question';
 
 interface QuestionComponentProps {
@@ -37,13 +37,20 @@ function QuestionComponent(props: QuestionComponentProps) {
           </Grid>
           {question.resultantAnswers.map((answer) => {
             return (
-              <AnswerButton
-                answer={answer}
-                onClick={() => {
-                  // eslint-disable-next-line no-underscore-dangle
-                  handleClick(answer._id);
-                }}
-              />
+              <Grid
+                container
+                direction="column"
+                alignItems="center"
+                padding={1}
+              >
+                <AnswerButton
+                  answer={answer}
+                  onClick={() => {
+                    // eslint-disable-next-line no-underscore-dangle
+                    handleClick(answer._id);
+                  }}
+                />
+              </Grid>
             );
           })}
         </Grid>

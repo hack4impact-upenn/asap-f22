@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import ConfirmationModal from './ConfirmationModal';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 function StartOverButton() {
   const navigate = useNavigate();
@@ -9,13 +14,69 @@ function StartOverButton() {
     navigate('/home');
   }
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleConfirm = () => {
+    handleNav();
+    handleClose();
+  };
+
   return (
-    <ConfirmationModal
-      buttonText="RESTART"
-      title="Are you sure you want to start over?"
-      body="You will lose all progress and return to the home page."
-      onConfirm={() => handleNav()}
-    />
+    <div>
+      <Button
+        onClick={handleClickOpen}
+        sx={{
+          width: '96px',
+          height: '39px',
+          textTransform: 'none',
+          backgroundColor: '#EEEEEE',
+          color: 'rgba(0, 0, 0, 0.87)',
+          padding: '6px 16px 6px 12px',
+          gap: '8px',
+          position: 'fixed',
+          left: '66.61%',
+          right: '26.72%',
+          top: '75.45%',
+          bottom: '10.74%',
+          fontFamily: 'Roboto',
+          fontStyle: 'normal',
+          fontWeight: '500',
+          fontSize: '14px',
+          lineHeight: '14px',
+        }}
+      >
+        RESTART
+      </Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Are you sure you want to start over?
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            You will lose all progress and return to the home page.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleConfirm} autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   );
 }
 

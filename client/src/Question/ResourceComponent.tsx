@@ -18,34 +18,28 @@ function ResourceComponent(props: ResourceComponentProps) {
       <ScreenGrid>
         <Grid
           container
-          direction="column"
-          justifyContent="space-between"
+          direction="row"
+          // justifyContent="space-between"
           alignItems="center"
           height="100%"
           fit-content="100%"
+          spacing={2}
         >
-          <Grid
-            container
-            height="100%"
-            direction="column"
-            alignItems="center"
-            justifyContent="space-in"
-            gap="2%"
-          >
-            <Grid container direction="column" alignItems="center" padding={2}>
-              <Typography variant="h2" fontWeight="bold" textAlign="center">
-                {question.text}
-              </Typography>
-            </Grid>
-            {question.resultantAnswers.map((answer) => {
-              return (
+          <Grid item>
+            <Typography variant="h2" fontWeight="bold" textAlign="center">
+              Resources
+            </Typography>
+          </Grid>
+          {question.resultantAnswers.map((answer) => {
+            return (
+              <Grid item>
                 <ResourceDropdown
                   title={answer.text}
                   content={answer.resourceContent}
                 />
-              );
-            })}
-          </Grid>
+              </Grid>
+            );
+          })}
         </Grid>
       </ScreenGrid>
     </div>

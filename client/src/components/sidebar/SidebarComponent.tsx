@@ -8,15 +8,12 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SidebarContent from './SidebarContent';
+import Footer from '../Footer';
 import { IQuestion } from '../../util/types/question';
 
 const drawerWidth = 260;
 
 interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   window?: () => Window;
   currentQuestion: IQuestion;
   children: JSX.Element;
@@ -60,8 +57,8 @@ export default function SidebarComponent(props: Props) {
       <Box
         component="main"
         sx={{
-          flexGrow: 1,
-          p: 3,
+          // flexGrow: 1,
+          p: 4,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
@@ -107,6 +104,16 @@ export default function SidebarComponent(props: Props) {
         >
           <SidebarContent currentQuestion={currentQuestion} />
         </Drawer>
+      </Box>
+      <Box
+        position="fixed"
+        bottom="0px"
+        sx={{
+          flexGrow: 1,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+        }}
+      >
+        <Footer />
       </Box>
     </Box>
   );

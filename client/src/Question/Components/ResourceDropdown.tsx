@@ -21,12 +21,8 @@ export default function ResourceDropdown(props: ResourceDropdownProps) {
   return (
     <Card sx={{ minWidth: 300, border: '1px solid rgba(211,211,211,0.6)' }}>
       <CardHeader
+        titleTypographyProps={{ variant: 'button' }}
         title={title}
-        fontFamily="Roboto"
-        fontStyle="normal"
-        fontWeight="400"
-        fontSize="15px"
-        lineHeight="18px"
         action={
           <IconButton
             onClick={() => setOpen(!open)}

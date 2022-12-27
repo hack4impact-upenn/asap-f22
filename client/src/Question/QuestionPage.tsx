@@ -1,14 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Typography } from '@mui/material';
-import zIndex from '@mui/material/styles/zIndex';
+import { Box } from '@mui/material';
 import ScreenGrid from '../components/ScreenGrid';
 import QuestionComponent from './QuestionComponent';
 import ResourceComponent from './ResourceComponent';
 import { IQuestion } from '../util/types/question';
 import { getData } from '../util/api';
 import SidebarComponent from '../components/sidebar/SidebarComponent';
-import Footer from '../components/Footer';
 import BackButton from './Components/BackButton';
 import NextButton from './Components/NextButton';
 import StartOverButton from './Components/StartOverButton';
@@ -73,7 +71,6 @@ function QuestionPage() {
     // truncate both the answers array and the questions array at that index
     // and then do the following code
     if (questionIndex !== allQuestions.length - 1) {
-      console.log('truncate');
       allQuestions.length = questionIndex + 1;
     }
 
@@ -92,8 +89,6 @@ function QuestionPage() {
           resultantAnswers: res.data.resultantAnswers,
         } as IQuestion);
         incrementIndex();
-        console.log(questionIndex);
-        console.log(allQuestions);
       };
       fetchData();
     })();
@@ -101,23 +96,16 @@ function QuestionPage() {
 
   const handleBack = () => {
     const newQID = allQuestions.at(questionIndex - 1);
-    console.log(allQuestions);
     if (newQID) {
       getNextFromID(newQID);
       decrementIndex();
-      console.log(questionIndex);
-      console.log(allQuestions);
-    } else {
-      console.log('index or q array wrong');
     }
   };
 
   const handleNext = () => {
     const newQID = allQuestions[questionIndex + 1];
     getNextFromID(newQID);
-    decrementIndex();
-    console.log(questionIndex);
-    console.log(allQuestions);
+    incrementIndex();
   };
 
   useEffect(() => {
@@ -148,12 +136,13 @@ function QuestionPage() {
     return (
       <ScreenGrid>
         <SidebarComponent currentQuestion={currentQuestion}>
-          <Box justifyContent="space-between" height="100%">
-            <QuestionComponent
-              question={currentQuestion}
-              handleClick={getNextFromAnswer}
-            />
-            <Footer />
+          <Box justifyContent="space-between" height="100%" margin="auto">
+            <Box width="50%" margin="auto">
+              <QuestionComponent
+                question={currentQuestion}
+                handleClick={getNextFromAnswer}
+              />
+            </Box>
           </Box>
         </SidebarComponent>
         {leftButton}
@@ -163,7 +152,18 @@ function QuestionPage() {
   }
   return (
     <ScreenGrid>
-      <ResourceComponent question={currentQuestion} />
+      <SidebarComponent currentQuestion={currentQuestion}>
+        <Box
+          justifyContent="space-between"
+          height="100%"
+          margin="auto"
+          marginTop="15%"
+        >
+          <Box margin="auto">
+            <ResourceComponent question={currentQuestion} />
+          </Box>
+        </Box>
+      </SidebarComponent>
       {leftButton}
       {rightButton}
     </ScreenGrid>

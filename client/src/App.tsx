@@ -65,38 +65,28 @@ function App() {
                 {/* Routes accessed only if user is authenticated */}
                 {/* <Route element={<AdminRoutesWrapper />}> */}
                 <Route element={<ProtectedRoutesWrapper />}>
-                  <Route path="/users" element={<AdminDashboardPage />} />
+                  <Route
+                    path="/admin-dashboard"
+                    element={<AdminDashboardPage />}
+                  />
                 </Route>
 
                 {/* Route which redirects to a different page depending on if the user is an authenticated or not by utilizing the DynamicRedirect component */}
                 <Route
                   path="/"
                   element={
-                    <DynamicRedirect unAuthPath="/login" authPath="/home" />
+                    <DynamicRedirect
+                      unAuthPath="/home"
+                      authPath="/admin-dashboard"
+                    />
                   }
                 />
-
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/about" element={<AboutThisProjectPage />} />
                 <Route path="/question" element={<QuestionPage />} />
 
                 {/* Route which is accessed if no other route is matched */}
                 <Route path="*" element={<NotFoundPage />} />
-
-                <Route path="/home" element={<HomePage />} />
-                <Route path="/about-us" element={<AboutThisProjectPage />} />
-
-                {/* <Route
-                    path="/dropdown"
-                    element={
-                      <Box padding={2}>
-                        <ResourceDropdown
-                          title="Example Resource"
-                          content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed gravida ex. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut erat pulvinar, dignissim est et, eleifend quam. Aenean euismod ultricies accumsan. Sed vel nulla posuere, vestibulum sem eget, porttitor dolor. Integer et erat in mi tincidunt sollicitudin."
-                        />
-                      </Box>
-                    }
-                  /> */}
-                {/* <Route path="popupwarning" element={<PopupWarning />} /> */}
-                {/* <Route path="/sidebar" element={<SidebarComponent />} /> */}
               </Routes>
             </CssBaseline>
           </ThemeProvider>
