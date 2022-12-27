@@ -22,7 +22,12 @@ export default function Footer() {
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Shield_of_the_University_of_Pennsylvania.svg/1200px-Shield_of_the_University_of_Pennsylvania.svg.png"
         />
 
-        <Button color="primary" size="medium" endIcon={<ArrowForward />}>
+        <Button
+          color="primary"
+          size="medium"
+          endIcon={<ArrowForward />}
+          href="/about"
+        >
           About This Project
         </Button>
       </Stack>

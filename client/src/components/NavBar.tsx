@@ -32,7 +32,7 @@ function NavBar() {
     // console.log('before null data check route change login navbar');
     if (data === null) return null;
     // console.log('past null data check route change login navbar');
-    return !data.error ? navigate('/users') : navigate('/login');
+    return !data.error ? navigate('/admin-dashboard') : navigate('/login');
   };
 
   return (

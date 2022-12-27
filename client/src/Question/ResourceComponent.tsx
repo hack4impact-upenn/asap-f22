@@ -1,15 +1,8 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useState } from 'react';
-import Button from '@mui/material/Button';
-import { Typography, Grid, ListItemSecondaryAction } from '@mui/material';
-import Box from '@mui/system/Box';
-import { ViewComfyAltOutlined } from '@mui/icons-material';
+import React from 'react';
+import { Typography, Grid } from '@mui/material';
 import ScreenGrid from '../components/ScreenGrid';
-import AnswerButton from './AnswerButton';
-import { IAnswer } from '../util/types/answer';
-import { IResource } from '../util/types/resource';
 import { IQuestion } from '../util/types/question';
-import { getData, useData } from '../util/api';
 import ResourceDropdown from '../components/ResourceDropdown';
 
 interface ResourceComponentProps {
@@ -22,39 +15,40 @@ function ResourceComponent(props: ResourceComponentProps) {
   return (
     // eslint-disable-next-line no-underscore-dangle
     <div>
-      <ScreenGrid>
+      <Grid
+        container
+        direction="column"
+        justifyContent="space-between"
+        alignItems="center"
+        fit-content="100%"
+        height="100%"
+      >
         <Grid
           container
-          direction="column"
-          justifyContent="space-between"
-          alignItems="center"
           height="100%"
+          direction="column"
+          alignItems="center"
           fit-content="100%"
+          justifyContent="space-in"
+          gap="2%"
         >
-          <Grid
-            container
-            height="100%"
-            direction="column"
-            alignItems="center"
-            justifyContent="space-in"
-            gap="2%"
-          >
-            <Grid container direction="column" alignItems="center" padding={2}>
-              <Typography variant="h1" fontWeight="bold" textAlign="center">
-                {question.text}
-              </Typography>
-            </Grid>
-            {question.resultantAnswers.map((answer) => {
-              return (
+          <Grid container direction="column" alignItems="center">
+            <Typography variant="h2" fontWeight="bold" textAlign="center">
+              Resources
+            </Typography>
+          </Grid>
+          {question.resultantAnswers.map((answer) => {
+            return (
+              <Grid item margin="auto" marginTop="1%">
                 <ResourceDropdown
                   title={answer.text}
                   content={answer.resourceContent}
                 />
-              );
-            })}
-          </Grid>
+              </Grid>
+            );
+          })}
         </Grid>
-      </ScreenGrid>
+      </Grid>
     </div>
   );
 }

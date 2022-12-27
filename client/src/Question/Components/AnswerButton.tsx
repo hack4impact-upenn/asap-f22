@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import { Button } from '@mui/material';
-import { IAnswer } from '../util/types/answer';
+import { IAnswer } from '../../util/types/answer';
 
 interface AnswerButtonProps {
   answer: IAnswer;

@@ -19,14 +19,9 @@ export default function ResourceDropdown(props: ResourceDropdownProps) {
   const [open, setOpen] = useState(false);
   const { title, content } = props;
   return (
-    <Card
-      sx={{
-        border: '1px solid rgba(211,211,211,0.6)',
-        width: '50vw',
-      }}
-    >
+    <Card sx={{ minWidth: 300, border: '1px solid rgba(211,211,211,0.6)' }}>
       <CardHeader
-        titleTypographyProps={{ variant: 'subtitle1', fontWeight: 600 }}
+        titleTypographyProps={{ variant: 'button' }}
         title={title}
         action={
           <IconButton

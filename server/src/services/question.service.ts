@@ -189,7 +189,6 @@ const editQuestion = async (
 
   await TempQuestion.findByIdAndUpdate(qID, [{ $set: { text: qText } }]).exec();
 
-
   // do we need to check for isQuestion? if it's false answerVals will just be empty.
   // for (const key in answerVals) {
   Object.keys(answerVals).forEach(async (key) => {

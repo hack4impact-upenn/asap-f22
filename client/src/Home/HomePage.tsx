@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import { Typography, Grid } from '@mui/material';
 import Box from '@mui/system/Box';
+import { useNavigate } from 'react-router-dom';
 import ScreenGrid from '../components/ScreenGrid';
 import Footer from '../components/Footer';
 import NavBar from '../components/NavBar';
@@ -42,7 +43,7 @@ function HomePage() {
             </Grid>
 
             <Grid container direction="column" alignItems="center" padding={8}>
-              <Button variant="contained" size="large">
+              <Button variant="contained" size="large" href="/question">
                 Begin
               </Button>
               <Box padding={2}>
