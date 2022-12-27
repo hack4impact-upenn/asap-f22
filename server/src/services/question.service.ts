@@ -13,6 +13,7 @@ async function getAnswerObj(ansId: string) {
     text: resultantAnswer?.text,
     resourceContent: resultantAnswer?.resourceContent,
     resultantQuestionId: resultantAnswer?.resultantQuestionId,
+    resourceLink: resultantAnswer?.resourceLink,
   } as IAnswer;
   return answerObj;
 }

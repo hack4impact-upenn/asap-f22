@@ -9,15 +9,17 @@ import Collapse from '@mui/material/Collapse';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Button, Grid, Typography } from '@mui/material';
+import Link from '@mui/material/Link';
 
 interface ResourceDropdownProps {
   title: string;
   content: string;
+  resourceLink: string;
 }
 
 export default function ResourceDropdown(props: ResourceDropdownProps) {
   const [open, setOpen] = useState(false);
-  const { title, content } = props;
+  const { title, content, resourceLink } = props;
   return (
     <Card sx={{ minWidth: 300, border: '1px solid rgba(211,211,211,0.6)' }}>
       <CardHeader
@@ -41,8 +43,8 @@ export default function ResourceDropdown(props: ResourceDropdownProps) {
           <CardContent>
             <Typography>{content}</Typography>
             <Grid container justifyContent="flex-end">
-              <Button variant="text" size="medium">
-                Learn More
+              <Button href={resourceLink} variant="text" size="medium">
+                Link to Resource
               </Button>
             </Grid>
           </CardContent>

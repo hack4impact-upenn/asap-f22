@@ -39,12 +39,14 @@ function EditQuestionButton({
     text: '2x edited answer text 1',
     resultantQuestionId: '63751d7cc26b48cf7f1d9724',
     resourceContent: '',
+    resourceLink: '',
   };
   const tempAnswer2: IAnswer = {
     _id: '6369a04ee0cca0b76f26576b',
     text: '2x edited answer text 2',
     resultantQuestionId: '63751d7cc26b48cf7f1d9724',
     resourceContent: '',
+    resourceLink: '',
   };
   const tempQuestion: IQuestion = {
     _id: '63699fdbe0cca0b76f26576a',

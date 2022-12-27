@@ -49,6 +49,7 @@ function ResourceComponent(props: ResourceComponentProps) {
                 <ResourceDropdown
                   title={answer.text}
                   content={answer.resourceContent}
+                  resourceLink={answer.resourceLink}
                 />
               );
             })}

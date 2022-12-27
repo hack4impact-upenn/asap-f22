@@ -21,6 +21,10 @@ const AnswerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  resourceLink: {
+    type: String,
+    required: true,
+  },
 });
 
 interface IAnswer extends mongoose.Document {
@@ -28,6 +32,7 @@ interface IAnswer extends mongoose.Document {
   text: string;
   resourceContent: string;
   resultantQuestionId: string;
+  resourceLink: string;
 }
 
 const Answer = mongoose.model<IAnswer>('Answer', AnswerSchema);

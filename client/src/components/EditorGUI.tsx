@@ -41,6 +41,7 @@ export default function EditorGUI({
           text: text,
           resultantQuestionId: item.resultantQuestionId,
           resourceContent: item.resourceContent,
+          resourceLink: item.resourceLink,
         };
         return newAnswer;
       }
@@ -58,6 +59,7 @@ export default function EditorGUI({
           text: item.text,
           resultantQuestionId: item.resultantQuestionId,
           resourceContent: text,
+          resourceLink: text,
         };
         return newAnswer;
       }
