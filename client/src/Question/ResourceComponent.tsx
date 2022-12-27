@@ -15,45 +15,40 @@ function ResourceComponent(props: ResourceComponentProps) {
   return (
     // eslint-disable-next-line no-underscore-dangle
     <div>
-      <ScreenGrid>
+      <Grid
+        container
+        direction="column"
+        justifyContent="space-between"
+        alignItems="center"
+        fit-content="100%"
+        height="100%"
+      >
         <Grid
           container
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="center"
           height="100%"
+          direction="column"
+          alignItems="center"
+          fit-content="100%"
+          justifyContent="space-in"
+          gap="2%"
         >
-          <Grid
-            container
-            height="100%"
-            direction="row"
-            alignItems="center"
-            justifyContent="flex-start"
-            // gap="2%"
-          >
-            <Grid
-              container
-              direction="column"
-              alignItems="center"
-              justifyContent="flex-start"
-            >
-              <Typography variant="h2" fontWeight="bold" textAlign="center">
-                Resources
-              </Typography>
-            </Grid>
-            {question.resultantAnswers.map((answer) => {
-              return (
-                <Grid item margin="auto">
-                  <ResourceDropdown
-                    title={answer.text}
-                    content={answer.resourceContent}
-                  />
-                </Grid>
-              );
-            })}
+          <Grid container direction="column" alignItems="center">
+            <Typography variant="h2" fontWeight="bold" textAlign="center">
+              Resources
+            </Typography>
           </Grid>
+          {question.resultantAnswers.map((answer) => {
+            return (
+              <Grid item margin="auto" marginTop="1%">
+                <ResourceDropdown
+                  title={answer.text}
+                  content={answer.resourceContent}
+                />
+              </Grid>
+            );
+          })}
         </Grid>
-      </ScreenGrid>
+      </Grid>
     </div>
   );
 }

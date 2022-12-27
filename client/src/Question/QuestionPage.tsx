@@ -153,12 +153,7 @@ function QuestionPage() {
   return (
     <ScreenGrid>
       <SidebarComponent currentQuestion={currentQuestion}>
-        <Box
-          justifyContent="space-between"
-          height="100%"
-          margin="auto"
-          marginTop="15%"
-        >
+        <Box height="100%" margin="auto">
           <Box margin="auto">
             <ResourceComponent question={currentQuestion} />
           </Box>
