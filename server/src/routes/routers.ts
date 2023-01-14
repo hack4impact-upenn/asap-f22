@@ -11,6 +11,7 @@ import adminRouter from './admin.route';
 import authRouter from './auth.route';
 import questionRouter from './question.route';
 import resourceRouter from './resource.route';
+import definitionRouter from './definition.route';
 
 const prefixToRouterMap: { prefix: string; router: Router }[] = [
   {
@@ -28,6 +29,10 @@ const prefixToRouterMap: { prefix: string; router: Router }[] = [
   {
     prefix: '/api/resource',
     router: resourceRouter,
+  },
+  {
+    prefix: '/api/definition',
+    router: definitionRouter,
   },
 ];
 

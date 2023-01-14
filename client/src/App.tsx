@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import theme from './assets/theme';
-import { store, persistor } from './util/redux/store';
+import { persistor, store } from './util/redux/store';
 import NotFoundPage from './NotFound/NotFoundPage';
 import HomePage from './Home/HomePage';
 import AboutThisProjectPage from './Home/AboutThisProjectPage';
@@ -23,6 +23,7 @@ import RegisterPage from './Authentication/RegisterPage';
 import LoginPage from './Authentication/LoginPage';
 import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage';
 import ResetPasswordPage from './Authentication/ResetPasswordPage';
+import QuestionPage from './Question/QuestionPage';
 
 function App() {
   /* const testa = {
@@ -47,7 +48,7 @@ function App() {
                 <Routes>
                   {/* Routes accessed only if user is not authenticated */}
                   <Route element={<UnauthenticatedRoutesWrapper />}>
-                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/login" element={<QuestionPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route
                       path="/verify-account/:token"
@@ -75,31 +76,25 @@ function App() {
 
                   {/* Route which redirects to a different page depending on if the user is an authenticated or not by utilizing the DynamicRedirect component */}
                   <Route
+                    path="/admin-dashboard"
+                    element={<AdminDashboardPage />}
+                  />
+                  {/* Route which redirects to a different page depending on if the user is an authenticated or not by utilizing the DynamicRedirect component */}
+                  <Route
                     path="/"
                     element={
-                      <DynamicRedirect unAuthPath="/login" authPath="/home" />
+                      <DynamicRedirect
+                        unAuthPath="/home"
+                        authPath="/admin-dashboard"
+                      />
                     }
                   />
+                  <Route path="/home" element={<HomePage />} />
+                  <Route path="/about" element={<AboutThisProjectPage />} />
+                  <Route path="/question" element={<QuestionPage />} />
 
                   {/* Route which is accessed if no other route is matched */}
                   <Route path="*" element={<NotFoundPage />} />
-
-                  <Route path="/home" element={<HomePage />} />
-                  <Route path="/about-us" element={<AboutThisProjectPage />} />
-
-                  {/* <Route
-                    path="/dropdown"
-                    element={
-                      <Box padding={2}>
-                        <ResourceDropdown
-                          title="Example Resource"
-                          content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed gravida ex. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut erat pulvinar, dignissim est et, eleifend quam. Aenean euismod ultricies accumsan. Sed vel nulla posuere, vestibulum sem eget, porttitor dolor. Integer et erat in mi tincidunt sollicitudin."
-                        />
-                      </Box>
-                    }
-                  /> */}
-                  {/* <Route path="popupwarning" element={<PopupWarning />} /> */}
-                  {/* <Route path="/sidebar" element={<SidebarComponent />} /> */}
                 </Routes>
               </CssBaseline>
             </ThemeProvider>

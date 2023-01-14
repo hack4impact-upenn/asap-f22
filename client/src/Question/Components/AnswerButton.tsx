@@ -1,7 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import { Button } from '@mui/material';
-import { IAnswer } from '../util/types/answer';
+import HTMLMapper from '../../components/HTMLMapper';
+import { IAnswer } from '../../util/types/answer';
 
 interface AnswerButtonProps {
   answer: IAnswer;
@@ -66,7 +67,7 @@ function AnswerButton(props: AnswerButtonProps) {
         padding: '6px 22px',
       }}
     >
-      {answer.text}
+      <HTMLMapper text={answer.text} />
     </Button>
   );
 }
