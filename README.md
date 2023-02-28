@@ -1,6 +1,6 @@
 # Boilerplate
 
-This is a simple boilerplate designed to serve as robust template for quickly starting development on a [Typescript](https://www.typescriptlang.org) based [MERN](https://www.mongodb.com/mern-stack) web application.
+This is a web app built for Abuse and Sexual Assault Prevention, a student organization at Penn, as a resource tree for all sexual violence resources at Penn. This is a [Typescript](https://www.typescriptlang.org) based [MERN](https://www.mongodb.com/mern-stack) web application.
 
 ## Features
 
