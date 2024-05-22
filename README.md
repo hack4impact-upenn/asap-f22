@@ -1,17 +1,15 @@
 # Boilerplate
 
-This is a simple boilerplate designed to serve as robust template for quickly starting development on a [Typescript](https://www.typescriptlang.org) based [MERN](https://www.mongodb.com/mern-stack) web application.
+This is a web app built for Abuse and Sexual Assault Prevention, a student organization at Penn, as a resource tree for all sexual violence resources at Penn. This is a [Typescript](https://www.typescriptlang.org) based [MERN](https://www.mongodb.com/mern-stack) web application.
 
 ## Features
 
-- Session based authentication with [Passport](https://www.passportjs.org)
-- Emailing for account verification and resetting password with [SendGrid](https://sendgrid.com)
-- Admin functionality for viewing/deleting/promoting other users
-- Clean authentication pages built with [Material UI](https://mui.com)
-- In memory database testing with [Jest](https://jestjs.io) and [Supertest](https://www.npmjs.com/package/supertest)
-- [AirBnb Typescript styling](https://github.com/airbnb/javascript) with [Prettier](https://prettier.io) and [ESLint](https://eslint.org)
-- [Husky](https://typicode.github.io/husky/#/) and [lint-staged](https://github.com/okonet/lint-staged) for checking linting on commits
-- [GitHub Actions](https://docs.github.com/en/actions) for ensuring linting + tests pass on pushes
+- Admin portal with ability to change resources, questions, and answers
+- Rich text editor for answer and question changes
+- Tree-based data structure in backend
+- Private and secure user experience that does not track user data
+- Back and Next buttons, as well as ability to see other resources if different answers were selected
+- Dictionary and side help bar for unkown terms, filtered based on the words in the question/answer/resource
 
 ## Required tools
 

@@ -9,6 +9,7 @@ import {
   TablePagination,
   TableRow,
 } from '@mui/material';
+import HTMLMapper from './HTMLMapper';
 
 /**
  * interface for the props of the {@link PaginationTable} component
@@ -60,9 +61,16 @@ function Row({ row, columns }: RowProps) {
         if (value === null || value === undefined) {
           return null;
         }
+        if (column.id === 'edit') {
+          return (
+            <TableCell key={column.id + row.key} align={column.align || 'left'}>
+              {value}
+            </TableCell>
+          );
+        }
         return (
           <TableCell key={column.id + row.key} align={column.align || 'left'}>
-            {value}
+            <HTMLMapper text={value} />
           </TableCell>
         );
       })}

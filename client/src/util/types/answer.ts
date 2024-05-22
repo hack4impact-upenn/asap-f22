@@ -5,7 +5,7 @@
 export interface IAnswer {
   _id: string;
   text: string;
-  resourceContent: string;
-  resultantQuestionId: string;
-  resourceLink: string;
+  resourceLink: string | undefined;
+  resourceContent: string | undefined;
+  resultantQuestionId: string | undefined;
 }

@@ -134,7 +134,7 @@ function LoginPage() {
         <FormCol>
           <Grid item container justifyContent="center">
             <Typography variant="h2" textAlign="center">
-              Log In
+              Administrator Log In
             </Typography>
           </Grid>
           <Grid item width="1">
@@ -177,11 +177,11 @@ function LoginPage() {
                 Forgot password?
               </Link>
             </Grid>
-            <Grid item>
+            {/* <Grid item>
               <Link component={RouterLink} to="/register">
                 Sign up
               </Link>
-            </Grid>
+            </Grid> */}
           </FormRow>
         </FormCol>
       </FormGrid>
