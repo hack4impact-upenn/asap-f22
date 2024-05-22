@@ -3,6 +3,8 @@ import { Box, Button, Stack } from '@mui/material';
 import ArrowForward from '@mui/icons-material/ArrowForward';
 
 export default function Footer() {
+  const params = window.location.pathname;
+  const isAbout = params === '/about';
   return (
     <div>
       <Stack
@@ -21,14 +23,13 @@ export default function Footer() {
           alt="Penn Logo"
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Shield_of_the_University_of_Pennsylvania.svg/1200px-Shield_of_the_University_of_Pennsylvania.svg.png"
         />
-
         <Button
           color="primary"
           size="medium"
           endIcon={<ArrowForward />}
-          href="/about"
+          href={isAbout ? '/question' : '/about'}
         >
-          About This Project
+          {isAbout ? 'Ask a Question' : 'About This Project'}
         </Button>
       </Stack>
     </div>

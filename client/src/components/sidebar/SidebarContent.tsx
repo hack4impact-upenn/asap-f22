@@ -41,6 +41,9 @@ export default function SidebarContent(props: SidebarProps) {
     <div>
       <Toolbar />
       <List>
+        <ListItem>
+          <h1>Definitions</h1>
+        </ListItem>
         {definitions.map((definition) => (
           <ListItem>
             <SidebarContentItem

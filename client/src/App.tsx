@@ -58,12 +58,10 @@ function App() {
                     path="/reset-password/:token"
                     element={<ResetPasswordPage />}
                   />
-                  {/* <Route element={<AdminRoutesWrapper />}> */}
-                  {/* <Route path="/users" element={<AdminDashboardPage />} /> */}
-                  {/* </Route> */}
+                  <Route path="/home" element={<HomePage />} />
+                  <Route path="/question" element={<QuestionPage />} />
                 </Route>
                 {/* Routes accessed only if user is authenticated */}
-                {/* <Route element={<AdminRoutesWrapper />}> */}
                 <Route element={<ProtectedRoutesWrapper />}>
                   <Route
                     path="/admin-dashboard"
@@ -81,9 +79,7 @@ function App() {
                     />
                   }
                 />
-                <Route path="/home" element={<HomePage />} />
                 <Route path="/about" element={<AboutThisProjectPage />} />
-                <Route path="/question" element={<QuestionPage />} />
 
                 {/* Route which is accessed if no other route is matched */}
                 <Route path="*" element={<NotFoundPage />} />

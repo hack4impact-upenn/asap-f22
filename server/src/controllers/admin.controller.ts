@@ -6,7 +6,7 @@ import express from 'express';
 import ApiError from '../util/apiError';
 import StatusCode from '../util/statusCode';
 import { IUser } from '../models/user.model';
-import IQuestion from '../models/question.model';
+import { IQuestion } from '../models/question.model';
 import {
   upgradeUserToAdmin,
   getUserByEmail,
@@ -135,8 +135,7 @@ const getAllQuestions = async (
 };
 
 /**
- * Upgrade a user to an admin. The email of the user is expected to be in the request body.
- * Upon success, return 200 OK status code.
+ * Edits the text of a question in the database. The new text is expected to be in the request body.
  */
 const editQuestionText = async (
   req: express.Request,
@@ -149,7 +148,7 @@ const editQuestionText = async (
     return;
   }
 
-  const qID = Object.keys(questionVals)[0];
+  const qID = parseInt(Object.keys(questionVals)[0], 10);
 
   const question: IQuestion | null = await getQuestionById(qID);
   if (!question) {

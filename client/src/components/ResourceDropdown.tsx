@@ -3,7 +3,6 @@ import { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
-import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -12,12 +11,13 @@ import { Button, Grid, Typography } from '@mui/material';
 
 interface ResourceDropdownProps {
   title: string;
-  content: string;
+  content: string | undefined;
+  link: string | undefined;
 }
 
 export default function ResourceDropdown(props: ResourceDropdownProps) {
   const [open, setOpen] = useState(false);
-  const { title, content } = props;
+  const { title, content, link } = props;
   return (
     <Card
       sx={{
@@ -45,12 +45,29 @@ export default function ResourceDropdown(props: ResourceDropdownProps) {
       <div style={{ backgroundColor: 'rgba(211,211,211,0.4)' }}>
         <Collapse in={open} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography>{content}</Typography>
-            <Grid container justifyContent="flex-end">
-              <Button variant="text" size="medium">
-                Learn More
-              </Button>
-            </Grid>
+            <Typography>{content || ''}</Typography>
+            {link ? (
+              <Grid container justifyContent="flex-end">
+                <Button
+                  variant="text"
+                  size="medium"
+                  onClick={() => {
+                    const newWindow = window.open(
+                      link,
+                      '_blank',
+                      'noopener,noreferrer',
+                    );
+                    if (newWindow) {
+                      newWindow.opener = null;
+                    }
+                  }}
+                >
+                  Learn More
+                </Button>
+              </Grid>
+            ) : (
+              <div />
+            )}
           </CardContent>
         </Collapse>
       </div>

@@ -12,14 +12,15 @@ const getNextQuestion = async (
   next: express.NextFunction,
 ) => {
   const { answerID } = req.params;
+  const id = parseInt(answerID, 10);
   return (
-    getNextQuestionFromDB(answerID)
+    getNextQuestionFromDB(id)
       .then((nextQuestion) => {
         res.status(StatusCode.OK).send(nextQuestion);
-        // console.log('Next question', nextQuestion);
       })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .catch((e) => {
+        console.log(e);
         next(ApiError.internal('Unable to retrieve next question'));
       })
   );
@@ -31,14 +32,16 @@ const getQuestionWithID = async (
   next: express.NextFunction,
 ) => {
   const { questionID } = req.params;
+  const id = parseInt(questionID, 10);
   return (
-    getQuestionById(questionID)
+    getQuestionById(id)
       .then((nextQuestion) => {
         // console.log(nextQuestion);
         res.status(StatusCode.OK).send(nextQuestion);
       })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .catch((e) => {
+        console.log(e);
         next(ApiError.internal('Unable to retrieve next question'));
       })
   );

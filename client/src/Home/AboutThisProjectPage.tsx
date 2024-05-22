@@ -21,14 +21,14 @@ function AboutThisProjectPage() {
         direction="row"
         justifyContent="space-between"
         alignItems="flex-start"
-        height="100%"
+        height="100vh"
         fit-content="100%"
       >
         <Grid item width="100%">
           <NavBar />
         </Grid>
 
-        <Grid item width="100%" padding={2} justifyContent="flex-start">
+        <Grid item width="100%" justifyContent="flex-start">
           <Typography variant="h3" fontWeight="bold" textAlign="center">
             Guide to Interpersonal Resources at Penn
           </Typography>
@@ -130,7 +130,15 @@ function AboutThisProjectPage() {
             </Box>
           </Grid>
         </Grid>
-        <Grid item width="100%" alignItems="flex-end" padding={0} spacing={0}>
+        <Grid
+          item
+          width="100%"
+          alignItems="flex-end"
+          padding={0}
+          spacing={0}
+          position="fixed"
+          bottom={0}
+        >
           <Footer />
         </Grid>
       </Grid>
