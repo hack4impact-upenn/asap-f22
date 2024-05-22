@@ -17,9 +17,9 @@ function HTMLMapper(props: HTMLMapperProps) {
       {{
         p: null,
         // eslint-disable-next-line react/jsx-no-undef, react/jsx-props-no-spreading, react/no-unstable-nested-components
-        a: ({ href, children, ...rest }) => (
+        a: ({ href, children, ...rest }: any) => (
           // eslint-disable-next-line react/jsx-props-no-spreading
-          <a href={href} {...rest}>
+          <a href={href || ''} {...rest}>
             {children}
           </a>
         ),
