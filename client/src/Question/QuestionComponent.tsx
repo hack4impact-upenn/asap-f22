@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography, Grid } from '@mui/material';
+import HTMLMapper from '../components/HTMLMapper';
 import AnswerButton from './Components/AnswerButton';
 import { IQuestion } from '../util/types/question';
 
@@ -32,7 +33,7 @@ function QuestionComponent(props: QuestionComponentProps) {
         >
           <Grid container direction="column" alignItems="center" padding={2}>
             <Typography variant="h2" fontWeight="bold" textAlign="center">
-              {question.text}
+              <HTMLMapper text={question.text} />
             </Typography>
           </Grid>
           {question.resultantAnswers.map((answer) => {

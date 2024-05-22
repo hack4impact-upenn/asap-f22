@@ -74,32 +74,37 @@ const getAllQuestionsFromDB = async () => {
   return questionList;
 };
 
-/**
- * Edits the text of a question in the database. The new text is expected to be in the request body.
- */
-const editQuestion = async (
-  questionVals: { [key: string]: string },
-  // NOTE that we are using strings for IDs here rather than the Answer Interface.
-  answerVals: { [key: string]: string },
-) => {
-  const qID = Object.keys(questionVals)[0];
-  const qText = questionVals[qID];
+//  /**
+//   * A function that upgrades a certain user to an admin.
+//   * @param id The id of the user to upgrade.
+//   * @returns nothing?
+//   */
 
-  const newq = await Question.findByIdAndUpdate(qID, [
-    { $set: { text: qText } },
-  ]).exec();
-  if (!newq) {
-    throw new Error('Question not found');
+const editQuestion = async (question: IQuestion) => {
+  const qID = question._id;
+  await Question.replaceOne({ _id: qID }, question).exec();
+  // save answers too
+  if (question.resultantAnswers != null) {
+    question.resultantAnswers.forEach(async (answer: IAnswer) => {
+      await Answer.replaceOne({ _id: answer._id }, answer).exec();
+    });
   }
-  // do we need to check for isQuestion? if it's false answerVals will just be empty.
-  if (!newq.isQuestion) {
-    throw new Error('Invalid question');
-  }
-  Object.keys(answerVals).forEach(async (key) => {
-    await Answer.findByIdAndUpdate(key, [
-      { $set: { text: answerVals[key] } },
-    ]).exec();
-  });
+};
+
+const deleteResource = async (question: IQuestion, resource: IAnswer) => {
+  const qID = question._id;
+  const rID = resource._id;
+  // removes resource with id rID from question with id qID
+  await Question.findByIdAndUpdate(
+    { _id: qID },
+    { $pull: { resultantAnswerIds: rID } },
+  ).exec();
+};
+
+const deleteQuestion = async (question: IQuestion) => {
+  const qID = question._id;
+  // removes question from question db
+  await Question.findByIdAndDelete(qID).exec();
 };
 
 export {
@@ -108,4 +113,7 @@ export {
   getAllQuestionsFromDB,
   editQuestion,
   getNextQuestionFromDB,
+  deleteResource,
+  deleteQuestion,
+  //    deleteUserById,
 };

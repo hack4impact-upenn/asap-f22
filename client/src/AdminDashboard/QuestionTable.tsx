@@ -4,6 +4,7 @@
  */
 import React, { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
+import { EnhancedEncryptionRounded } from '@mui/icons-material';
 import { PaginationTable, TColumn } from '../components/PaginationTable';
 import DeleteUserButton from './DeleteUserButton';
 import DeleteQuestionButton from './DeleteQuestionButton';
@@ -12,14 +13,15 @@ import { useData } from '../util/api';
 import { useAppSelector } from '../util/redux/hooks';
 import { selectUser } from '../util/redux/userSlice';
 import IUser from '../util/types/user';
-import { IQuestion } from '../util/types/question'; // '../../../server/src/models/question.model';
+import { IQuestion } from '../util/types/question';
+import { IResource } from '../util/types/resource';
 import EditQuestionButton from './EditQuestionButton';
+import { deleteQuestion } from './api';
 
 interface AdminDashboardRow {
   key: string;
   question: string;
   // promote: React.ReactElement;
-  remove: React.ReactElement;
   edit: React.ReactElement;
 }
 
@@ -38,10 +40,12 @@ interface AdminDashboardRow {
 function QuestionTable() {
   // define columns for the table
   const columns: TColumn[] = [
-    { id: 'question', label: 'Question' },
+    {
+      id: 'question',
+      label: 'Question/Resource',
+    },
     // { id: 'promote', label: 'Promote to Admin' },
-    { id: 'remove', label: 'Remove Question' },
-    { id: 'edit', label: 'Edit Question' },
+    { id: 'edit', label: 'Edit' },
   ];
 
   const [selectedRow, setSelectedRow] = useState({});
@@ -50,7 +54,6 @@ function QuestionTable() {
   function createAdminDashboardRow(
     question: IQuestion, // IUser, //fix this to question type
     // promote: React.ReactElement,
-    remove: React.ReactElement,
     edit: React.ReactElement,
   ): AdminDashboardRow {
     // const { _id, qstn } = user;
@@ -61,7 +64,6 @@ function QuestionTable() {
       // resultantAnswerIds: resultantAnswerIds,
       // isQuestion: isQuestion,
       // promote,
-      remove,
       edit,
     };
   }
@@ -91,11 +93,13 @@ function QuestionTable() {
       questionList.filter(
         (entry: IQuestion) =>
           entry &&
-          entry.isQuestion &&
           entry.text &&
-          entry.text !== question.text, //! == question.text,
+          entry.text !== question.text &&
+          // eslint-disable-next-line no-underscore-dangle
+          entry._id !== question._id, //! == question.text,
       ),
     );
+    deleteQuestion(question);
   };
 
   const handleEditChange = (oldQ: IQuestion, newQ: IQuestion) => {
@@ -139,22 +143,12 @@ function QuestionTable() {
       rows={questionList.map((question: IQuestion) =>
         createAdminDashboardRow(
           question,
-          <DeleteQuestionButton
-            isQuestion={question.isQuestion}
-            text={question.text}
-            removeRow={() => removeQuestion(question)}
-          />,
-          // <DeleteQuestionButton
-          //   isQuestion={question.isQuestion}
-          //   text={question.text}
-          //   removeRow={() => removeQuestion(question)}
-          // />,
-
           <EditQuestionButton
             // eslint-disable-next-line no-underscore-dangle
             qID={question._id}
             isQuestion={question.isQuestion}
             text={question.text}
+            question={question}
             editRow={() => editRow(question, '')}
             // open up text editor
             // extract inputted text data from text editor GUI

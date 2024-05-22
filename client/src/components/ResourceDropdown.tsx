@@ -8,6 +8,7 @@ import Collapse from '@mui/material/Collapse';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Button, Grid, Typography } from '@mui/material';
+import HTMLMapper from './HTMLMapper';
 
 interface ResourceDropdownProps {
   title: string;
@@ -27,7 +28,7 @@ export default function ResourceDropdown(props: ResourceDropdownProps) {
     >
       <CardHeader
         titleTypographyProps={{ variant: 'subtitle1', fontWeight: 600 }}
-        title={title}
+        title={<HTMLMapper text={title} />}
         action={
           <IconButton
             onClick={() => setOpen(!open)}
@@ -45,7 +46,9 @@ export default function ResourceDropdown(props: ResourceDropdownProps) {
       <div style={{ backgroundColor: 'rgba(211,211,211,0.4)' }}>
         <Collapse in={open} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography>{content || ''}</Typography>
+            <Typography>
+              {content ? <HTMLMapper text={content} /> : ''}
+            </Typography>
             {link ? (
               <Grid container justifyContent="flex-end">
                 <Button
