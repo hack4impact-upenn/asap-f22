@@ -48,7 +48,7 @@ function App() {
                 <Routes>
                   {/* Routes accessed only if user is not authenticated */}
                   <Route element={<UnauthenticatedRoutesWrapper />}>
-                    <Route path="/login" element={<QuestionPage />} />
+                    <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route
                       path="/verify-account/:token"
@@ -62,23 +62,20 @@ function App() {
                       path="/reset-password/:token"
                       element={<ResetPasswordPage />}
                     />
-                    {/* <Route element={<AdminRoutesWrapper />}> */}
+                    <Route path="/home" element={<HomePage />} />
+                    <Route path="/question" element={<QuestionPage />} />
+                  </Route>
+                  {/* Routes accessed only if user is authenticated */}
+                  <Route element={<ProtectedRoutesWrapper />}>
+                    <Route
+                      path="/admin-dashboard"
+                      element={<AdminDashboardPage />}
+                    />
                     <Route path="/users" element={<AdminDashboardPage />} />
-                    {/* </Route> */}
                     <Route path="/editResource" element={<EditResource />} />
                     <Route path="/editQuestion" element={<EditQuestion />} />
                   </Route>
-                  {/* Routes accessed only if user is authenticated */}
-                  {/* <Route element={<AdminRoutesWrapper />}> */}
-                  <Route element={<ProtectedRoutesWrapper />}>
-                    {/* <Route path="/users" element={<AdminDashboardPage />} /> */}
-                  </Route>
 
-                  {/* Route which redirects to a different page depending on if the user is an authenticated or not by utilizing the DynamicRedirect component */}
-                  <Route
-                    path="/admin-dashboard"
-                    element={<AdminDashboardPage />}
-                  />
                   {/* Route which redirects to a different page depending on if the user is an authenticated or not by utilizing the DynamicRedirect component */}
                   <Route
                     path="/"
@@ -89,9 +86,7 @@ function App() {
                       />
                     }
                   />
-                  <Route path="/home" element={<HomePage />} />
                   <Route path="/about" element={<AboutThisProjectPage />} />
-                  <Route path="/question" element={<QuestionPage />} />
 
                   {/* Route which is accessed if no other route is matched */}
                   <Route path="*" element={<NotFoundPage />} />

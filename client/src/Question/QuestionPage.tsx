@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import ScreenGrid from '../components/ScreenGrid';
 import QuestionComponent from './QuestionComponent';
 import ResourceComponent from './ResourceComponent';
@@ -10,7 +10,6 @@ import SidebarComponent from '../components/sidebar/SidebarComponent';
 import BackButton from './Components/BackButton';
 import NextButton from './Components/NextButton';
 import StartOverButton from './Components/StartOverButton';
-import PopupWarning from '../components/PopupWarning';
 
 /**
  * This page is the source of truth for all the state driven interactions of the question system.
@@ -21,18 +20,9 @@ import PopupWarning from '../components/PopupWarning';
  * It also stores an array of "allQuestions" which will be used to handle to "back" functionality
  */
 function QuestionPage() {
-  const initialQuestion = '637ea16cf9860ef25c72e639';
-  const [currentQuestion, setCurrentQuestion] = useState({
-    _id: 'Placeholder',
-    text: '',
-    isQuestion: true,
-    resultantAnswers: [],
-  } as IQuestion);
-
-  // const allQuestions: string[] = [initialQuestion];
+  const [currentQuestion, setCurrentQuestion] = useState({} as IQuestion);
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [allQuestions, setAllQuestions] = useState<string[]>([initialQuestion]);
-  // const [allAnswers, setAllAnswers] = useState<string[]>([]);
+  const [allQuestions, setAllQuestions] = useState<string[]>([]);
 
   // Helper functions
   const appendQuestion = (value: string) => {
@@ -109,10 +99,11 @@ function QuestionPage() {
   };
 
   useEffect(() => {
-    if (initialQuestion != null) {
-      getNextFromID(initialQuestion);
+    if (allQuestions.length === 0) {
+      getNextFromID('1');
+      appendQuestion('1');
     }
-  }, [initialQuestion]);
+  }, [allQuestions]);
 
   let leftButton = <div />;
   if (questionIndex !== 0) {
@@ -130,6 +121,14 @@ function QuestionPage() {
     }
   } else {
     rightButton = <StartOverButton />;
+  }
+
+  if (!currentQuestion.text) {
+    return (
+      <ScreenGrid>
+        <CircularProgress />
+      </ScreenGrid>
+    );
   }
 
   if (currentQuestion.isQuestion) {
@@ -163,7 +162,6 @@ function QuestionPage() {
       {rightButton}
     </ScreenGrid>
   );
-  // }
 }
 
 export default QuestionPage;

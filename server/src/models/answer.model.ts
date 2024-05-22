@@ -9,25 +9,34 @@
 import mongoose from 'mongoose';
 
 const AnswerSchema = new mongoose.Schema({
+  _id: {
+    type: Number,
+    required: true,
+  },
   text: {
     type: String,
     required: true,
   },
   resultantQuestionId: {
-    type: String,
-    required: true,
+    type: Number,
+    required: false,
   },
   resourceContent: {
     type: String,
-    required: true,
+    required: false,
+  },
+  resourceLink: {
+    type: String,
+    required: false,
   },
 });
 
 interface IAnswer extends mongoose.Document {
-  _id: string;
+  _id: number;
   text: string;
   resourceContent: string;
-  resultantQuestionId: string;
+  resultantQuestionId: number;
+  resourceLink: string;
 }
 
 const Answer = mongoose.model<IAnswer>('Answer', AnswerSchema);

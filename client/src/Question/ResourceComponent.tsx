@@ -38,11 +38,13 @@ function ResourceComponent(props: ResourceComponentProps) {
             </Typography>
           </Grid>
           {question.resultantAnswers.map((answer) => {
+            console.log(answer.resourceContent);
             return (
               <Grid item margin="auto" marginTop="1%">
                 <ResourceDropdown
                   title={answer.text}
                   content={answer.resourceContent}
+                  link={answer.resourceLink}
                 />
               </Grid>
             );

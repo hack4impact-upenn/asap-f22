@@ -136,8 +136,7 @@ const getAllQuestions = async (
 };
 
 /**
- * Upgrade a user to an admin. The email of the user is expected to be in the request body.
- * Upon success, return 200 OK status code.
+ * Edits the text of a question in the database. The new text is expected to be in the request body.
  */
 const editQuestionText = async (
   req: express.Request,

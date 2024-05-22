@@ -3,93 +3,40 @@
  */
 // import { hash } from 'bcrypt';
 import { Answer, IAnswer } from '../models/answer.model';
-import IQuestion from '../models/question.model';
-import { TempQuestion, ITempQuestion } from '../models/temp-question.model';
+import { IQuestion, Question } from '../models/question.model';
 
-async function getAnswerObj(ansId: string) {
-  const resultantAnswer = await Answer.findById(ansId);
-  const answerObj = {
-    _id: resultantAnswer?._id,
-    text: resultantAnswer?.text,
-    resourceContent: resultantAnswer?.resourceContent,
-    resultantQuestionId: resultantAnswer?.resultantQuestionId,
-  } as IAnswer;
-  return answerObj;
-}
-
-const convertTempToQuestion = async (tempQuestion: ITempQuestion) => {
-  const answerArray: IAnswer[] = [];
-  if (tempQuestion != null) {
-    await Promise.all(
-      tempQuestion?.resultantAnswerIds.map(async (id) =>
-        getAnswerObj(id).then((newAnswer) => answerArray.push(newAnswer)),
-      ),
-    );
-  }
-
-  const question = {
-    _id: tempQuestion?._id,
-    text: tempQuestion?.text,
-    resultantAnswers: answerArray,
-    isQuestion: tempQuestion?.isQuestion,
-  } as IQuestion;
-
-  return question;
-};
-
-const convertQuestionToTemp = (question: IQuestion) => {
-  const answerIdArray: string[] = [];
-  question.resultantAnswers.forEach((answer) => {
-    answerIdArray.push(answer._id);
-  });
-  const tempQuestion = {
-    _id: question._id,
-    text: question.text,
-    resultantAnswerIds: answerIdArray,
-    isQuestion: question.isQuestion,
-  } as ITempQuestion;
-
-  return tempQuestion;
-};
-
-const getNextQuestionFromDB = async (answerID: string) => {
-  const answer = await Answer.findById(answerID).exec();
-  const tempQuestion = await TempQuestion.findById(
-    answer?.resultantQuestionId,
-  ).exec();
-
-  if (tempQuestion != null) {
-    return convertTempToQuestion(tempQuestion!);
-  }
-  return null;
-};
+// async function getAnswerObj(ansId: string) {
+//   const resultantAnswer = await Answer.findById(ansId);
+//   const answerObj = {
+//     _id: resultantAnswer?._id,
+//     text: resultantAnswer?.text,
+//     resourceContent: resultantAnswer?.resourceContent,
+//     resultantQuestionId: resultantAnswer?.resultantQuestionId,
+//   } as IAnswer;
+//   return answerObj;
+// }
 
 /**
- * Get's a question from it's ID
+ * Get's a question from its ID
  * @param questID the id of the desired question
  * @returns the question with the given ID or null
  */
-const getQuestionById = async (questID: string) => {
-  const tempQuestion = await TempQuestion.findById(questID).exec();
-  if (tempQuestion != null) {
-    return convertTempToQuestion(tempQuestion!);
+const getQuestionById = async (questID: number) => {
+  const question = await Question.findById(questID).exec();
+  if (!question) {
+    throw new Error('Question not found');
   }
-  return null;
+  return question;
 };
 
-// const passwordHashSaltRounds = 10;
-//  const removeSensitiveDataQuery = [
-//    '-password',
-//    '-verificationToken',
-//    '-resetPasswordToken',
-//    '-resetPasswordTokenExpiryDate',
-//  ];
-
-//  const removeSensitiveDataQueryKeepPassword = [
-//    '-verificationToken',
-//    '-resetPasswordToken',
-//    '-resetPasswordTokenExpiryDate',
-//  ];
+const getNextQuestionFromDB = async (answerID: number) => {
+  const answer = await Answer.findById(answerID).exec();
+  if (!answer) {
+    throw new Error('Answer not found');
+  }
+  const question = await getQuestionById(answer.resultantQuestionId);
+  return question;
+};
 
 /**
  * Creates a new question in the database.
@@ -104,73 +51,27 @@ const createQuestion = async (
   isQuestion: boolean,
 ) => {
   const newQuestion = {
-    _id,
+    _id: parseInt(_id, 10),
     text,
     resultantAnswers,
     isQuestion,
   } as IQuestion;
-  const newTempQuestion = convertQuestionToTemp(newQuestion);
-
-  const user = await newTempQuestion.save();
-  return user;
+  const q = await Question.create(newQuestion);
+  if (!q) {
+    throw new Error('Question not created');
+  }
+  return q;
 };
-
-/**
- * Gets a user from the database by their email but doesn't include the
- * password in the returned user.
- * @param email The email of the user to get
- * @returns The {@link User} or null if the user was not found.
- */
-//  const getUserByEmail = async (email: string) => {
-//    const user = await Question.findOne({ email })
-//      .select(removeSensitiveDataQuery)
-//      .exec();
-//    return user;
-//  };
-
-//  /**
-//   * Gets a user from the database by their email and includes the password in
-//   * the returned user.
-//   * @param email The email of the user to get
-//   * @returns The {@link User} or null if the user was not found.
-//   */
-//  const getUserByEmailWithPassword = async (email: string) => {
-//    const user = await User.findOne({ email })
-//      .select(removeSensitiveDataQueryKeepPassword)
-//      .exec();
-//    return user;
-//  };
-
-//  /**
-//   * Gets a user from the database by their verification token but doesn't include
-//   * the password in the returned user.
-//   * @param verificationToken The {@link string} representing the verification token
-//   * @returns The {@link User} or null if the user was not found.
-//   */
-//  const getUserByVerificationToken = async (verificationToken: string) => {
-//    const user = await User.findOne({ verificationToken })
-//      .select(removeSensitiveDataQuery)
-//      .exec();
-//    return user;
-//  };
 
 /**
  * @returns All the {@link IQuestion}s in the database.
  */
 const getAllQuestionsFromDB = async () => {
-  const tempQuestionList = await TempQuestion.find({}).exec(); // .select(removeSensitiveDataQuery).exec();
-  const questionArray: IQuestion[] = [];
-  if (tempQuestionList != null) {
-    await Promise.all(
-      tempQuestionList?.map(async (tempQuestion) =>
-        convertTempToQuestion(tempQuestion).then((newQuestion) =>
-          questionArray.push(newQuestion),
-        ),
-      ),
-    );
-    return questionArray;
+  const questionList = await Question.find({}).exec();
+  if (!questionList) {
+    throw new Error('Questions not found');
   }
-  return null;
+  return questionList;
 };
 
 //  /**
@@ -181,8 +82,7 @@ const getAllQuestionsFromDB = async () => {
 
 const editQuestion = async (question: IQuestion) => {
   const qID = question._id;
-  const tempQuestion: ITempQuestion = convertQuestionToTemp(question);
-  await TempQuestion.replaceOne({ _id: qID }, tempQuestion).exec();
+  await Question.replaceOne({ _id: qID }, question).exec();
   // save answers too
   if (question.resultantAnswers != null) {
     question.resultantAnswers.forEach(async (answer: IAnswer) => {
@@ -195,7 +95,7 @@ const deleteResource = async (question: IQuestion, resource: IAnswer) => {
   const qID = question._id;
   const rID = resource._id;
   // removes resource with id rID from question with id qID
-  await TempQuestion.findByIdAndUpdate(
+  await Question.findByIdAndUpdate(
     { _id: qID },
     { $pull: { resultantAnswerIds: rID } },
   ).exec();
@@ -204,27 +104,12 @@ const deleteResource = async (question: IQuestion, resource: IAnswer) => {
 const deleteQuestion = async (question: IQuestion) => {
   const qID = question._id;
   // removes question from question db
-  await TempQuestion.findByIdAndDelete(qID).exec();
+  await Question.findByIdAndDelete(qID).exec();
 };
 
-//  /**
-//   * A function that deletes a user from the database.
-//   * @param id The id of the user to delete.
-//   * @returns The deleted {@link User}
-//   */
-//  const deleteUserById = async (id: string) => {
-//    const user = await User.findByIdAndDelete(id).exec();
-//    return user;
-//  };
-
 export {
-  //    passwordHashSaltRounds,
   createQuestion,
-  //    getUserByEmail,
-  //    getUserByVerificationToken,
   getQuestionById,
-  //    getUserByEmailWithPassword,
-  //    getUserByResetPasswordToken,
   getAllQuestionsFromDB,
   editQuestion,
   getNextQuestionFromDB,

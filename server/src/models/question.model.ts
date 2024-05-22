@@ -3,13 +3,35 @@
  * access the model in TypeScript.
  */
 
-import { IAnswer } from './answer.model';
+import mongoose from 'mongoose';
+import { Answer, IAnswer } from './answer.model';
+
+const QuestionSchema = new mongoose.Schema({
+  _id: {
+    type: Number,
+    required: true,
+  },
+  text: {
+    type: String,
+    required: true,
+  },
+  resultantAnswers: {
+    type: [Answer.schema],
+    required: true,
+  },
+  isQuestion: {
+    type: Boolean,
+    required: true,
+  },
+});
 
 interface IQuestion {
-  _id: string;
+  _id: number;
   text: string;
   resultantAnswers: [IAnswer];
   isQuestion: boolean;
 }
 
-export default IQuestion;
+const Question = mongoose.model<IQuestion>('Question', QuestionSchema);
+
+export { IQuestion, Question };
