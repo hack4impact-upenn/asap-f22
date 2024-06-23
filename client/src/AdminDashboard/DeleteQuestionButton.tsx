@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { deleteQuestion } from './api'; // change to deleteQuestion
+import { deleteResource } from './api'; // change to deleteQuestion
 import LoadingButton from '../components/buttons/LoadingButton';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { IQuestion } from '../util/types/question';
 
 interface DeleteQuestionButtonProps {
+  id: string;
   question: IQuestion;
   removeRow: (question: IQuestion) => void;
 }
@@ -14,47 +14,42 @@ interface DeleteQuestionButtonProps {
 /**
  * The button component which, when clicked, will delete the question from the database.
  * If the user is not a valid question, button will be unclickable //this is kinda unnecessary lowkey
- * @param isQuestion - whether the question is valid
- * @param text - the text of the question to delete
+ * @param id - id of the question to delete
+ * @param question - the question to delete
  * @param removeRow - a function which removes a row from the question table. This
  * function is called upon successfully deletion of user from the database.
  */
 function DeleteQuestionButton({
+  id,
   question,
   removeRow,
 }: DeleteQuestionButtonProps) {
-  const navigate = useNavigate();
-
   const [isLoading, setLoading] = useState(false);
-  async function handleDelete() {
+
+  async function handleDeleteResource() {
     setLoading(true);
-    if (await deleteQuestion(question)) {
-      // if you comment this out it'll go to the login page but rn this never returns true bc theres no user created that it can delete
-      removeRow(question);
-      // go to new page just to check button functionality
-      // navigate('/login');
-    } else {
-      setLoading(false);
-    }
+    await deleteResource(id);
+    removeRow(question);
+    setLoading(false);
   }
   if (isLoading) {
     return <LoadingButton />;
   }
   if (question.isQuestion) {
-    // valid question
     return (
-      <ConfirmationModal
-        buttonText="Remove Question"
-        title="Are you sure you want to remove this question?"
-        body="This action is permanent. Question information will not be able to be recovered."
-        onConfirm={() => handleDelete()}
-      />
+      <Button variant="outlined" disabled>
+        Delete Question
+      </Button>
     );
   }
+  // resource
   return (
-    <Button variant="outlined" disabled>
-      Question is Invalid
-    </Button>
+    <ConfirmationModal
+      buttonText="Remove Resource"
+      title="Are you sure you want to remove this resource?"
+      body="This action is permanent. Resource information will not be able to be recovered."
+      onConfirm={() => handleDeleteResource()}
+    />
   );
 }
 

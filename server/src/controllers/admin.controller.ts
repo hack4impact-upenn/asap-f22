@@ -6,6 +6,7 @@ import express from 'express';
 import ApiError from '../util/apiError';
 import StatusCode from '../util/statusCode';
 import { IUser } from '../models/user.model';
+import { IQuestion } from '../models/question.model';
 import {
   upgradeUserToAdmin,
   getUserByEmail,
@@ -15,10 +16,8 @@ import {
 import {
   editQuestion,
   getAllQuestionsFromDB,
-  // getQuestionById,
-  //  deleteQuestionById,
-  deleteResource,
-  deleteQuestion,
+  getQuestionById,
+  deleteQuestionById,
 } from '../services/question.service';
 
 /**
@@ -160,50 +159,32 @@ const editQuestionText = async (
 };
 
 /**
- * Delete resource
+ * Delete a resource question from the database. The id of the resource is expected to be in the request parameter (url). Send a 200 OK status code on success.
  */
-const deleteResourceFromQuestion = async (
+const deleteResource = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { question, resource } = req.body;
-  if (!question) {
-    next(ApiError.missingFields(['question']));
+  const { id } = req.params;
+  if (!id) {
+    next(ApiError.missingFields(['id']));
     return;
   }
+
+  // Check if resource to delete is an admin
+  const resource: IQuestion | null = await getQuestionById(parseInt(id, 10));
   if (!resource) {
-    next(ApiError.missingFields(['resource']));
-    return;
-  }
-  deleteResource(question, resource)
-    .then(() => {
-      res.sendStatus(StatusCode.OK);
-    })
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    .catch((e) => {
-      next(ApiError.internal('Unable to delete resource.'));
-    });
-};
-
-const deleteQuestionFromDB = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction,
-) => {
-  const { question } = req.body;
-  if (!question) {
-    next(ApiError.missingFields(['question']));
+    next(ApiError.notFound(`Resource with id ${id} does not exist`));
     return;
   }
 
-  deleteQuestion(question)
-    .then(() => {
-      res.sendStatus(StatusCode.OK);
-    })
+  // resource is a question
+  deleteQuestionById(resource._id)
+    .then(() => res.sendStatus(StatusCode.OK))
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     .catch((e) => {
-      next(ApiError.internal('Unable to delete question.'));
+      next(ApiError.internal('Failed to delete question.'));
     });
 };
 
@@ -213,6 +194,5 @@ export {
   deleteUser,
   getAllQuestions,
   editQuestionText,
-  deleteResourceFromQuestion,
-  deleteQuestionFromDB,
+  deleteResource,
 };

@@ -1,20 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import {
-  Typography,
-  Container,
-  Box,
-  Alert,
-  AlertTitle,
-  Button,
-} from '@mui/material';
-import { sizing } from '@mui/system';
-import {
-  deleteQuestion,
-  deleteResource,
-  editQuestion,
-} from '../AdminDashboard/api';
+import { Typography, Container, Box, Alert, AlertTitle } from '@mui/material';
+import { editQuestion } from '../AdminDashboard/api';
 import { IAnswer } from '../util/types/answer';
 import { IQuestion } from '../util/types/question';
 import EditorGUI from './EditorGUI';
@@ -46,7 +34,7 @@ export default function EditResource() {
       <Container sx={{ margin: 4 }}>
         <Alert severity="warning" sx={{ marginBottom: 4 }}>
           <AlertTitle>
-            ***Please make sure that any link you add starts with
+            Please make sure that any link you add starts with
             <strong>&quot;http://&quot;</strong> or{' '}
             <strong>&quot;https://&quot;</strong>!
           </AlertTitle>

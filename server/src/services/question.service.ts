@@ -107,6 +107,16 @@ const deleteQuestion = async (question: IQuestion) => {
   await Question.findByIdAndDelete(qID).exec();
 };
 
+/**
+ * A function that deletes a question from the database.
+ * @param id The id of the question to delete.
+ * @returns The deleted {@link Question}
+ */
+const deleteQuestionById = async (id: number) => {
+  const question = await Question.findByIdAndDelete(id).exec();
+  return question;
+};
+
 export {
   createQuestion,
   getQuestionById,
@@ -116,4 +126,5 @@ export {
   deleteResource,
   deleteQuestion,
   //    deleteUserById,
+  deleteQuestionById,
 };

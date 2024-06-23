@@ -4,34 +4,19 @@
  */
 import React, { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
-import { EnhancedEncryptionRounded } from '@mui/icons-material';
 import { PaginationTable, TColumn } from '../components/PaginationTable';
-import DeleteUserButton from './DeleteUserButton';
 import DeleteQuestionButton from './DeleteQuestionButton';
-import PromoteUserButton from './PromoteUserButton';
 import { useData } from '../util/api';
-import { useAppSelector } from '../util/redux/hooks';
-import { selectUser } from '../util/redux/userSlice';
-import IUser from '../util/types/user';
 import { IQuestion } from '../util/types/question';
-import { IResource } from '../util/types/resource';
 import EditQuestionButton from './EditQuestionButton';
-import { deleteQuestion } from './api';
+import { deleteResource } from './api';
 
 interface AdminDashboardRow {
   key: string;
   question: string;
-  // promote: React.ReactElement;
+  deleteButton: React.ReactElement;
   edit: React.ReactElement;
 }
-
-// const testq: IQuestion = {
-//   //required params: text, resultantAnswerIds, isQuestion
-//   text: '',
-//   resultantAnswerIds: [],
-//   isQuestion: true,
-
-// };
 
 /**
  * The standalone table component for holding information about the users in
@@ -48,47 +33,31 @@ function QuestionTable() {
     { id: 'edit', label: 'Edit' },
   ];
 
-  const [selectedRow, setSelectedRow] = useState({});
-
   // Used to create the data type to create a row in the table
   function createAdminDashboardRow(
     question: IQuestion, // IUser, //fix this to question type
-    // promote: React.ReactElement,
+    deleteButton: React.ReactElement,
     edit: React.ReactElement,
   ): AdminDashboardRow {
-    // const { _id, qstn } = user;
-    const { _id, text, resultantAnswers, isQuestion } = question;
+    const { _id, text } = question;
     return {
       key: _id,
       question: text,
-      // resultantAnswerIds: resultantAnswerIds,
-      // isQuestion: isQuestion,
-      // promote,
+      deleteButton,
       edit,
     };
   }
 
   const [questionList, setQuestionList] = useState<IQuestion[]>([]);
   const questions = useData('admin/allQuestions'); // this is a route for GETTING ALL question data; TODO: update later
-  // TESTING:
-  // const questions = testq;
-
-  // const self = useAppSelector(selectUser);
 
   // Upon getting the list of users for the database, set the state of the userList to contain all users except for logged in user
   useEffect(() => {
-    setQuestionList(
-      // questions?.data.filter( //don't actually need the filter i think but it's fine just making sure text isn't empty
-      //   (entry: IQuestion) => entry && entry.text,// && entry.text !== self.text,
-      // ),
-      questions?.data,
-      // TESTING:
-      // [questions, questions], //testing
-    );
-  }, [questions]); // [questions, self]); //should i actually be returning self here
+    setQuestionList(questions?.data);
+  }, [questions]);
 
   // update state of userlist to remove a user from  the frontend representation of the data
-  const removeQuestion = (question: IQuestion) => {
+  const removeResource = (question: IQuestion) => {
     setQuestionList(
       questionList.filter(
         (entry: IQuestion) =>
@@ -96,38 +65,21 @@ function QuestionTable() {
           entry.text &&
           entry.text !== question.text &&
           // eslint-disable-next-line no-underscore-dangle
-          entry._id !== question._id, //! == question.text,
+          entry._id !== question._id,
       ),
     );
-    deleteQuestion(question);
+    // eslint-disable-next-line no-underscore-dangle
+    deleteResource(question._id);
   };
 
   const handleEditChange = (oldQ: IQuestion, newQ: IQuestion) => {
-    // setQuestionList(event.target.value);
-    removeQuestion(oldQ);
-    // addQuestion(newQ);
-    console.log('value is:', newQ.text);
+    setQuestionList(
+      questionList.map((q: IQuestion) =>
+        // eslint-disable-next-line no-underscore-dangle
+        q.text === oldQ.text && q._id === oldQ._id ? newQ : q,
+      ),
+    );
   };
-
-  function editRow(row: IQuestion, newText: string) {
-    console.log('khgfjgfsjgfliglkghd');
-    // row.text = newText; // 'hello ' + row.text;
-  }
-
-  // idrk what this is but updated it for question
-  // update state of userlist to promote a user on the frontend representation
-  // const updateQuestion = (text: string) => {
-  //   setQuestionList(
-  //     questionList.map((entry) => {
-  //       if (entry.text !== text) {
-  //         return entry;
-  //       }
-  //       const newEntry = entry;
-  //       newEntry.isQuestion = true;
-  //       return newEntry;
-  //     }),
-  //   );
-  // };
 
   // if the questionlist is not yet populated, display a loading spinner
   if (!questionList) {
@@ -143,36 +95,17 @@ function QuestionTable() {
       rows={questionList.map((question: IQuestion) =>
         createAdminDashboardRow(
           question,
-          <EditQuestionButton
+          <DeleteQuestionButton
             // eslint-disable-next-line no-underscore-dangle
-            qID={question._id}
-            isQuestion={question.isQuestion}
-            text={question.text}
+            id={question._id}
             question={question}
-            editRow={() => editRow(question, '')}
-            // open up text editor
-            // extract inputted text data from text editor GUI
-            // if isQuestion true --> replace current question.text with data from text editor GUI
-            // else (isQuestion false) --> take answer IDs and resource descriptions to replace all resource description text with the data from text editor GUI
-            // embedded links (clickable)
-            // save and turn off editing mode
+            removeRow={() => removeResource(question)}
           />,
-
-          // <PromoteUserButton
-          //   isQuestion={question.isQuestion}
-          //   email={question.text}
-          //   updateAdmin={updateAdmin}
-          // />,
+          <EditQuestionButton question={question} />,
         ),
       )}
       columns={columns}
     />
-
-    // <TableRow
-    //   onClick={() => setSelectedRow(row)}
-    //   key={row.name}
-    //   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-    // ></TableRow>
   );
 }
 

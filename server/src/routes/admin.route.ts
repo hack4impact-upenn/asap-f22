@@ -9,9 +9,8 @@ import {
   upgradePrivilege,
   deleteUser,
   getAllQuestions,
+  deleteResource,
   editQuestionText,
-  deleteResourceFromQuestion,
-  deleteQuestionFromDB,
 } from '../controllers/admin.controller';
 import { isAuthenticated } from '../controllers/auth.middleware';
 import { approve } from '../controllers/auth.controller';
@@ -64,12 +63,6 @@ router.delete('/:email', isAuthenticated, isAdmin, deleteUser);
 router.get('/allQuestions', getAllQuestions);
 
 /**
- * A PUT route to delete certain question.
- * Expects an IQuestion
- */
-router.put('/deleteQuestion', deleteQuestionFromDB);
-
-/**
  * A PUT route to edit certain question. Checks first if the requestor is a
  * authenticated and is an admin.
  * Expects an IQuestion
@@ -79,10 +72,11 @@ router.put('/deleteQuestion', deleteQuestionFromDB);
 router.put('/editQuestion', editQuestionText);
 
 /**
- * A DELETE route to delete resource from resultantAnswers of a resource question. Checks first if the requestor is a
- * authenticated and is an admin.
- * Expects an IAnswer component
+ * A PUT route to delete a resource. Checks first if the requestor
+ * is a authenticated and is an admin.
+ * Expects the following fields in the URL:
+ * resource id (string) - The id of the resource to be deleted
  */
-router.put('/deleteResource', deleteResourceFromQuestion);
+router.delete('/resource/:id', isAuthenticated, isAdmin, deleteResource);
 
 export default router;
