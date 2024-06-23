@@ -4,15 +4,19 @@
  */
 
 import mongoose from 'mongoose';
-import { IAnswer, AnswerSchema } from './answer.model';
+import { Answer, IAnswer } from './answer.model';
 
 const QuestionSchema = new mongoose.Schema({
+  _id: {
+    type: Number,
+    required: true,
+  },
   text: {
     type: String,
     required: true,
   },
   resultantAnswers: {
-    type: [AnswerSchema],
+    type: [Answer.schema],
     required: true,
   },
   isQuestion: {
@@ -21,8 +25,8 @@ const QuestionSchema = new mongoose.Schema({
   },
 });
 
-interface IQuestion extends mongoose.Document {
-  _id: string;
+interface IQuestion {
+  _id: number;
   text: string;
   resultantAnswers: [IAnswer];
   isQuestion: boolean;

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Typography, Grid } from '@mui/material';
 import ScreenGrid from '../components/ScreenGrid';
-// import UserTable from './QuestionTable';
 import QuestionTable from './QuestionTable';
 
 /**

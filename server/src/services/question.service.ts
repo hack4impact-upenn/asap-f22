@@ -3,21 +3,40 @@
  */
 // import { hash } from 'bcrypt';
 import { Answer, IAnswer } from '../models/answer.model';
-import { Question } from '../models/question.model';
+import { IQuestion, Question } from '../models/question.model';
 
-// const passwordHashSaltRounds = 10;
-//  const removeSensitiveDataQuery = [
-//    '-password',
-//    '-verificationToken',
-//    '-resetPasswordToken',
-//    '-resetPasswordTokenExpiryDate',
-//  ];
+// async function getAnswerObj(ansId: string) {
+//   const resultantAnswer = await Answer.findById(ansId);
+//   const answerObj = {
+//     _id: resultantAnswer?._id,
+//     text: resultantAnswer?.text,
+//     resourceContent: resultantAnswer?.resourceContent,
+//     resultantQuestionId: resultantAnswer?.resultantQuestionId,
+//   } as IAnswer;
+//   return answerObj;
+// }
 
-//  const removeSensitiveDataQueryKeepPassword = [
-//    '-verificationToken',
-//    '-resetPasswordToken',
-//    '-resetPasswordTokenExpiryDate',
-//  ];
+/**
+ * Get's a question from its ID
+ * @param questID the id of the desired question
+ * @returns the question with the given ID or null
+ */
+const getQuestionById = async (questID: number) => {
+  const question = await Question.findById(questID).exec();
+  if (!question) {
+    throw new Error('Question not found');
+  }
+  return question;
+};
+
+const getNextQuestionFromDB = async (answerID: number) => {
+  const answer = await Answer.findById(answerID).exec();
+  if (!answer) {
+    throw new Error('Answer not found');
+  }
+  const question = await getQuestionById(answer.resultantQuestionId);
+  return question;
+};
 
 /**
  * Creates a new question in the database.
@@ -31,75 +50,27 @@ const createQuestion = async (
   resultantAnswers: IAnswer[],
   isQuestion: boolean,
 ) => {
-  //    const hashedPassword = await hash(password, passwordHashSaltRounds);
-  //    if (!hashedPassword) {
-  //      return null;
-  //    }
-  const newQuestion = new Question({
-    _id,
+  const newQuestion = {
+    _id: parseInt(_id, 10),
     text,
     resultantAnswers,
     isQuestion,
-  });
-  const user = await newQuestion.save();
-  return user;
-};
-
-/**
- * Gets a user from the database by their email but doesn't include the
- * password in the returned user.
- * @param email The email of the user to get
- * @returns The {@link User} or null if the user was not found.
- */
-//  const getUserByEmail = async (email: string) => {
-//    const user = await Question.findOne({ email })
-//      .select(removeSensitiveDataQuery)
-//      .exec();
-//    return user;
-//  };
-
-//  /**
-//   * Gets a user from the database by their email and includes the password in
-//   * the returned user.
-//   * @param email The email of the user to get
-//   * @returns The {@link User} or null if the user was not found.
-//   */
-//  const getUserByEmailWithPassword = async (email: string) => {
-//    const user = await User.findOne({ email })
-//      .select(removeSensitiveDataQueryKeepPassword)
-//      .exec();
-//    return user;
-//  };
-
-//  /**
-//   * Gets a user from the database by their verification token but doesn't include
-//   * the password in the returned user.
-//   * @param verificationToken The {@link string} representing the verification token
-//   * @returns The {@link User} or null if the user was not found.
-//   */
-//  const getUserByVerificationToken = async (verificationToken: string) => {
-//    const user = await User.findOne({ verificationToken })
-//      .select(removeSensitiveDataQuery)
-//      .exec();
-//    return user;
-//  };
-
-/**
- * Gets a question from the database by their id but doesn't include the
- * password in the returned user.
- * @param id The id of the user to get.
- * @returns The {@link IQuestion} or null if the user was not found.
- */
-const getQuestionById = async (id: string) => {
-  const question = await Question.findById(id).exec();
-  return question;
+  } as IQuestion;
+  const q = await Question.create(newQuestion);
+  if (!q) {
+    throw new Error('Question not created');
+  }
+  return q;
 };
 
 /**
  * @returns All the {@link IQuestion}s in the database.
  */
 const getAllQuestionsFromDB = async () => {
-  const questionList = await Question.find({}).exec(); // .select(removeSensitiveDataQuery).exec();
+  const questionList = await Question.find({}).exec();
+  if (!questionList) {
+    throw new Error('Questions not found');
+  }
   return questionList;
 };
 
@@ -109,57 +80,51 @@ const getAllQuestionsFromDB = async () => {
 //   * @returns nothing?
 //   */
 
-const editQuestion = async (
-  questionVals: { [key: string]: string },
-  // NOTE that we are using strings for IDs here rather than the Answer Interface.
-  answerVals: { [key: string]: string },
-) => {
-  const qID = Object.keys(questionVals)[0];
-  const qText = questionVals[qID];
-
-  console.log('in edit question');
-
-  await Question.findByIdAndUpdate(qID, [{ $set: { text: qText } }]).exec();
-
-  // do we need to check for isQuestion? if it's false answerVals will just be empty.
-  // for (const key in answerVals) {
-  Object.keys(answerVals).forEach(async (key) => {
-    await Answer.findByIdAndUpdate(key, [
-      { $set: { text: answerVals[key] } },
-    ]).exec();
-  });
+const editQuestion = async (question: IQuestion) => {
+  const qID = question._id;
+  await Question.replaceOne({ _id: qID }, question).exec();
+  // save answers too
+  if (question.resultantAnswers != null) {
+    question.resultantAnswers.forEach(async (answer: IAnswer) => {
+      await Answer.replaceOne({ _id: answer._id }, answer).exec();
+    });
+  }
 };
 
-//  /**
-//   * A function that deletes a user from the database.
-//   * @param id The id of the user to delete.
-//   * @returns The deleted {@link User}
-//   */
-//  const deleteUserById = async (id: string) => {
-//    const user = await User.findByIdAndDelete(id).exec();
-//    return user;
-//  };
+const deleteResource = async (question: IQuestion, resource: IAnswer) => {
+  const qID = question._id;
+  const rID = resource._id;
+  // removes resource with id rID from question with id qID
+  await Question.findByIdAndUpdate(
+    { _id: qID },
+    { $pull: { resultantAnswerIds: rID } },
+  ).exec();
+};
+
+const deleteQuestion = async (question: IQuestion) => {
+  const qID = question._id;
+  // removes question from question db
+  await Question.findByIdAndDelete(qID).exec();
+};
 
 /**
  * A function that deletes a question from the database.
  * @param id The id of the question to delete.
  * @returns The deleted {@link Question}
  */
-const deleteQuestionById = async (id: string) => {
+const deleteQuestionById = async (id: number) => {
   const question = await Question.findByIdAndDelete(id).exec();
   return question;
 };
 
 export {
-  //    passwordHashSaltRounds,
   createQuestion,
-  //    getUserByEmail,
-  //    getUserByVerificationToken,
   getQuestionById,
-  //    getUserByEmailWithPassword,
-  //    getUserByResetPasswordToken,
   getAllQuestionsFromDB,
   editQuestion,
+  getNextQuestionFromDB,
+  deleteResource,
+  deleteQuestion,
   //    deleteUserById,
   deleteQuestionById,
 };

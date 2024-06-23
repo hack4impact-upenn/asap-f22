@@ -135,29 +135,20 @@ const getAllQuestions = async (
 };
 
 /**
- * Upgrade a user to an admin. The email of the user is expected to be in the request body.
- * Upon success, return 200 OK status code.
+ * Edits the text of a question in the database. The new text is expected to be in the request body.
  */
 const editQuestionText = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { questionVals, answerVals } = req.body;
-  if (!questionVals) {
-    next(ApiError.missingFields(['questionVals']));
-    return;
-  }
-
-  const qID = Object.keys(questionVals)[0];
-
-  const question: IQuestion | null = await getQuestionById(qID);
+  const { question } = req.body;
   if (!question) {
-    next(ApiError.notFound(`Question with id ${qID} does not exist`));
+    next(ApiError.missingFields(['question']));
     return;
   }
 
-  editQuestion(questionVals, answerVals)
+  editQuestion(question)
     .then(() => {
       res.sendStatus(StatusCode.OK);
     })
@@ -182,7 +173,7 @@ const deleteResource = async (
   }
 
   // Check if resource to delete is an admin
-  const resource: IQuestion | null = await getQuestionById(id);
+  const resource: IQuestion | null = await getQuestionById(parseInt(id, 10));
   if (!resource) {
     next(ApiError.notFound(`Resource with id ${id} does not exist`));
     return;

@@ -1,7 +1,8 @@
 /**
  * A file containing all the api calls for the admin dashboard.
  */
-import { deleteData, putData, postData } from '../util/api';
+import { deleteData, putData } from '../util/api';
+import { IQuestion } from '../util/types/question';
 
 /**
  * Sends a request to the server to delete a user
@@ -14,12 +15,6 @@ async function deleteUser(email: string) {
   return true;
 }
 
-async function deleteQuestion(text: string) {
-  const res = await deleteData(`admin/${text}`);
-  if (res.error) return false;
-  return true;
-}
-
 async function deleteResource(id: string) {
   const res = await deleteData(`admin/resource/${id}`);
   if (res.error) return false;
@@ -27,27 +22,13 @@ async function deleteResource(id: string) {
 }
 
 // routes! hopefully
-async function editQuestion(
-  questionVals: { [key: string]: string },
-  answerVals: { [key: string]: string },
-) {
+async function editQuestion(question: IQuestion) {
   const res = await putData(`admin/editQuestion`, {
-    // add in all fields
-    questionVals,
-    answerVals,
+    question,
   });
   if (res.error) return false;
   return true;
 }
-
-// async function editAnswer(questionID: string, answer: string) {
-//   const res = await putData(`admin/${questionID}`, { //put = add, post = create new
-//     // call this for every answer
-//     answer,
-//   }); //does this edit or just add new question?
-//   if (res.error) return false;
-//   return true;
-// }
 
 /**
  * Sends a request to the server to promote a user to admin
@@ -60,10 +41,4 @@ async function upgradePrivilege(email: string) {
   return true;
 }
 
-export {
-  deleteUser,
-  deleteQuestion,
-  deleteResource,
-  editQuestion,
-  upgradePrivilege,
-};
+export { deleteUser, editQuestion, deleteResource, upgradePrivilege };
