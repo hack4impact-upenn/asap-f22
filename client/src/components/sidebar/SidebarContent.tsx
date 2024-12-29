@@ -6,7 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import { useEffect, useState } from 'react';
 import SidebarContentItem from './SidebarContentItem';
 import { IQuestion } from '../../util/types/question';
-import { getData, useData } from '../../util/api';
+import { useData } from '../../util/api';
 import { IDefinition } from '../../util/types/definition';
 
 interface SidebarProps {
@@ -39,19 +39,21 @@ export default function SidebarContent(props: SidebarProps) {
 
   return (
     <div>
-      <Toolbar />
-      <List>
+      <List sx={{ marginBottom: '30px' }}>
         <ListItem>
           <h1>Definitions</h1>
         </ListItem>
-        {definitions.map((definition) => (
-          <ListItem>
-            <SidebarContentItem
-              title={definition.word}
-              definition={definition.definition}
-            />
-          </ListItem>
-        ))}
+        {definitions
+          ? definitions.map((definition) => (
+              <ListItem>
+                <SidebarContentItem
+                  title={definition.word}
+                  definition={definition.definition}
+                  link={definition.link}
+                />
+              </ListItem>
+            ))
+          : null}
       </List>
     </div>
   );

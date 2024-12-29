@@ -23,10 +23,15 @@ export default function ResourceDropdown(props: ResourceDropdownProps) {
     <Card
       sx={{
         border: '1px solid rgba(211,211,211,0.6)',
-        width: '50vw',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
+        flex: 1,
       }}
     >
       <CardHeader
+        sx={{ width: '100%' }}
         titleTypographyProps={{ variant: 'subtitle1', fontWeight: 600 }}
         title={<HTMLMapper text={title} />}
         action={
@@ -43,13 +48,13 @@ export default function ResourceDropdown(props: ResourceDropdownProps) {
           </IconButton>
         }
       />
-      <div style={{ backgroundColor: 'rgba(211,211,211,0.4)' }}>
+      <div style={{ backgroundColor: 'rgba(211,211,211,0.4)', width: '100%' }}>
         <Collapse in={open} timeout="auto" unmountOnExit>
           <CardContent>
             <Typography>
               {content ? <HTMLMapper text={content} /> : ''}
             </Typography>
-            {link ? (
+            {link && link !== '' ? (
               <Grid container justifyContent="flex-end">
                 <Button
                   variant="text"

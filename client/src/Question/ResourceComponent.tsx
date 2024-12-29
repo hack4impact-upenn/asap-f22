@@ -40,7 +40,7 @@ function ResourceComponent(props: ResourceComponentProps) {
           {question.resultantAnswers.map((answer) => {
             console.log(answer.resourceContent);
             return (
-              <Grid item margin="auto" marginTop="1%">
+              <Grid item marginTop="1%" width="100%">
                 <ResourceDropdown
                   title={answer.text}
                   content={answer.resourceContent}

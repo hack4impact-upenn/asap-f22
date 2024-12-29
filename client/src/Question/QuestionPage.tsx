@@ -20,7 +20,9 @@ import StartOverButton from './Components/StartOverButton';
  * It also stores an array of "allQuestions" which will be used to handle to "back" functionality
  */
 function QuestionPage() {
-  const [currentQuestion, setCurrentQuestion] = useState({} as IQuestion);
+  const [currentQuestion, setCurrentQuestion] = useState<IQuestion | null>(
+    null,
+  );
   const [questionIndex, setQuestionIndex] = useState(0);
   const [allQuestions, setAllQuestions] = useState<string[]>([]);
 
@@ -100,10 +102,19 @@ function QuestionPage() {
 
   useEffect(() => {
     if (allQuestions.length === 0) {
-      getNextFromID('1');
-      appendQuestion('1');
+      // FLAG: HARDCODED
+      getNextFromID('000000010000000000000000');
+      appendQuestion('000000010000000000000000');
     }
-  }, [allQuestions]);
+  }, [allQuestions, currentQuestion, questionIndex]);
+
+  if (!currentQuestion) {
+    return (
+      <ScreenGrid>
+        <CircularProgress />
+      </ScreenGrid>
+    );
+  }
 
   let leftButton = <div />;
   if (questionIndex !== 0) {
@@ -121,14 +132,6 @@ function QuestionPage() {
     }
   } else {
     rightButton = <StartOverButton />;
-  }
-
-  if (!currentQuestion.text) {
-    return (
-      <ScreenGrid>
-        <CircularProgress />
-      </ScreenGrid>
-    );
   }
 
   if (currentQuestion.isQuestion) {
@@ -152,8 +155,8 @@ function QuestionPage() {
   return (
     <ScreenGrid>
       <SidebarComponent currentQuestion={currentQuestion}>
-        <Box height="100%" margin="auto">
-          <Box margin="auto">
+        <Box justifyContent="space-between" height="100%" margin="auto">
+          <Box width="50%" margin="auto">
             <ResourceComponent question={currentQuestion} />
           </Box>
         </Box>

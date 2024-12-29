@@ -1,27 +1,16 @@
 /**
- * All the functions for interacting with user data in the MongoDB database
+ * All the functions for interacting with question data in the MongoDB database
  */
-// import { hash } from 'bcrypt';
+import mongoose from 'mongoose';
 import { Answer, IAnswer } from '../models/answer.model';
 import { IQuestion, Question } from '../models/question.model';
-
-// async function getAnswerObj(ansId: string) {
-//   const resultantAnswer = await Answer.findById(ansId);
-//   const answerObj = {
-//     _id: resultantAnswer?._id,
-//     text: resultantAnswer?.text,
-//     resourceContent: resultantAnswer?.resourceContent,
-//     resultantQuestionId: resultantAnswer?.resultantQuestionId,
-//   } as IAnswer;
-//   return answerObj;
-// }
 
 /**
  * Get's a question from its ID
  * @param questID the id of the desired question
  * @returns the question with the given ID or null
  */
-const getQuestionById = async (questID: number) => {
+const getQuestionById = async (questID: mongoose.Types.ObjectId) => {
   const question = await Question.findById(questID).exec();
   if (!question) {
     throw new Error('Question not found');
@@ -29,7 +18,7 @@ const getQuestionById = async (questID: number) => {
   return question;
 };
 
-const getNextQuestionFromDB = async (answerID: number) => {
+const getNextQuestionFromDB = async (answerID: string) => {
   const answer = await Answer.findById(answerID).exec();
   if (!answer) {
     throw new Error('Answer not found');
@@ -51,7 +40,7 @@ const createQuestion = async (
   isQuestion: boolean,
 ) => {
   const newQuestion = {
-    _id: parseInt(_id, 10),
+    _id: new mongoose.Types.ObjectId(_id),
     text,
     resultantAnswers,
     isQuestion,
@@ -74,21 +63,27 @@ const getAllQuestionsFromDB = async () => {
   return questionList;
 };
 
-//  /**
-//   * A function that upgrades a certain user to an admin.
-//   * @param id The id of the user to upgrade.
-//   * @returns nothing?
-//   */
-
 const editQuestion = async (question: IQuestion) => {
-  const qID = question._id;
-  await Question.replaceOne({ _id: qID }, question).exec();
-  // save answers too
-  if (question.resultantAnswers != null) {
-    question.resultantAnswers.forEach(async (answer: IAnswer) => {
-      await Answer.replaceOne({ _id: answer._id }, answer).exec();
-    });
-  }
+  // create new answer IDs with this new content
+  const newAnswerIDs: mongoose.Types.ObjectId[] = [];
+  question.resultantAnswers.forEach(async (ans: IAnswer) => {
+    if (ans._id == null) {
+      const newAnswer = await Answer.create(ans);
+      newAnswerIDs.push(newAnswer._id);
+    } else {
+      newAnswerIDs.push(ans._id);
+    }
+  });
+
+  const newQuestion = {
+    _id: question._id,
+    text: question.text,
+    resultantAnswers: newAnswerIDs,
+    isQuestion: question.isQuestion,
+  };
+
+  // update question with new content and new answerIDs
+  await Question.replaceOne({ _id: question._id }, newQuestion).exec();
 };
 
 const deleteResource = async (question: IQuestion, resource: IAnswer) => {
@@ -112,7 +107,7 @@ const deleteQuestion = async (question: IQuestion) => {
  * @param id The id of the question to delete.
  * @returns The deleted {@link Question}
  */
-const deleteQuestionById = async (id: number) => {
+const deleteQuestionById = async (id: mongoose.Types.ObjectId) => {
   const question = await Question.findByIdAndDelete(id).exec();
   return question;
 };

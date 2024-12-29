@@ -3,6 +3,7 @@
  * admin users such as getting all users, deleting users and upgrading users.
  */
 import express from 'express';
+import mongoose from 'mongoose';
 import ApiError from '../util/apiError';
 import StatusCode from '../util/statusCode';
 import { IUser } from '../models/user.model';
@@ -173,7 +174,9 @@ const deleteResource = async (
   }
 
   // Check if resource to delete is an admin
-  const resource: IQuestion | null = await getQuestionById(parseInt(id, 10));
+  const resource: IQuestion | null = await getQuestionById(
+    new mongoose.Types.ObjectId(id),
+  );
   if (!resource) {
     next(ApiError.notFound(`Resource with id ${id} does not exist`));
     return;

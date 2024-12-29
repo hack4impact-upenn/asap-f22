@@ -10,8 +10,8 @@ import NotFoundPage from './NotFound/NotFoundPage';
 import HomePage from './Home/HomePage';
 import AboutThisProjectPage from './Home/AboutThisProjectPage';
 import AdminDashboardPage from './AdminDashboard/AdminDashboardPage';
-import EditResource from './components/EditResource';
-import EditQuestion from './components/EditQuestion';
+import EditResource from './AdminDashboard/EditResource';
+import EditQuestion from './AdminDashboard/EditQuestion';
 import {
   UnauthenticatedRoutesWrapper,
   ProtectedRoutesWrapper,
@@ -24,6 +24,7 @@ import LoginPage from './Authentication/LoginPage';
 import EmailResetPasswordPage from './Authentication/EmailResetPasswordPage';
 import ResetPasswordPage from './Authentication/ResetPasswordPage';
 import QuestionPage from './Question/QuestionPage';
+import AllResourcesPage from './Home/AllResourcesPage';
 
 function App() {
   /* const testa = {
@@ -62,9 +63,11 @@ function App() {
                       path="/reset-password/:token"
                       element={<ResetPasswordPage />}
                     />
-                    <Route path="/home" element={<HomePage />} />
-                    <Route path="/question" element={<QuestionPage />} />
                   </Route>
+
+                  <Route path="/home" element={<HomePage />} />
+                  <Route path="/question" element={<QuestionPage />} />
+                  <Route path="/all-resources" element={<AllResourcesPage />} />
                   {/* Routes accessed only if user is authenticated */}
                   <Route element={<ProtectedRoutesWrapper />}>
                     <Route
@@ -72,8 +75,8 @@ function App() {
                       element={<AdminDashboardPage />}
                     />
                     <Route path="/users" element={<AdminDashboardPage />} />
-                    <Route path="/editResource" element={<EditResource />} />
-                    <Route path="/editQuestion" element={<EditQuestion />} />
+                    <Route path="/edit-resource" element={<EditResource />} />
+                    <Route path="/edit-question" element={<EditQuestion />} />
                   </Route>
 
                   {/* Route which redirects to a different page depending on if the user is an authenticated or not by utilizing the DynamicRedirect component */}

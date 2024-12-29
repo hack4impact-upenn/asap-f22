@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import StatusCode from '../util/statusCode';
 import ApiError from '../util/apiError';
 import {
@@ -12,9 +13,8 @@ const getNextQuestion = async (
   next: express.NextFunction,
 ) => {
   const { answerID } = req.params;
-  const id = parseInt(answerID, 10);
   return (
-    getNextQuestionFromDB(id)
+    getNextQuestionFromDB(answerID)
       .then((nextQuestion) => {
         res.status(StatusCode.OK).send(nextQuestion);
       })
@@ -32,9 +32,8 @@ const getQuestionWithID = async (
   next: express.NextFunction,
 ) => {
   const { questionID } = req.params;
-  const id = parseInt(questionID, 10);
   return (
-    getQuestionById(id)
+    getQuestionById(new mongoose.Types.ObjectId(questionID))
       .then((nextQuestion) => {
         // console.log(nextQuestion);
         res.status(StatusCode.OK).send(nextQuestion);

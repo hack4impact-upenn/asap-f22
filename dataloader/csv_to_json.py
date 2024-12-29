@@ -11,18 +11,38 @@ def int_to_objectid(i):
 def clean_string(s):
     return re.sub(r'^[\'"]|[\'"]$', '', str(s))
 
-def questions_to_json(csv_file, json_output):
+def load_answers(csv_file):
+    answers = {}
+    with open(csv_file, encoding="utf-8", mode='r') as file:
+        csv_reader = csv.reader(file)
+        for row in csv_reader:
+            id, text, resultantQuestionId, resourceContent, resourceLink = row
+            answers[int_to_objectid(id)] = {
+                "_id": int_to_objectid(id),
+                "text": clean_string(text),
+                "resultantQuestionId": None if resultantQuestionId == "" else int_to_objectid(resultantQuestionId),
+                "resourceContent": clean_string(resourceContent),
+                "resourceLink": clean_string(resourceLink)
+            }
+    return answers
+
+def questions_to_json(csv_file, answers_file, json_output):
+    answers = load_answers(answers_file)
     data = []
     with open(csv_file, mode='r') as file:
         csv_reader = csv.reader(file)
         for row in csv_reader:
             id, text, resultantAnswers_str, isQuestion = row
 
+            resultantAnswerIds = [] if clean_string(resultantAnswers_str) == "" else [int_to_objectid(oid) for oid in re.split(r',\s*', clean_string(resultantAnswers_str))]
+            
+            resultantAnswers = [answers[answer_id] for answer_id in resultantAnswerIds if answer_id in answers]
+
             data.append({
                 "_id": int_to_objectid(id),
                 "text": clean_string(text),
-                "resultantAnswers": [] if clean_string(resultantAnswers_str) == "" else [int_to_objectid(oid) for oid in re.split(r',\s*', clean_string(resultantAnswers_str))],
-                "isQuestion": bool(isQuestion)
+                "resultantAnswers": resultantAnswers,
+                "isQuestion": False if isQuestion == "0" else True 
             })
 
     # Write the data as JSON
@@ -83,7 +103,7 @@ def main():
     answers_json = json_path + 'answers.json'
     definitions_json = json_path + 'definitions.json'
 
-    questions_to_json(questions_csv, questions_json)
+    questions_to_json(questions_csv, answers_csv, questions_json)
     print(f"Data has been successfully converted to JSON and saved to {questions_json}")
 
     answers_to_json(answers_csv, answers_json)

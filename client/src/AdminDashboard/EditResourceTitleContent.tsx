@@ -11,8 +11,8 @@ import {
 import { sizing } from '@mui/system';
 import { IAnswer } from '../util/types/answer';
 import { IQuestion } from '../util/types/question';
-import EditorGUI from './EditorGUI';
-import { deleteResource } from '../AdminDashboard/api';
+import EditorGUI from '../components/EditorGUI';
+import { deleteResource } from './api';
 
 export default function EditResourceTitleContent({
   values,
@@ -23,7 +23,7 @@ export default function EditResourceTitleContent({
   const [deleted, setDeleted] = useState<boolean>(false);
 
   const handleDelete = () => {
-    deleteResource(values, ans);
+    deleteResource(values);
     setDeleted(true);
   };
 

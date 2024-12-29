@@ -24,13 +24,12 @@ function HomePage() {
 
         <Grid
           container
-          height="100%"
           direction="column"
           xs
           alignItems="center"
           justifyContent="center"
         >
-          <Grid container direction="column" alignItems="center" padding={2}>
+          <Grid container direction="column" alignItems="center" marginTop={4}>
             <Typography variant="h2" fontWeight="bold" textAlign="center">
               Abuse and Sexual Assault Resource Tree
             </Typography>
@@ -47,18 +46,23 @@ function HomePage() {
                 Begin
               </Button>
               <Box padding={2}>
-                <Button>Or, See all resources instead</Button>
+                <Button href="/all-resources">
+                  Or, See all resources instead
+                </Button>
               </Box>
             </Grid>
           </Grid>
         </Grid>
-        <Grid container direction="column" padding={2} alignItems="center">
-          <Typography variant="body2" align="center" color="grayText">
+        <Grid item width="100%">
+          <Typography
+            variant="body2"
+            align="center"
+            color="grayText"
+            marginBottom={1.5}
+          >
             Disclaimer: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
             sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </Typography>
-        </Grid>
-        <Grid item width="100%">
           <Footer />
         </Grid>
       </Grid>

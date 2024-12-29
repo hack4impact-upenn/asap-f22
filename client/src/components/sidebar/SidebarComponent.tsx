@@ -10,6 +10,7 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SidebarContent from './SidebarContent';
 import Footer from '../Footer';
 import { IQuestion } from '../../util/types/question';
+import NavBar from '../NavBar';
 
 const drawerWidth = 260;
 
@@ -31,7 +32,7 @@ export default function SidebarComponent(props: Props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex' }} width="100vw" height="100vw">
+    <Box sx={{ display: 'flex' }} width="100vw" height="100vh">
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -39,7 +40,7 @@ export default function SidebarComponent(props: Props) {
           zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
       >
-        <Toolbar>
+        {/* <Toolbar>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
             ASAP Resource Tree
           </Typography>
@@ -52,23 +53,27 @@ export default function SidebarComponent(props: Props) {
           >
             <HelpOutlineIcon />
           </IconButton>
-        </Toolbar>
+        </Toolbar> */}
+        <NavBar />
       </AppBar>
       <Box
         component="main"
         sx={{
-          // flexGrow: 1,
-          p: 4,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          mt: '64px',
+          mb: '74px',
+          px: 0,
+          overflowY: 'auto',
+          width: { sm: `calc(100vw - ${drawerWidth}px)` },
         }}
       >
-        <Toolbar />
+        <Toolbar sx={{ p: 0 }} />
         {children}
+        <div style={{ height: '64px' }} />
       </Box>
       <Box
         component="nav"
+        marginTop="64px"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
       >
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
@@ -84,6 +89,7 @@ export default function SidebarComponent(props: Props) {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
+              marginTop: '64px',
             },
           }}
           anchor="right"
@@ -97,6 +103,7 @@ export default function SidebarComponent(props: Props) {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
+              marginTop: '64px',
             },
           }}
           anchor="right"

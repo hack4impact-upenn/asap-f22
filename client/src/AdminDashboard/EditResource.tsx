@@ -2,10 +2,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Typography, Container, Box, Alert, AlertTitle } from '@mui/material';
-import { editQuestion } from '../AdminDashboard/api';
+import { editQuestion } from './api';
 import { IAnswer } from '../util/types/answer';
 import { IQuestion } from '../util/types/question';
-import EditorGUI from './EditorGUI';
+import EditorGUI from '../components/EditorGUI';
 import EditResourceTitleContent from './EditResourceTitleContent';
 
 export default function EditResource() {

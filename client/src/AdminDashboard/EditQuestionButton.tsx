@@ -22,7 +22,7 @@ function EditQuestionButton({ question }: EditQuestionButtonProps) {
     return (
       <div>
         <Link
-          to="/editQuestion"
+          to="/edit-question"
           state={{ question }}
           style={{ textDecoration: 'none' }}
         >
@@ -35,7 +35,7 @@ function EditQuestionButton({ question }: EditQuestionButtonProps) {
   return (
     <div>
       <Link
-        to="/editResource"
+        to="/edit-resource"
         state={{ question }}
         style={{ textDecoration: 'none' }}
       >

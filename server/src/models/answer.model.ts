@@ -9,16 +9,12 @@
 import mongoose from 'mongoose';
 
 const AnswerSchema = new mongoose.Schema({
-  _id: {
-    type: Number,
-    required: true,
-  },
   text: {
     type: String,
     required: true,
   },
   resultantQuestionId: {
-    type: Number,
+    type: mongoose.Types.ObjectId,
     required: false,
   },
   resourceContent: {
@@ -32,10 +28,10 @@ const AnswerSchema = new mongoose.Schema({
 });
 
 interface IAnswer extends mongoose.Document {
-  _id: number;
+  _id: mongoose.Types.ObjectId;
   text: string;
   resourceContent: string;
-  resultantQuestionId: number;
+  resultantQuestionId: mongoose.Types.ObjectId;
   resourceLink: string;
 }
 
