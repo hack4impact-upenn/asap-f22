@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { Typography, Grid } from '@mui/material';
-import ScreenGrid from '../components/ScreenGrid';
 import { IQuestion } from '../util/types/question';
 import ResourceDropdown from '../components/ResourceDropdown';
 
@@ -38,9 +37,8 @@ function ResourceComponent(props: ResourceComponentProps) {
             </Typography>
           </Grid>
           {question.resultantAnswers.map((answer) => {
-            console.log(answer.resourceContent);
             return (
-              <Grid item marginTop="1%" width="100%">
+              <Grid item marginTop="1%" width="100%" key={answer._id}>
                 <ResourceDropdown
                   title={answer.text}
                   content={answer.resourceContent}

@@ -68,7 +68,6 @@ export default function SidebarComponent(props: Props) {
       >
         <Toolbar sx={{ p: 0 }} />
         {children}
-        <div style={{ height: '64px' }} />
       </Box>
       <Box
         component="nav"
@@ -89,6 +88,7 @@ export default function SidebarComponent(props: Props) {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
+              paddingBottom: '50px',
               marginTop: '64px',
             },
           }}
@@ -104,6 +104,7 @@ export default function SidebarComponent(props: Props) {
               boxSizing: 'border-box',
               width: drawerWidth,
               marginTop: '64px',
+              paddingBottom: '50px',
             },
           }}
           anchor="right"

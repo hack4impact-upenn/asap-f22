@@ -23,6 +23,16 @@ function HTMLMapper(props: HTMLMapperProps) {
             {children}
           </a>
         ),
+        // eslint-disable-next-line react/jsx-props-no-spreading, react/no-unstable-nested-components
+        ul: ({ children, ...rest }: any) => (
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          <ul {...rest}>{children}</ul>
+        ),
+        // eslint-disable-next-line react/jsx-props-no-spreading, react/no-unstable-nested-components
+        li: ({ children, ...rest }: any) => (
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          <li {...rest}>{children}</li>
+        ),
       }}
     </HtmlMapper>
   );

@@ -6,6 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Typography from '@mui/material/Typography';
 
 function StartOverButton() {
   const navigate = useNavigate();
@@ -61,9 +62,9 @@ function StartOverButton() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <Typography variant="h6" paddingTop={3} paddingLeft={3}>
           Are you sure you want to start over?
-        </DialogTitle>
+        </Typography>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             You will lose all progress and return to the home page.

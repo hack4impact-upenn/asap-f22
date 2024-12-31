@@ -1,7 +1,9 @@
 import React from 'react';
-import { Typography, Grid } from '@mui/material';
+import { Typography, AppBar, Box } from '@mui/material';
 import ScreenGrid from '../components/ScreenGrid';
-import QuestionTable from './QuestionTable';
+import QuestionTable from './Tables/QuestionTable';
+import ResourceTable from './Tables/ResourceTable';
+import DefinitionTable from './Tables/DefinitionTable';
 import NavBar from '../components/NavBar';
 
 /**
@@ -11,26 +13,73 @@ import NavBar from '../components/NavBar';
 function AdminDashboardPage() {
   return (
     <ScreenGrid>
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        alignItems="flex-start"
-        height="100vh"
-        fit-content="100%"
+      <AppBar
+        position="fixed"
+        sx={{
+          zIndex: 1,
+        }}
       >
-        <Grid item width="100%">
-          <NavBar />
-        </Grid>
-        <Grid item marginX="auto">
+        <NavBar />
+      </AppBar>
+      <Box
+        component="main"
+        sx={{
+          mt: '64px',
+          px: 0,
+          overflowY: 'auto',
+          width: '100%',
+        }}
+      >
+        <div
+          style={{
+            margin: 'auto',
+            width: '70vw',
+            marginTop: '60px',
+            marginBottom: '60px',
+          }}
+        >
           <Typography variant="h2">Welcome to the Admin Dashboard</Typography>
-
-          <div style={{ height: '60vh', width: '60vw' }}>
-            {/* <UserTable /> */}
-            <QuestionTable />
+          <div
+            style={{
+              marginTop: '20px',
+              marginBottom: '40px',
+            }}
+          >
+            <Typography variant="h5" marginBottom="10px">
+              Questions
+            </Typography>
+            <div style={{ width: '100%', height: '60vh' }}>
+              <QuestionTable />
+            </div>
           </div>
-        </Grid>
-      </Grid>
+          <div
+            style={{
+              marginTop: '40px',
+              marginBottom: '40px',
+            }}
+          >
+            <Typography variant="h5" marginBottom="10px">
+              Resources
+            </Typography>
+            <div style={{ width: '100%', height: '60vh' }}>
+              <ResourceTable />
+            </div>
+          </div>
+          <div
+            style={{
+              marginTop: '40px',
+              marginBottom: '40px',
+            }}
+          >
+            <Typography variant="h5" marginBottom="10px">
+              Definitions
+            </Typography>
+            <div style={{ width: '100%', height: '60vh' }}>
+              <DefinitionTable />
+            </div>
+          </div>
+        </div>
+      </Box>
     </ScreenGrid>
   );
 }

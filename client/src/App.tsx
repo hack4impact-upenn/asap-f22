@@ -10,13 +10,13 @@ import NotFoundPage from './NotFound/NotFoundPage';
 import HomePage from './Home/HomePage';
 import AboutThisProjectPage from './Home/AboutThisProjectPage';
 import AdminDashboardPage from './AdminDashboard/AdminDashboardPage';
-import EditResource from './AdminDashboard/EditResource';
-import EditQuestion from './AdminDashboard/EditQuestion';
+import EditResourcePage from './AdminDashboard/EditResourcePage';
+import EditQuestionPage from './AdminDashboard/EditQuestionPage';
+import EditDefinitionPage from './AdminDashboard/EditDefinitionPage';
 import {
   UnauthenticatedRoutesWrapper,
   ProtectedRoutesWrapper,
   DynamicRedirect,
-  AdminRoutesWrapper,
 } from './util/routes';
 import VerifyAccountPage from './Authentication/VerifyAccountPage';
 import RegisterPage from './Authentication/RegisterPage';
@@ -75,8 +75,18 @@ function App() {
                       element={<AdminDashboardPage />}
                     />
                     <Route path="/users" element={<AdminDashboardPage />} />
-                    <Route path="/edit-resource" element={<EditResource />} />
-                    <Route path="/edit-question" element={<EditQuestion />} />
+                    <Route
+                      path="/edit-resource"
+                      element={<EditResourcePage />}
+                    />
+                    <Route
+                      path="/edit-question"
+                      element={<EditQuestionPage />}
+                    />
+                    <Route
+                      path="/edit-definition"
+                      element={<EditDefinitionPage />}
+                    />
                   </Route>
 
                   {/* Route which redirects to a different page depending on if the user is an authenticated or not by utilizing the DynamicRedirect component */}

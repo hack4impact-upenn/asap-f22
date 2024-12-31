@@ -39,10 +39,8 @@ function AllResourcesPage() {
   return (
     <ScreenGrid>
       <SidebarComponent currentQuestion={currentQuestion}>
-        <Box justifyContent="space-between" height="100%" margin="auto">
-          <Box width="50%" margin="auto">
-            <ResourceComponent question={currentQuestion} />
-          </Box>
+        <Box width="75%" marginX="auto" marginBottom="50px">
+          <ResourceComponent question={currentQuestion} />
         </Box>
       </SidebarComponent>
     </ScreenGrid>

@@ -19,10 +19,10 @@ const drawerWidth = 260;
 export default function SidebarContent(props: SidebarContentProps) {
   const { title, definition, link } = props;
   return (
-    <Box>
+    <Box sx={{ maxWidth: drawerWidth, overflow: 'auto' }}>
       <Card variant="outlined" sx={{ maxWidth: drawerWidth, overflow: 'auto' }}>
-        <CardContent>
-          <Typography variant="h5" component="div">
+        <CardContent sx={{ maxWidth: drawerWidth, overflow: 'auto' }}>
+          <Typography variant="h6" component="div">
             {title}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">

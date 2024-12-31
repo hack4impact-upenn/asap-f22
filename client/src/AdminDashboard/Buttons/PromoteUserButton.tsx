@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
-import { upgradePrivilege } from './api';
-import LoadingButton from '../components/buttons/LoadingButton';
-import ConfirmationModal from '../components/ConfirmationModal';
+import { upgradePrivilege } from '../api';
+import LoadingButton from '../../components/buttons/LoadingButton';
+import ConfirmationModal from '../../components/ConfirmationModal';
 
 interface PromoteUserButtonProps {
   admin: boolean;

@@ -23,6 +23,9 @@ const getNextQuestionFromDB = async (answerID: string) => {
   if (!answer) {
     throw new Error('Answer not found');
   }
+  if (!answer.resultantQuestionId) {
+    throw new Error('No resultant question found');
+  }
   const question = await getQuestionById(answer.resultantQuestionId);
   return question;
 };
@@ -65,20 +68,20 @@ const getAllQuestionsFromDB = async () => {
 
 const editQuestion = async (question: IQuestion) => {
   // create new answer IDs with this new content
-  const newAnswerIDs: mongoose.Types.ObjectId[] = [];
+  const newAnswers: IAnswer[] = [];
   question.resultantAnswers.forEach(async (ans: IAnswer) => {
     if (ans._id == null) {
       const newAnswer = await Answer.create(ans);
-      newAnswerIDs.push(newAnswer._id);
+      newAnswers.push(newAnswer);
     } else {
-      newAnswerIDs.push(ans._id);
+      newAnswers.push(ans);
     }
   });
 
-  const newQuestion = {
+  const newQuestion: IQuestion = {
     _id: question._id,
     text: question.text,
-    resultantAnswers: newAnswerIDs,
+    resultantAnswers: newAnswers as [IAnswer],
     isQuestion: question.isQuestion,
   };
 

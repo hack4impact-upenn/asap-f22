@@ -1,7 +1,7 @@
 import express from 'express';
 import StatusCode from '../util/statusCode';
 import ApiError from '../util/apiError';
-import getDefinitionsForQuestionFromDB from '../services/definition.service';
+import { getDefinitionsForQuestionFromDB } from '../services/definition.service';
 
 const getDefinitionsForQuestionID = async (
   req: express.Request,

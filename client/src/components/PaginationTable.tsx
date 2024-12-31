@@ -61,7 +61,7 @@ function Row({ row, columns }: RowProps) {
         if (value === null || value === undefined) {
           return null;
         }
-        if (column.id === 'edit') {
+        if (column.id === 'edit' || column.id === 'delete') {
           return (
             <TableCell key={column.id + row.key} align={column.align || 'left'}>
               {value}

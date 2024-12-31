@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import JoditEditor from 'jodit-react';
 import {
   Typography,
@@ -7,75 +7,54 @@ import {
   CardActions,
   CardContent,
 } from '@mui/material';
-import ConfirmationModal from './ConfirmationModal';
-import { IAnswer } from '../util/types/answer';
 
 export default function EditorGUI({
   values,
   setValue,
   type,
-  idx,
   deleted,
+  idx,
 }: any) {
   const editor = useRef(null);
   // console.log(values);
   let defaultText = '';
-  if (type === 'question') {
+  if (type === 'text') {
     defaultText = values.text;
+  } else if (type === 'resourceContent') {
+    defaultText = values.resourceContent;
+  } else if (type === 'definition') {
+    defaultText = values.definition;
+  } else if (type === 'word') {
+    defaultText = values.word;
   } else if (type === 'title') {
     defaultText = values.resultantAnswers[idx].text;
-  } else {
-    defaultText = values.resultantAnswers[idx].resourceContent;
+  } else if (type === 'link') {
+    if (values.link === undefined) {
+      defaultText = '';
+    } else {
+      defaultText = values.link;
+    }
+  } else if (type === 'resourceLink') {
+    if (values.resourceLink === undefined) {
+      defaultText = '';
+    } else {
+      defaultText = values.resourceLink;
+    }
   }
   // change useState input if we store everything as html in db
   const [text, setText] = useState(defaultText);
   const [clicked, setClicked] = useState(false);
 
-  const updateTitle = (index: any) => {
-    const newArray = values.resultantAnswers.map((item: IAnswer, i: any) => {
-      if (index === i) {
-        const newAnswer: IAnswer = {
-          // eslint-disable-next-line no-underscore-dangle
-          _id: item._id,
-          // eslint-disable-next-line object-shorthand
-          text: text,
-          resultantQuestionId: item.resultantQuestionId,
-          resourceContent: item.resourceContent,
-          resourceLink: item.resourceLink,
-        };
-        return newAnswer;
-      }
-      return item;
-    });
-    setValue('resultantAnswers', newArray);
-  };
-
-  const updateDescription = (index: any) => {
-    const newArray = values.resultantAnswers.map((item: IAnswer, i: any) => {
-      if (index === i) {
-        const newAnswer: IAnswer = {
-          // eslint-disable-next-line no-underscore-dangle
-          _id: item._id,
-          text: item.text,
-          resultantQuestionId: item.resultantQuestionId,
-          resourceContent: text,
-          resourceLink: text,
-        };
-        return newAnswer;
-      }
-      return item;
-    });
-    setValue('resultantAnswers', newArray);
-  };
-
   const handleUpdate = () => {
-    if (type === 'question') {
-      // const newText = text.replaceAll(/<[^>]*>?/gm, '');
-      setValue('text', text);
-    } else if (type === 'title') {
-      updateTitle(idx);
-    } else if (type === 'description') {
-      updateDescription(idx);
+    if (type === 'link' || type === 'resourceLink') {
+      // strip link of html tags
+      const temp = document.createElement('div');
+      temp.innerHTML = text;
+      const newText = temp.textContent || temp.innerText || '';
+      setText(newText);
+      setValue(type, newText);
+    } else {
+      setValue(type, text);
     }
     setClicked(false);
   };
@@ -83,17 +62,15 @@ export default function EditorGUI({
   const handleCancelClick = () => {
     setClicked(!clicked);
     setText(defaultText);
-    console.log(text);
   };
 
   return (
-    <Card
-      className="App"
-      sx={{ boxShadow: 2 }}
-      style={deleted ? { color: '#C0C0C0' } : {}}
-    >
+    <Card sx={{ boxShadow: 2 }} style={deleted ? { color: '#C0C0C0' } : {}}>
       <CardContent>
-        <Typography variant="h6" dangerouslySetInnerHTML={{ __html: text }} />
+        <Typography
+          variant="body1"
+          dangerouslySetInnerHTML={{ __html: text }}
+        />
       </CardContent>
       <CardActions>
         <Button
@@ -104,6 +81,16 @@ export default function EditorGUI({
         >
           Edit
         </Button>
+        {type === 'link' || type === 'resourceLink' ? (
+          <Button
+            variant="outlined"
+            sx={{ margin: 1 }}
+            onClick={() => window.open(text, '_blank')}
+            disabled={deleted}
+          >
+            Open Link
+          </Button>
+        ) : null}
       </CardActions>
       {clicked && (
         <CardContent>

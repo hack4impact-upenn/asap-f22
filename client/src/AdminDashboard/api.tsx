@@ -3,6 +3,8 @@
  */
 import { deleteData, putData } from '../util/api';
 import { IQuestion } from '../util/types/question';
+import { IAnswer } from '../util/types/answer';
+import { IDefinition } from '../util/types/definition';
 
 /**
  * Sends a request to the server to delete a user
@@ -21,10 +23,31 @@ async function deleteResource(id: string) {
   return true;
 }
 
-// routes! hopefully
+async function editResource(resource: IAnswer) {
+  const res = await putData(`admin/editResource`, {
+    resource,
+  });
+  if (res.error) return false;
+  return true;
+}
+
 async function editQuestion(question: IQuestion) {
   const res = await putData(`admin/editQuestion`, {
     question,
+  });
+  if (res.error) return false;
+  return true;
+}
+
+async function deleteDefinition(id: string) {
+  const res = await deleteData(`admin/definition/${id}`);
+  if (res.error) return false;
+  return true;
+}
+
+async function editDefinition(definition: IDefinition) {
+  const res = await putData(`admin/editDefinition`, {
+    definition,
   });
   if (res.error) return false;
   return true;
@@ -41,4 +64,12 @@ async function upgradePrivilege(email: string) {
   return true;
 }
 
-export { deleteUser, editQuestion, deleteResource, upgradePrivilege };
+export {
+  deleteUser,
+  editQuestion,
+  editResource,
+  deleteResource,
+  editDefinition,
+  deleteDefinition,
+  upgradePrivilege,
+};

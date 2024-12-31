@@ -30,9 +30,9 @@ const AnswerSchema = new mongoose.Schema({
 interface IAnswer extends mongoose.Document {
   _id: mongoose.Types.ObjectId;
   text: string;
-  resourceContent: string;
-  resultantQuestionId: mongoose.Types.ObjectId;
-  resourceLink: string;
+  resultantQuestionId: mongoose.Types.ObjectId | null;
+  resourceContent: string | null;
+  resourceLink: string | null;
 }
 
 const Answer = mongoose.model<IAnswer>('Answer', AnswerSchema);

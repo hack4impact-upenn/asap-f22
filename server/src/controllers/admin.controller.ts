@@ -3,11 +3,9 @@
  * admin users such as getting all users, deleting users and upgrading users.
  */
 import express from 'express';
-import mongoose from 'mongoose';
 import ApiError from '../util/apiError';
 import StatusCode from '../util/statusCode';
 import { IUser } from '../models/user.model';
-import { IQuestion } from '../models/question.model';
 import {
   upgradeUserToAdmin,
   getUserByEmail,
@@ -17,9 +15,17 @@ import {
 import {
   editQuestion,
   getAllQuestionsFromDB,
-  getQuestionById,
-  deleteQuestionById,
 } from '../services/question.service';
+import {
+  getAllDefinitionsFromDB,
+  editDefinitionById,
+  deleteDefinitionById,
+} from '../services/definition.service';
+import {
+  getAllResourcesFromDB,
+  editAnswerById,
+  deleteAnswerById,
+} from '../services/answer.service';
 
 /**
  * Get all users from the database. Upon success, send the a list of all users in the res body with 200 OK status code.
@@ -159,10 +165,45 @@ const editQuestionText = async (
     });
 };
 
-/**
- * Delete a resource question from the database. The id of the resource is expected to be in the request parameter (url). Send a 200 OK status code on success.
- */
-const deleteResource = async (
+const getAllDefinitions = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  return (
+    getAllDefinitionsFromDB()
+      .then((definitionList) => {
+        res.status(StatusCode.OK).send(definitionList);
+      })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .catch((e) => {
+        next(ApiError.internal('Unable to retrieve all definitions'));
+      })
+  );
+};
+
+const editDefinition = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { definition } = req.body;
+  if (!definition) {
+    next(ApiError.missingFields(['definition']));
+    return;
+  }
+
+  editDefinitionById(definition)
+    .then(() => {
+      res.sendStatus(StatusCode.OK);
+    })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    .catch((e) => {
+      next(ApiError.internal('Unable to edit definition.'));
+    });
+};
+
+const deleteDefinition = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
@@ -173,21 +214,73 @@ const deleteResource = async (
     return;
   }
 
-  // Check if resource to delete is an admin
-  const resource: IQuestion | null = await getQuestionById(
-    new mongoose.Types.ObjectId(id),
-  );
-  if (!resource) {
-    next(ApiError.notFound(`Resource with id ${id} does not exist`));
-    return;
-  }
-
-  // resource is a question
-  deleteQuestionById(resource._id)
-    .then(() => res.sendStatus(StatusCode.OK))
+  deleteDefinitionById(id)
+    .then(() => {
+      res.sendStatus(StatusCode.OK);
+    })
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     .catch((e) => {
-      next(ApiError.internal('Failed to delete question.'));
+      next(ApiError.internal('Unable to delete definition.'));
+    });
+};
+
+const getAllResources = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  return (
+    getAllResourcesFromDB()
+      .then((resourceList) => {
+        res.status(StatusCode.OK).send(resourceList);
+      })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .catch((e) => {
+        next(ApiError.internal('Unable to retrieve all resources'));
+      })
+  );
+};
+
+const editResource = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { resource } = req.body;
+  if (!resource) {
+    next(ApiError.missingFields(['resource']));
+  }
+
+  editAnswerById(resource)
+    .then(() => {
+      res.sendStatus(StatusCode.OK);
+    })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    .catch((e) => {
+      next(ApiError.internal('Unable to edit resource.'));
+    });
+};
+
+/**
+ * Delete a resource answer object from the database. The id of the resource is expected to be in the request parameter (url). Send a 200 OK status code on success.
+ */
+const deleteResource = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { id } = req.params;
+  if (!id) {
+    next(ApiError.missingFields(['id']));
+  }
+
+  deleteAnswerById(id)
+    .then(() => {
+      res.sendStatus(StatusCode.OK);
+    })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    .catch((e) => {
+      next(ApiError.internal('Unable to delete resource.'));
     });
 };
 
@@ -197,5 +290,10 @@ export {
   deleteUser,
   getAllQuestions,
   editQuestionText,
+  getAllDefinitions,
+  editDefinition,
+  deleteDefinition,
+  getAllResources,
+  editResource,
   deleteResource,
 };

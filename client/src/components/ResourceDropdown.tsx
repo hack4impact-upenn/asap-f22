@@ -51,9 +51,12 @@ export default function ResourceDropdown(props: ResourceDropdownProps) {
       <div style={{ backgroundColor: 'rgba(211,211,211,0.4)', width: '100%' }}>
         <Collapse in={open} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography>
-              {content ? <HTMLMapper text={content} /> : ''}
-            </Typography>
+            {content ? (
+              // eslint-disable-next-line react/no-danger
+              <div dangerouslySetInnerHTML={{ __html: content }} />
+            ) : (
+              ''
+            )}
             {link && link !== '' ? (
               <Grid container justifyContent="flex-end">
                 <Button

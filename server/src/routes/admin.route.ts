@@ -9,8 +9,13 @@ import {
   upgradePrivilege,
   deleteUser,
   getAllQuestions,
-  deleteResource,
   editQuestionText,
+  getAllDefinitions,
+  editDefinition,
+  deleteDefinition,
+  getAllResources,
+  editResource,
+  deleteResource,
 } from '../controllers/admin.controller';
 import { isAuthenticated } from '../controllers/auth.middleware';
 import { approve } from '../controllers/auth.controller';
@@ -60,7 +65,7 @@ router.delete('/:email', isAuthenticated, isAdmin, deleteUser);
  * authenticated and is an admin.
  */
 //  router.get('/allQuestions', isAuthenticated, isAdmin, getAllQuestions);
-router.get('/allQuestions', getAllQuestions);
+router.get('/allQuestions', isAuthenticated, getAllQuestions);
 
 /**
  * A PUT route to edit certain question. Checks first if the requestor is a
@@ -68,15 +73,18 @@ router.get('/allQuestions', getAllQuestions);
  * Expects an IQuestion
 
  */
-// router.put('/editQuestion', isAuthenticated, isAdmin, editQuestionText);
-router.put('/editQuestion', editQuestionText);
+router.put('/editQuestion', isAuthenticated, editQuestionText);
 
-/**
- * A PUT route to delete a resource. Checks first if the requestor
- * is a authenticated and is an admin.
- * Expects the following fields in the URL:
- * resource id (string) - The id of the resource to be deleted
- */
-router.delete('/resource/:id', isAuthenticated, isAdmin, deleteResource);
+router.get('/allResources', isAuthenticated, getAllResources);
+
+router.put('/editResource', isAuthenticated, editResource);
+
+router.delete('/resource/:id', isAuthenticated, deleteResource);
+
+router.get('/allDefinitions', isAuthenticated, getAllDefinitions);
+
+router.put('/editDefinition', isAuthenticated, editDefinition);
+
+router.delete('/definition/:id', isAuthenticated, deleteDefinition);
 
 export default router;

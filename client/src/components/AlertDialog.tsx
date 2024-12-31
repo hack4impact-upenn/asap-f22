@@ -4,7 +4,7 @@ import {
   Dialog,
   DialogContent,
   DialogContentText,
-  DialogTitle,
+  Typography,
   DialogActions,
 } from '@mui/material';
 
@@ -43,7 +43,9 @@ function AlertDialog({ showAlert, title, message, onClose }: AlertDialogProps) {
         },
       }}
     >
-      <DialogTitle>{title}</DialogTitle>
+      <Typography variant="h6" paddingTop={3} paddingLeft={3}>
+        {title}
+      </Typography>
       <DialogContent>
         <DialogContentText>{message}</DialogContentText>
       </DialogContent>

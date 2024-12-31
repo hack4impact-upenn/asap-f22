@@ -82,8 +82,8 @@ def definitions_to_json(csv_file, json_output):
                 "_id": int_to_objectid(id),
                 "word": clean_string(word),
                 "definition": clean_string(definition),
-                "questionIds": [int_to_objectid(qid) for qid in re.split(r',\s*', clean_string(questionIds))],
-                "link": clean_string(link)
+                "link": clean_string(link),
+                "questionIds": [int_to_objectid(qid) for qid in re.split(r',\s*', clean_string(questionIds))]
             })
         # except:
         #     print(row_idx)

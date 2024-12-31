@@ -48,9 +48,9 @@ const importData = async () => {
     const answerFormattedData = answerData.map((item: any) => ({
       ...item,
       _id: new mongoose.Types.ObjectId(item._id), // Convert _id to ObjectId
-      resultantQuestionId: new mongoose.Types.ObjectId(
-        item.resultantQuestionId,
-      ), // Convert resultantQuestionId to ObjectId
+      resultantQuestionId: item.resultantQuestionId
+        ? new mongoose.Types.ObjectId(item.resultantQuestionId)
+        : null, // Convert resultantQuestionId to ObjectId
     }));
 
     // Insert the transformed data

@@ -40,12 +40,12 @@ export default function SidebarContent(props: SidebarProps) {
   return (
     <div>
       <List sx={{ marginBottom: '30px' }}>
-        <ListItem>
+        <ListItem key="definitions">
           <h1>Definitions</h1>
         </ListItem>
         {definitions
           ? definitions.map((definition) => (
-              <ListItem>
+              <ListItem key={definition._id}>
                 <SidebarContentItem
                   title={definition.word}
                   definition={definition.definition}
