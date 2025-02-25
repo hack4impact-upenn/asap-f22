@@ -141,6 +141,9 @@ function AboutThisProjectPage() {
                       Penn Womens Center
                     </ListItem>
                     <ListItem sx={{ display: 'list-item' }}>
+                      Penn Title IX Office
+                    </ListItem>
+                    <ListItem sx={{ display: 'list-item' }}>
                       Special Services
                     </ListItem>
                   </List>

@@ -29,6 +29,7 @@ function RegisterPage() {
     email: '',
     password: '',
     confirmPassword: '',
+    registerSecret: '',
   };
   const defaultShowErrors = {
     firstName: false,
@@ -36,6 +37,7 @@ function RegisterPage() {
     email: false,
     password: false,
     confirmPassword: false,
+    registerSecret: false,
     alert: false,
   };
   const defaultErrorMessages = {
@@ -44,6 +46,7 @@ function RegisterPage() {
     email: '',
     password: '',
     confirmPassword: '',
+    registerSecret: '',
     alert: '',
   };
   type ValueType = keyof typeof values;
@@ -132,12 +135,18 @@ function RegisterPage() {
 
   async function handleSubmit() {
     if (validateInputs()) {
-      register(values.firstName, values.lastName, values.email, values.password)
+      register(
+        values.firstName,
+        values.lastName,
+        values.email,
+        values.password,
+        values.registerSecret,
+      )
         .then(() => {
           setShowError('alert', true);
           setAlertTitle('');
           setRegistered(true);
-          setErrorMessage('alert', 'Check email to verify account');
+          setErrorMessage('alert', 'Registration successful! Please login.');
         })
         .catch((e) => {
           setShowError('alert', true);
@@ -217,12 +226,25 @@ function RegisterPage() {
                 size="small"
                 type="password"
                 required
-                label=" Confirm Password"
+                label="Confirm Password"
                 value={values.confirmPassword}
                 onChange={(e) => setValue('confirmPassword', e.target.value)}
               />
             </Grid>
           </FormRow>
+          <Grid item width="1">
+            <TextField
+              fullWidth
+              error={showError.registerSecret}
+              helperText={errorMessage.registerSecret}
+              size="small"
+              type="password"
+              required
+              label="Register Secret"
+              value={values.registerSecret}
+              onChange={(e) => setValue('registerSecret', e.target.value)}
+            />
+          </Grid>
           <Grid item container justifyContent="center">
             <PrimaryButton
               fullWidth

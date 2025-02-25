@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useData } from '../util/api';
+import { logout } from '../Home/api';
 
 // let path = "";
 // let authenticated = router.get("/authstatus")
@@ -57,14 +58,29 @@ function NavBar() {
           >
             ASAP Resource Tree
           </Typography>
-          <Button
-            variant="contained"
-            disableElevation
-            size="large"
-            onClick={routeChange}
-          >
-            {buttonText}
-          </Button>
+          <div>
+            <Button
+              variant="contained"
+              disableElevation
+              size="large"
+              onClick={routeChange}
+            >
+              {buttonText}
+            </Button>
+            {data && !data.error && (
+              <Button
+                variant="contained"
+                disableElevation
+                size="large"
+                onClick={() => {
+                  logout();
+                  navigate('/home');
+                }}
+              >
+                Logout
+              </Button>
+            )}
+          </div>
         </Toolbar>
       </AppBar>
     </Box>

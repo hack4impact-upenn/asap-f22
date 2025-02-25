@@ -15,10 +15,7 @@ import {
   getUserByResetPasswordToken,
   getUserByVerificationToken,
 } from '../services/user.service';
-import {
-  emailResetPasswordLink,
-  emailVerificationLink,
-} from '../services/mail.service';
+import { emailResetPasswordLink } from '../services/mail.service';
 import ApiError from '../util/apiError';
 
 /**
@@ -102,10 +99,16 @@ const register = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { firstName, lastName, email, password } = req.body;
-  if (!firstName || !lastName || !email || !password) {
+  const { firstName, lastName, email, password, registerSecret } = req.body;
+  if (!firstName || !lastName || !email || !password || !registerSecret) {
     next(
-      ApiError.missingFields(['firstName', 'lastName', 'email', 'password']),
+      ApiError.missingFields([
+        'firstName',
+        'lastName',
+        'email',
+        'password',
+        'registerSecret',
+      ]),
     );
     return;
   }
@@ -120,9 +123,14 @@ const register = async (
     !email.match(emailRegex) ||
     !password.match(passwordRegex) ||
     !firstName.match(nameRegex) ||
-    !lastName.match(nameRegex)
+    !lastName.match(nameRegex) ||
+    registerSecret !== process.env.REGISTER_SECRET
   ) {
-    next(ApiError.badRequest('Invalid email, password, or name.'));
+    next(
+      ApiError.badRequest(
+        'Invalid email, password, name, or secret to create an account.',
+      ),
+    );
     return;
   }
 
@@ -151,16 +159,20 @@ const register = async (
       password,
     );
     // Don't need verification email if testing
-    if (process.env.NODE_ENV === 'test') {
-      user!.verified = true;
-      await user?.save();
+    // if (process.env.NODE_ENV === 'test') {
+    //   user!.verified = true;
+    //   await user?.save();
+    // } else {
+    //   const verificationToken = crypto.randomBytes(32).toString('hex');
+    //   user!.verificationToken = verificationToken;
+    //   await user!.save();
+    //   await emailVerificationLink(lowercaseEmail, verificationToken);
+    // }
+    if (user) {
+      res.sendStatus(StatusCode.CREATED);
     } else {
-      const verificationToken = crypto.randomBytes(32).toString('hex');
-      user!.verificationToken = verificationToken;
-      await user!.save();
-      await emailVerificationLink(lowercaseEmail, verificationToken);
+      next(ApiError.internal('Unable to register user.'));
     }
-    res.sendStatus(StatusCode.CREATED);
   } catch (err) {
     next(ApiError.internal('Unable to register user.'));
   }

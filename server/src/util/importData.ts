@@ -16,9 +16,10 @@ const importData = async () => {
     console.log('Connected to MongoDB');
 
     const questionRawData = fs.readFileSync(
-      'C:/Users/rosew/Documents/Hack4Impact/asap-f22/dataloader/json_files/questions.json',
+      '../../dataloader/json_files/questions.json',
       'utf-8',
     ); // Replace with your file path
+
     const questionData = JSON.parse(questionRawData);
 
     // Transform the data
@@ -34,14 +35,19 @@ const importData = async () => {
       })),
     }));
 
+    // clear database of existing data
+    await Question.deleteMany({});
+    console.log('All questions cleared');
+
     // Insert the transformed data
     await Question.insertMany(questionFormattedData);
     console.log('QuestionData imported successfully');
 
     const answerRawData = fs.readFileSync(
-      'C:/Users/rosew/Documents/Hack4Impact/asap-f22/dataloader/json_files/answers.json',
+      '../../dataloader/json_files/answers.json',
       'utf-8',
     ); // Replace with your file path
+
     const answerData = JSON.parse(answerRawData);
 
     // Transform the data
@@ -53,14 +59,18 @@ const importData = async () => {
         : null, // Convert resultantQuestionId to ObjectId
     }));
 
+    await Answer.deleteMany({});
+    console.log('All answers cleared');
+
     // Insert the transformed data
     await Answer.insertMany(answerFormattedData);
     console.log('Answer Data imported successfully');
 
     const definitionsRawData = fs.readFileSync(
-      'C:/Users/rosew/Documents/Hack4Impact/asap-f22/dataloader/json_files/definitions.json',
+      '../../dataloader/json_files/definitions.json',
       'utf-8',
     ); // Replace with your file path
+
     const definitionsData = JSON.parse(definitionsRawData);
 
     // Transform the data
@@ -71,6 +81,9 @@ const importData = async () => {
         (id: string) => new mongoose.Types.ObjectId(id),
       ),
     }));
+
+    await Definition.deleteMany({});
+    console.log('All definitions cleared');
 
     // Insert the transformed data
     await Definition.insertMany(definitionsFormattedData);

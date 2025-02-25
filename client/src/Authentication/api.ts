@@ -49,6 +49,7 @@ async function register(
   lastName: string,
   email: string,
   password: string,
+  registerSecret: string,
 ) {
   const lowercaseEmail = email.toLowerCase();
   const res = await postData('auth/register', {
@@ -56,6 +57,7 @@ async function register(
     lastName,
     email: lowercaseEmail,
     password,
+    registerSecret,
   });
   if (res.error) {
     throw Error(res.error.message);

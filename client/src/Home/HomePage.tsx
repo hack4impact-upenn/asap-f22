@@ -30,24 +30,47 @@ function HomePage() {
           justifyContent="center"
         >
           <Grid container direction="column" alignItems="center" marginTop={4}>
-            <Typography variant="h2" fontWeight="bold" textAlign="center">
+            <Typography
+              sx={{
+                fontSize: {
+                  xs: '2.2rem', // Smaller font size for mobile
+                  sm: '2.5rem', // Medium size for tablets
+                  md: '3rem', // Larger size for desktops (h2 default)
+                },
+                px: { xs: 1.25, md: 4 },
+                py: { xs: 3, md: 2 },
+              }}
+              fontWeight="bold"
+              textAlign="center"
+            >
               Abuse and Sexual Assault Resource Tree
             </Typography>
 
-            <Grid item style={{ maxWidth: '600px' }}>
+            <Grid
+              item
+              sx={{
+                px: { xs: 2, md: 4 },
+                pb: { xs: 3, md: 0 },
+              }}
+            >
               <Typography textAlign="center">
                 Answer a few questions to find the resources you need. If you
                 need immediate help, call Penn Police.
               </Typography>
             </Grid>
 
-            <Grid container direction="column" alignItems="center" padding={8}>
+            <Grid
+              container
+              direction="column"
+              alignItems="center"
+              sx={{ p: { xs: 3, md: 8 } }}
+            >
               <Button variant="contained" size="large" href="/question">
                 Begin
               </Button>
               <Box padding={2}>
-                <Button href="/all-resources">
-                  Or, See all resources instead
+                <Button href="/all-resources" sx={{ textAlign: 'center' }}>
+                  Or, view all on-campus resources.
                 </Button>
               </Box>
             </Grid>
@@ -58,7 +81,9 @@ function HomePage() {
             variant="body2"
             align="center"
             color="grayText"
-            marginBottom={1.5}
+            sx={{
+              p: { xs: 2, md: 4 },
+            }}
           >
             Disclaimer: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
             sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

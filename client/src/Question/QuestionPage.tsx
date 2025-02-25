@@ -138,7 +138,13 @@ function QuestionPage() {
     return (
       <ScreenGrid>
         <SidebarComponent currentQuestion={currentQuestion}>
-          <Box width="65%" marginX="auto" marginBottom="50px">
+          <Box
+            sx={{
+              width: { xs: '90%', sm: '65%' },
+              marginX: 'auto',
+              marginBottom: '50px',
+            }}
+          >
             <QuestionComponent
               question={currentQuestion}
               handleClick={getNextFromAnswer}
@@ -153,7 +159,13 @@ function QuestionPage() {
   return (
     <ScreenGrid>
       <SidebarComponent currentQuestion={currentQuestion}>
-        <Box width="65%" marginX="auto" marginBottom="50px">
+        <Box
+          sx={{
+            width: { xs: '90%', sm: '65%' },
+            marginX: 'auto',
+            marginBottom: '50px',
+          }}
+        >
           <ResourceComponent question={currentQuestion} />
         </Box>
       </SidebarComponent>

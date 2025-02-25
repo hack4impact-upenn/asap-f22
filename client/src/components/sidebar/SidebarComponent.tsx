@@ -5,7 +5,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SidebarContent from './SidebarContent';
 import Footer from '../Footer';
@@ -22,10 +21,10 @@ interface Props {
 
 export default function SidebarComponent(props: Props) {
   const { window, currentQuestion, children } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+    setDrawerOpen(!drawerOpen);
   };
 
   const container =
@@ -40,20 +39,6 @@ export default function SidebarComponent(props: Props) {
           zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
       >
-        {/* <Toolbar>
-          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
-            ASAP Resource Tree
-          </Typography>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ display: { sm: 'none' } }}
-          >
-            <HelpOutlineIcon />
-          </IconButton>
-        </Toolbar> */}
         <NavBar />
       </AppBar>
       <Box
@@ -63,62 +48,87 @@ export default function SidebarComponent(props: Props) {
           mb: '74px',
           px: 0,
           overflowY: 'auto',
-          width: { sm: `calc(100vw - ${drawerWidth}px)` },
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        <Toolbar sx={{ p: 0 }} />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            p: 1,
+            mr: 4,
+          }}
+        >
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="end"
+            onClick={handleDrawerToggle}
+            sx={{ color: 'primary.main' }}
+          >
+            <HelpOutlineIcon />
+          </IconButton>
+        </Box>
         {children}
       </Box>
-      <Box
-        component="nav"
-        marginTop="64px"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-              paddingBottom: '50px',
-              marginTop: '64px',
-            },
-          }}
-          anchor="right"
+      {drawerOpen && (
+        <Box
+          component="nav"
+          marginTop="64px"
+          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         >
-          <SidebarContent currentQuestion={currentQuestion} />
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-              marginTop: '64px',
-              paddingBottom: '50px',
-            },
-          }}
-          anchor="right"
-          open
-        >
-          <SidebarContent currentQuestion={currentQuestion} />
-        </Drawer>
-      </Box>
+          {/* Mobile drawer */}
+          <Drawer
+            container={container}
+            variant="temporary"
+            open={drawerOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              display: { xs: 'block', sm: 'none' },
+              '& .MuiDrawer-paper': {
+                boxSizing: 'border-box',
+                width: drawerWidth,
+                paddingBottom: '50px',
+                marginTop: '64px',
+              },
+            }}
+            anchor="right"
+          >
+            <SidebarContent currentQuestion={currentQuestion} />
+          </Drawer>
+          {/* Desktop drawer */}
+          <Drawer
+            variant="temporary"
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+              '& .MuiDrawer-paper': {
+                boxSizing: 'border-box',
+                width: drawerWidth,
+                marginTop: '64px',
+                paddingBottom: '50px',
+                marginBotton: '74px',
+              },
+            }}
+            anchor="right"
+            open={drawerOpen}
+            onClose={handleDrawerToggle}
+          >
+            <SidebarContent currentQuestion={currentQuestion} />
+          </Drawer>
+        </Box>
+      )}
       <Box
         position="fixed"
         bottom="0px"
         sx={{
           flexGrow: 1,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          width: '100%',
+          zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
       >
         <Footer />

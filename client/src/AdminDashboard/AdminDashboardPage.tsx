@@ -5,12 +5,18 @@ import QuestionTable from './Tables/QuestionTable';
 import ResourceTable from './Tables/ResourceTable';
 import DefinitionTable from './Tables/DefinitionTable';
 import NavBar from '../components/NavBar';
+import { useAppSelector } from '../util/redux/hooks';
+import { selectUser } from '../util/redux/userSlice';
+import UserTable from './Tables/UserTable';
 
 /**
  * A page only accessible to admins that displays all users in a table and allows
  * Admin to delete users from admin and promote users to admin.
  */
 function AdminDashboardPage() {
+  // determine if user is an admin
+  const self = useAppSelector(selectUser);
+
   return (
     <ScreenGrid>
       <AppBar
@@ -78,6 +84,21 @@ function AdminDashboardPage() {
               <DefinitionTable />
             </div>
           </div>
+          {self.admin && (
+            <div
+              style={{
+                marginTop: '40px',
+                marginBottom: '40px',
+              }}
+            >
+              <Typography variant="h5" marginBottom="10px">
+                Users
+              </Typography>
+              <div style={{ width: '100%', height: '60vh' }}>
+                <UserTable />
+              </div>
+            </div>
+          )}
         </div>
       </Box>
     </ScreenGrid>

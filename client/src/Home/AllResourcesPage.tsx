@@ -39,7 +39,13 @@ function AllResourcesPage() {
   return (
     <ScreenGrid>
       <SidebarComponent currentQuestion={currentQuestion}>
-        <Box width="75%" marginX="auto" marginBottom="50px">
+        <Box
+          sx={{
+            width: { xs: '90%', sm: '75%' },
+            marginX: 'auto',
+            marginBottom: '50px',
+          }}
+        >
           <ResourceComponent question={currentQuestion} />
         </Box>
       </SidebarComponent>

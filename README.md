@@ -2,6 +2,14 @@
 
 This is a web app built for Abuse and Sexual Assault Prevention, a student organization at Penn, as a resource tree for all sexual violence resources at Penn. This is a [Typescript](https://www.typescriptlang.org) based [MERN](https://www.mongodb.com/mern-stack) web application.
 
+## Loading data from spreadsheet
+
+1. Download csv files from [this google sheet](https://docs.google.com/spreadsheets/d/1VnR7bca4DNmWQOIpBkgXTDB5DFEDv_ggvdWsPTAlj8I/edit?usp=sharing)
+   - Rename all csv files into `answers.csv`, `questions.csv`, `definitions.csv` respectively and put them in the `asap-f22/dataloader/csv_files` folder
+2. In the `asap-f22/dataloader` folder run `python csv_to_json.py`. You may need to pip install some packages / python versions.
+   - This generates the json files in the `json_files` directory.
+3. In the `asap-f22/server` folder, run `ts-node src/util/importData.ts`. This should clear the answers, defintions, and questions collections in your Mongo database and import the json files as objects.
+
 ## Features
 
 - Admin portal with ability to change resources, questions, and answers

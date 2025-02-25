@@ -32,7 +32,18 @@ function QuestionComponent(props: QuestionComponentProps) {
           gap="2%"
         >
           <Grid container direction="column" alignItems="center" padding={2}>
-            <Typography variant="h2" fontWeight="bold" textAlign="center">
+            <Typography
+              variant="h2"
+              fontWeight="bold"
+              textAlign="center"
+              sx={{
+                fontSize: {
+                  xs: '1.75rem', // Smaller font size for mobile
+                  sm: '2.5rem', // Medium size for tablets
+                  md: '3rem', // Larger size for desktops (h2 default)
+                },
+              }}
+            >
               <HTMLMapper text={question.text} />
             </Typography>
           </Grid>
