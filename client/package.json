@@ -32,6 +32,13 @@
     ]
   },
   "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "concurrently": "^7.0.0",
+    "cross-env": "^7.0.3",
+    "express": "^4.18.2",
+    "flag": "^5.0.1",
+    "react-html-map": "^0.1.1",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.5.3",
     "@mui/system": "^5.5.2",
@@ -53,6 +60,13 @@
     "web-vitals": "^3.0.3"
   },
   "devDependencies": {
+    "@types/babel__core": "^7.1.19",
+    "@types/express": "^4.17.14",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.3",
+    "ts-node-dev": "^2.0.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
